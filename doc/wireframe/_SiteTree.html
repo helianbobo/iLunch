@@ -1,0 +1,233 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><link href="Resources/axurerpprototype.css" type="text/css" rel="stylesheet"></HEAD>
+<BODY>
+<A href=# onclick='parent.CloseSitemap()' style='font-size:8pt'>Close Frames</A><br><br>
+
+<SCRIPT LANGUAGE="JavaScript">
+image1 = new Image();
+image1.src = 'Resources/plus.gif';
+
+function CloseSitemap()
+{
+	parent.URL = parent.mainFrame.URL
+}
+
+function ToggleDiv(node, id)
+{
+	sibling = document.getElementById(id);
+	if (sibling.style.display == 'none')
+	{
+		if (node.childNodes.length > 0)
+		{
+			if (node.childNodes[0].tagName == "IMG")
+			{
+				node.childNodes[0].src = "Resources/minus.gif";
+			}
+		}
+
+		sibling.style.display = '';
+	}
+	else
+	{
+		if (node.childNodes.length > 0)
+		{
+			if (node.childNodes[0].tagName == "IMG")
+			{
+				node.childNodes[0].src = "Resources/plus.gif";
+			}
+		}
+		sibling.style.display = 'none';
+	}
+}
+
+var currentPage = null;
+
+function highlight(id)
+{
+	if (currentPage != null)
+	{
+		currentPage.style.backgroundColor = '#EEEEFF';
+		currentPage.style.paddingLeft = '0px';
+		currentPage.style.paddingRight = '0px';
+		currentPage.style.border = '0px solid #666666';
+	}
+	
+	currentPage = document.getElementById(id);
+    if (currentPage) {
+	    currentPage.style.backgroundColor = '#DDDDDD';
+	    currentPage.style.paddingLeft = '3px';
+	    currentPage.style.paddingRight = '3px';
+	    currentPage.style.border = '1px solid #666666';
+    }
+}
+
+</SCRIPT>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><A onclick="ToggleDiv(this, 'd920f20f627cd477d952c5e9a992cc864')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A onclick="parent.mainFrame.location='尝鲜特价餐.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p920f20f627cd477d952c5e9a992cc864">尝鲜特价餐</SPAN></A><DIV id="d920f20f627cd477d952c5e9a992cc864">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='订餐选配菜.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pa4d38b8c6d024d0b9f0aea82f47c90e1">订餐选配菜</SPAN></A><DIV id="tda4d38b8c6d024d0b9f0aea82f47c90e1">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='确认配送信息.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p2d2a4eb52891470393d16de847f42faa">确认配送信息</SPAN></A><DIV id="td2d2a4eb52891470393d16de847f42faa">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="13" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="ToggleDiv(this, 'd02088c3e9601453e9ffa0d764fbde29e')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A onclick="parent.mainFrame.location='网上支付.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p02088c3e9601453e9ffa0d764fbde29e">网上支付</SPAN></A><DIV id="d02088c3e9601453e9ffa0d764fbde29e">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='支付确定.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p24ca21bbd9d44120845be5818ccf6519">支付确定</SPAN></A><DIV id="td24ca21bbd9d44120845be5818ccf6519">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='订餐成功.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pc0057532d41245eba467c1817c709703">订餐成功</SPAN></A><DIV id="tdc0057532d41245eba467c1817c709703">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><A onclick="ToggleDiv(this, 'd23a949bd638f4b169915716210accca7')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A onclick="parent.mainFrame.location='午餐预定.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p23a949bd638f4b169915716210accca7">午餐预定</SPAN></A><DIV id="d23a949bd638f4b169915716210accca7">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='主菜介绍.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pb936aef0892c427d9644449e76ffbe36">主菜介绍</SPAN></A><DIV id="tdb936aef0892c427d9644449e76ffbe36">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="13" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="ToggleDiv(this, 'dde5598146c2b41469208e77cd493331a')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A onclick="parent.mainFrame.location='登录选配菜.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pde5598146c2b41469208e77cd493331a">登录选配菜</SPAN></A><DIV id="dde5598146c2b41469208e77cd493331a">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='配菜介绍.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p910b46be8f7a484686b88522c05410e5">配菜介绍</SPAN></A><DIV id="td910b46be8f7a484686b88522c05410e5">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='登录确认配送信息.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p71988a8659584d0bbdfa7d114f59b74f">登录确认配送信息</SPAN></A><DIV id="td71988a8659584d0bbdfa7d114f59b74f">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="13" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="ToggleDiv(this, 'df40c36cc6dcf48cdad617a19e8dbfba2')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A onclick="parent.mainFrame.location='登录订餐支付.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pf40c36cc6dcf48cdad617a19e8dbfba2">登录订餐支付</SPAN></A><DIV id="df40c36cc6dcf48cdad617a19e8dbfba2">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='积分兑换.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p645dd1ddbd1c4f879a986b7d4bc8c8cc">积分兑换</SPAN></A><DIV id="td645dd1ddbd1c4f879a986b7d4bc8c8cc">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='登录支付确认.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pedc300a8e9da4a4fa7229e2965572f6f">登录支付确认</SPAN></A><DIV id="tdedc300a8e9da4a4fa7229e2965572f6f">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='登录订餐成功.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pd44dbbe5a50440f383cec7d0cf24cf67">登录订餐成功</SPAN></A><DIV id="tdd44dbbe5a50440f383cec7d0cf24cf67">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><A onclick="ToggleDiv(this, 'd98fdd69e88764158850e22718b74e44b')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A onclick="parent.mainFrame.location='我的订单.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p98fdd69e88764158850e22718b74e44b">我的订单</SPAN></A><DIV id="d98fdd69e88764158850e22718b74e44b">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='退订确认.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pba63bb49c27d457f9d70e20439f075c5">退订确认</SPAN></A><DIV id="tdba63bb49c27d457f9d70e20439f075c5">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><IMG SRC="Resources/transparent.gif" WIDTH=17px HEIGHT=9px><A onclick="parent.mainFrame.location='关于我们.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p5a2f2d2ca47f41cd9bd39a23a146aabe">关于我们</SPAN></A><DIV id="td5a2f2d2ca47f41cd9bd39a23a146aabe">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><IMG SRC="Resources/transparent.gif" WIDTH=17px HEIGHT=9px><A onclick="parent.mainFrame.location='常见问题.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pf0ca687248364acc84e7b103afb98cf9">常见问题</SPAN></A><DIV id="tdf0ca687248364acc84e7b103afb98cf9">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><A onclick="ToggleDiv(this, 'dbfdde831c4bd43df8ec82599c62e8e86')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A onclick="parent.mainFrame.location='切换地区弹出框.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pbfdde831c4bd43df8ec82599c62e8e86">切换地区弹出框</SPAN></A><DIV id="dbfdde831c4bd43df8ec82599c62e8e86">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='注册.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p36be2226b41f46fea329b190688a36a9">注册</SPAN></A><DIV id="td36be2226b41f46fea329b190688a36a9">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A onclick="parent.mainFrame.location='登录框.html'"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="paddb40866b824e2aae8c7555c0a3f73a">登录框</SPAN></A><DIV id="tdaddb40866b824e2aae8c7555c0a3f73a">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE></BODY></HTML>
