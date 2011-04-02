@@ -30,7 +30,8 @@ fixture {
     'person_liuchao'(Customer){
         name = '刘超'
         cellNumber = '18621077586'
-        building = building_lingyang
+        primaryBuilding = building_lingyang
+        buildings = [building_lingyang]
     }
 
 }

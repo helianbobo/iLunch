@@ -2,7 +2,7 @@ package cn.ilunch.domain
 
 class OrderItem {
 
-  Order order
+  ProductOrder order
   Product product
   BigDecimal price
 

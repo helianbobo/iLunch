@@ -2,11 +2,20 @@ package cn.ilunch.domain
 
 class Customer extends Person {
 
-  Building building
+    Building primaryBuilding
 
-  static hasMany = [orders:Order]
+    BigDecimal accountBalance
+    BigDecimal pointBalance
 
 
-  static constraints = {
-  }
+    static hasMany = [
+            orders: ProductOrder,
+            buildings: Building,
+            payments:Payment,
+            pointChanges:PointChange
+    ]
+
+
+    static constraints = {
+    }
 }
