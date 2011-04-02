@@ -1,10 +1,12 @@
 package cn.ilunch.domain
 
-class Customer extends Person{
+class Customer extends Person {
 
-    Building building
+  Building building
+
+  static hasMany = [orders:Order]
 
 
-    static constraints = {
-    }
+  static constraints = {
+  }
 }
