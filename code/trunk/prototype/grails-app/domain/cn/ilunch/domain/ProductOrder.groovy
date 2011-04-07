@@ -10,6 +10,7 @@ class ProductOrder {
 
     static hasMany = [
             orderItems: OrderItem,
+            shipments:Shipment,
             appliedPriceRule: PriceRule,
             payments:Payment
 
