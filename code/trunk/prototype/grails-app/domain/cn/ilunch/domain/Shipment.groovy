@@ -4,6 +4,7 @@ class Shipment {
 
     Date shipmentDate
     String status
+    ProductOrder order
 
     static hasMany = [orderItems: OrderItem]
 
