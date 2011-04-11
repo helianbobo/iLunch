@@ -4,7 +4,8 @@ class DistributionPoint extends Location{
 
     String name
 
-    DistributionPointGroup group
+    DistributionArea area
+    Kitchen kitchen
 
     static hasMany = [buildings:Building]
 

@@ -33,7 +33,7 @@
                                     <label for="group"><g:message code="distributionPoint.group.label" default="Group" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'group', 'errors')}">
-                                    <g:select name="group.id" from="${cn.ilunch.domain.DistributionPointGroup.list()}" optionKey="id" value="${distributionPointInstance?.group?.id}"  />
+                                    <g:select name="group.id" from="${cn.ilunch.domain.DistributionArea.list()}" optionKey="id" value="${distributionPointInstance?.group?.id}"  />
                                 </td>
                             </tr>
                         

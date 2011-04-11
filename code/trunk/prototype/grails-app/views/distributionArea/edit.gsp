@@ -1,11 +1,11 @@
 
 
-<%@ page import="cn.ilunch.domain.DistributionPoint" %>
+<%@ page import="cn.ilunch.domain.DistributionArea" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'distributionPoint.label', default: 'DistributionPoint')}" />
+        <g:set var="entityName" value="${message(code: 'distributionArea.label', default: 'DistributionArea')}" />
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -19,60 +19,67 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <g:hasErrors bean="${distributionPointInstance}">
+            <g:hasErrors bean="${distributionAreaInstance}">
             <div class="errors">
-                <g:renderErrors bean="${distributionPointInstance}" as="list" />
+                <g:renderErrors bean="${distributionAreaInstance}" as="list" />
             </div>
             </g:hasErrors>
             <g:form method="post" >
-                <g:hiddenField name="id" value="${distributionPointInstance?.id}" />
-                <g:hiddenField name="version" value="${distributionPointInstance?.version}" />
+                <g:hiddenField name="id" value="${distributionAreaInstance?.id}" />
+                <g:hiddenField name="version" value="${distributionAreaInstance?.version}" />
                 <div class="dialog">
                     <table>
                         <tbody>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="buildings"><g:message code="distributionPoint.buildings.label" default="Buildings" /></label>
+                                  <label for="distributionPoints"><g:message code="distributionArea.distributionPoints.label" default="Distribution Points" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'buildings', 'errors')}">
-                                    <g:select name="buildings" from="${cn.ilunch.domain.Building.list()}" multiple="yes" optionKey="id" size="5" value="${distributionPointInstance?.buildings*.id}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="group"><g:message code="distributionPoint.group.label" default="Group" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'group', 'errors')}">
-                                    <g:select name="group.id" from="${cn.ilunch.domain.DistributionArea.list()}" optionKey="id" value="${distributionPointInstance?.group?.id}"  />
+                                <td valign="top" class="value ${hasErrors(bean: distributionAreaInstance, field: 'distributionPoints', 'errors')}">
+                                    
+<ul>
+<g:each in="${distributionAreaInstance?.distributionPoints?}" var="d">
+    <li><g:link controller="distributionPoint" action="show" id="${d.id}">${d?.encodeAsHTML()}</g:link></li>
+</g:each>
+</ul>
+<g:link controller="distributionPoint" action="create" params="['distributionArea.id': distributionAreaInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'distributionPoint.label', default: 'DistributionPoint')])}</g:link>
+
                                 </td>
                             </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="latitude"><g:message code="distributionPoint.latitude.label" default="Latitude" /></label>
+                                  <label for="kitchens"><g:message code="distributionArea.kitchens.label" default="Kitchens" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'latitude', 'errors')}">
-                                    <g:textField name="latitude" value="${fieldValue(bean: distributionPointInstance, field: 'latitude')}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="longitude"><g:message code="distributionPoint.longitude.label" default="Longitude" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'longitude', 'errors')}">
-                                    <g:textField name="longitude" value="${fieldValue(bean: distributionPointInstance, field: 'longitude')}" />
+                                <td valign="top" class="value ${hasErrors(bean: distributionAreaInstance, field: 'kitchens', 'errors')}">
+                                    <g:select name="kitchens" from="${cn.ilunch.domain.Kitchen.list()}" multiple="yes" optionKey="id" size="5" value="${distributionAreaInstance?.kitchens*.id}" />
                                 </td>
                             </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="name"><g:message code="distributionPoint.name.label" default="Name" /></label>
+                                  <label for="latitude"><g:message code="distributionArea.latitude.label" default="Latitude" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'name', 'errors')}">
-                                    <g:textField name="name" value="${distributionPointInstance?.name}" />
+                                <td valign="top" class="value ${hasErrors(bean: distributionAreaInstance, field: 'latitude', 'errors')}">
+                                    <g:textField name="latitude" value="${fieldValue(bean: distributionAreaInstance, field: 'latitude')}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="longitude"><g:message code="distributionArea.longitude.label" default="Longitude" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: distributionAreaInstance, field: 'longitude', 'errors')}">
+                                    <g:textField name="longitude" value="${fieldValue(bean: distributionAreaInstance, field: 'longitude')}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="name"><g:message code="distributionArea.name.label" default="Name" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: distributionAreaInstance, field: 'name', 'errors')}">
+                                    <g:textField name="name" value="${distributionAreaInstance?.name}" />
                                 </td>
                             </tr>
                         

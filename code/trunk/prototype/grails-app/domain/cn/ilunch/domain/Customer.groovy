@@ -4,8 +4,8 @@ class Customer extends Person {
 
     Building primaryBuilding
 
-    BigDecimal accountBalance
-    BigDecimal pointBalance
+    BigDecimal accountBalance = 0
+    BigDecimal pointBalance = 0
 
 
     static hasMany = [

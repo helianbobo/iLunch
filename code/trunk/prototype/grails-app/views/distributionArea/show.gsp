@@ -1,10 +1,10 @@
 
-<%@ page import="cn.ilunch.domain.DistributionPoint" %>
+<%@ page import="cn.ilunch.domain.DistributionArea" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'distributionPoint.label', default: 'DistributionPoint')}" />
+        <g:set var="entityName" value="${message(code: 'distributionArea.label', default: 'DistributionArea')}" />
         <title><g:message code="default.show.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -23,19 +23,19 @@
                     <tbody>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.id.label" default="Id" /></td>
+                            <td valign="top" class="name"><g:message code="distributionArea.id.label" default="Id" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: distributionPointInstance, field: "id")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: distributionAreaInstance, field: "id")}</td>
                             
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.buildings.label" default="Buildings" /></td>
+                            <td valign="top" class="name"><g:message code="distributionArea.distributionPoints.label" default="Distribution Points" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
-                                <g:each in="${distributionPointInstance.buildings}" var="b">
-                                    <li><g:link controller="building" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></li>
+                                <g:each in="${distributionAreaInstance.distributionPoints}" var="d">
+                                    <li><g:link controller="distributionPoint" action="show" id="${d.id}">${d?.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>
@@ -43,30 +43,36 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.group.label" default="Group" /></td>
+                            <td valign="top" class="name"><g:message code="distributionArea.kitchens.label" default="Kitchens" /></td>
                             
-                            <td valign="top" class="value"><g:link controller="distributionArea" action="show" id="${distributionPointInstance?.group?.id}">${distributionPointInstance?.group?.encodeAsHTML()}</g:link></td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.latitude.label" default="Latitude" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: distributionPointInstance, field: "latitude")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.longitude.label" default="Longitude" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: distributionPointInstance, field: "longitude")}</td>
+                            <td valign="top" style="text-align: left;" class="value">
+                                <ul>
+                                <g:each in="${distributionAreaInstance.kitchens}" var="k">
+                                    <li><g:link controller="kitchen" action="show" id="${k.id}">${k?.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
                             
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.name.label" default="Name" /></td>
+                            <td valign="top" class="name"><g:message code="distributionArea.latitude.label" default="Latitude" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: distributionPointInstance, field: "name")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: distributionAreaInstance, field: "latitude")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="distributionArea.longitude.label" default="Longitude" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: distributionAreaInstance, field: "longitude")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="distributionArea.name.label" default="Name" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: distributionAreaInstance, field: "name")}</td>
                             
                         </tr>
                     
@@ -75,7 +81,7 @@
             </div>
             <div class="buttons">
                 <g:form>
-                    <g:hiddenField name="id" value="${distributionPointInstance?.id}" />
+                    <g:hiddenField name="id" value="${distributionAreaInstance?.id}" />
                     <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" /></span>
                     <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
                 </g:form>

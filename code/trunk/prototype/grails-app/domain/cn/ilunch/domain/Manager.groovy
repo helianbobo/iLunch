@@ -2,8 +2,9 @@ package cn.ilunch.domain
 
 class Manager extends Person{
 
-    Restaurant restaurant
+    static belongsTo = [kitchen:Kitchen]
 
     static constraints = {
+        kitchen(nullable: true)
     }
 }
