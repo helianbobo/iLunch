@@ -1,0 +1,14 @@
+<plugin name='spock-functional-test' version='0.1' grailsVersion='1.3.6 &gt; *'>
+  <author>Liu Chao</author>
+  <authorEmail>liuchao36@gmail.com</authorEmail>
+  <title>Spock Functional Test Plugin</title>
+  <description>\
+Spock Functional Test Plugin for internal use.
+</description>
+  <documentation>http://grails.org/plugin/spock-functional-test</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>

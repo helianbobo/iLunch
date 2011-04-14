@@ -1,18 +1,23 @@
-import cn.ilunch.test.HttpFunctionalSpec
+import it.tika.test.HttpFunctionalSpec
 
-class MySpec extends HttpFunctionalSpec{
+class MySpec extends HttpFunctionalSpec {
 
-    def "主菜列表"(){
+    def "主菜列表"() {
 
         when: "页面读取完毕,向后台发送ajax数据请求"
 
-        def response = get(url)
+        get(path) { response, json ->
+            json.each {mainDish->
+                assert mainDish.name != ""
+            }
+
+        }
 
         then: "后台返回json格式的数据"
-        response == '[{name:"咖喱鱼"}]'
 
         where:
-        url = 'http://localhost:8080/prototype/mainDish/show'
+        path = '/person/show/2'
+        expectJson = '[{name:"咖喱鱼"}]'
 
     }
 

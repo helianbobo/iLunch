@@ -16,18 +16,25 @@ grails.project.dependency.resolution = {
 
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
-        //mavenLocal()
-        //mavenCentral()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenLocal()
+        mavenCentral()
+        mavenRepo "http://snapshots.repository.codehaus.org"
+        mavenRepo "http://repository.codehaus.org"
+        mavenRepo "http://download.java.net/maven/2/"
+        mavenRepo "http://repository.jboss.com/maven2/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.13'
+
+        compile('org.spockframework:spock-grails-support:0.5-groovy-1.7') {
+            exclude "groovy-all"
+        }
+
+        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.1') {
+            excludes "commons-logging", "xml-apis", "groovy"
+        }
+
     }
 }
-
-grails.plugin.location."spock-functional-test" = "../spock-functional-test"
