@@ -2,6 +2,14 @@ import it.tika.test.HttpFunctionalSpec
 
 class MySpec extends HttpFunctionalSpec {
 
+    String getAppName(){
+        String result = 'prototype'
+        if(config){
+            result = config.app.name
+        }
+        return result
+    }
+
     def "主菜列表"() {
 
         when: "页面读取完毕,向后台发送ajax数据请求"
@@ -16,7 +24,7 @@ class MySpec extends HttpFunctionalSpec {
         then: "后台返回json格式的数据"
 
         where:
-        path = '/person/show/2'
+        path = "/${appName}/api/person/2"
         expectJson = '[{name:"咖喱鱼"}]'
 
     }

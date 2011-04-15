@@ -13,14 +13,23 @@ class HttpFunctionalSpec extends Specification {
     def log = Logger.getLogger(this.getClass().getName())
     def config = ConfigurationHolder.config
 
-    String baseUrl = config.grails.serverURL
+    protected String getBaseUrl() {
+
+        String result = 'http://localhost:8080'
+        if(config)
+            result = config.grails.serverURL
+
+        return result
+
+    }
 
     protected void get(String path, Closure successClosure) {
 
         def http = new HTTPBuilder(baseUrl)
 
-        http.request(Method.valueOf("GET"), JSON) {
+        http.request(Method.valueOf("GET"), JSON) {req->
             uri.path = path
+            headers.'User-Agent' = 'Mozilla/5.0'
             response.success = successClosure
             response.failure = { resp ->
                 def message = "Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
