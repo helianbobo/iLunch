@@ -6,31 +6,74 @@ import cn.ilunch.domain.Kitchen
 import cn.ilunch.domain.Manager
 import cn.ilunch.domain.MainDish
 import cn.ilunch.domain.SideDish
+import cn.ilunch.domain.ProductAreaPriceSchedule
+import java.text.SimpleDateFormat
+import cn.ilunch.domain.Product
+import cn.ilunch.domain.Role
+import cn.ilunch.domain.UserRole
+
+
 
 fixture {
-
-
-
-    'person_chenkai'(Manager){
+    'person_chenkai'(Manager) {
         name = '陈凯'
-        cellNumber = '1860018600'
+        cellNumber = '18600186000'
+        password = "password"
+        enabled = true
+        accountExpired = false
+        accountLocked = false
+        passwordExpired = false
     }
 
-    'da_zhangjiang'(DistributionArea){
+    'person_chenyu'(Manager) {
+        name = '晨煜'
+        cellNumber = '18600186001'
+        password = "password"
+        enabled = true
+        accountExpired = false
+        accountLocked = false
+        passwordExpired = false
+    }
+
+    'da_zhangjiang'(DistributionArea) {
         name = "张江高科"
         latitude = '31.204212'
         longitude = '121.600199'
     }
 
-    "kitchen_zhangjiang"(Kitchen){
-        name = "张江厨房"
-        manager = person_chenkai
+    'da_peoplesquare'(DistributionArea) {
+        name = "人民广场"
+        latitude = '32.204212'
+        longitude = '122.600199'
+    }
 
+    "kitchen_zhangjiang"(Kitchen) {
+        name = "张江厨房"
+    }
+
+    "kitchen_peoplesquare"(Kitchen) {
+        name = "人民广场厨房"
+        manager = person_chenyu
+    }
+
+    'dp_worldtradetower'(DistributionPoint) {
+        name = "世贸大厦楼下"
+        latitude = '31.205093'
+        longitude = '121.598160'
+        area = da_peoplesquare
+        kitchen = kitchen_peoplesquare
     }
 
 
 
-    'dp_lingyang'(DistributionPoint){
+    'building_worldtradetower'(Building) {
+        name = '世贸大厦'
+        latitude = '31.205093'
+        longitude = '121.598160'
+        distributionPoint = dp_worldtradetower
+    }
+
+    'dp_lingyang'(DistributionPoint) {
         name = "凌阳大厦大堂"
         latitude = '31.205093'
         longitude = '121.598160'
@@ -39,28 +82,235 @@ fixture {
 
     }
 
-    'building_lingyang'(Building){
+
+
+    'building_lingyang'(Building) {
         name = '凌阳大厦'
         latitude = '31.205093'
         longitude = '121.598160'
         distributionPoint = dp_lingyang
     }
 
-    'person_liuchao'(Customer){
+    'building_qq'(Building) {
+        name = 'QQ大厦'
+        latitude = '31.205093'
+        longitude = '121.598160'
+        distributionPoint = dp_lingyang
+    }
+
+    'person_liuchao'(Customer) {
         name = '刘超'
         cellNumber = '18621077586'
         primaryBuilding = building_lingyang
         buildings = [building_lingyang]
+        password = "password"
+        enabled = true
+        accountExpired = false
+        accountLocked = false
+        passwordExpired = false
     }
 
-    'md_curryfish'(MainDish){
+
+
+    'md_curryfish'(MainDish) {
         name = '咖喱鱼'
         flavor = '东南亚'
+        story = '东南亚咖喱鱼的传说'
     }
 
-    'sd_doujiao'(SideDish){
+    'md_psourcefish'(MainDish) {
+        name = '茄汁鱼'
+        flavor = '东南亚'
+        story = '东南亚茄汁鱼的传说'
+    }
+
+    'md_curryricewithfish'(MainDish) {
+        name = '炸白身鱼'
+        flavor = '日式'
+        story = '炸白身鱼的传说'
+    }
+
+    'md_curryricewithfriedpork'(MainDish) {
+        name = '炸猪排'
+        flavor = '日式'
+        story = '炸猪排的传说'
+    }
+
+    'sd_doujiao'(SideDish) {
         name = '豆角'
         flavor = '东北'
+        story = '东北豆角的传说'
     }
 
+    'sd_potatomash'(SideDish) {
+        name = '土豆泥'
+        flavor = '德式'
+        story = '德式土豆泥的传说'
+    }
+
+    'sd_liangpi'(SideDish) {
+        name = '凉皮'
+        flavor = '陕西'
+        story = '陕西凉皮的传说'
+    }
+
+    'sd_huangniluo'(SideDish) {
+        name = '黄泥螺'
+        flavor = '宁波'
+        story = '宁波黄泥螺的传说'
+    }
+
+    'schedule_sd_doujiao_2010-11-05->2011-04-05'(ProductAreaPriceSchedule) {
+        product = sd_doujiao
+        area = da_zhangjiang
+        price = 15.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-11-05')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-05')
+    }
+
+    'schedule_sd_doujiao_2011-04-06->*'(ProductAreaPriceSchedule) {
+        product = sd_doujiao
+        area = da_zhangjiang
+        price = 18.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-06')
+    }
+
+    'schedule_md_curryfish_2011-04-06'(ProductAreaPriceSchedule) {
+        product = md_curryfish
+        area = da_zhangjiang
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-06')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-06')
+    }
+
+    'schedule_md_psourcefish_2011-04-06'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 40.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-16')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-16')
+    }
+
+    'schedule_md_psourcefish_2010-04-16'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 40.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-04-16')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-12')
+    }
+    'schedule_md_psourcefish_2011-04-17'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 45.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-17')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-26')
+    }
+    'schedule_md_psourcefish_2011-04-27'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 40.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-27')
+    }
+
+    'schedule_md_psourcefish_peoplesquare_2011-05-01'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_peoplesquare
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-01')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-01')
+    }
+
+    'schedule_md_curryfish_peoplesquare_2011-05-02'(ProductAreaPriceSchedule) {
+        product = md_curryfish
+        area = da_peoplesquare
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-02')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-02')
+    }
+
+    'schedule_md_curryricewithfish_peoplesquare_2011-05-03'(ProductAreaPriceSchedule) {
+        product = md_curryricewithfish
+        area = da_peoplesquare
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-03')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-03')
+    }
+
+    'schedule_md_curryricewithfriedpork_peoplesquare_2011-05-04'(ProductAreaPriceSchedule) {
+        product = md_curryricewithfriedpork
+        area = da_peoplesquare
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-04')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-04')
+    }
+
+    'schedule_md_curryfish_peoplesquare_2011-05-05'(ProductAreaPriceSchedule) {
+        product = md_curryfish
+        area = da_peoplesquare
+        price = 35.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-05')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-05')
+    }
+
+    'schedule_md_liangpi_peoplesquare_2010-01-01'(ProductAreaPriceSchedule) {
+        product = sd_liangpi
+        area = da_peoplesquare
+        price = 35.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-01-01')
+    }
+
+    'schedule_sd_doujiao_peoplesquare_2010-01-01'(ProductAreaPriceSchedule) {
+        product = sd_doujiao
+        area = da_peoplesquare
+        price = 35.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-01-01')
+    }
+
+    'schedule_sd_potatomash_peoplesquare_2010-01-01'(ProductAreaPriceSchedule) {
+        product = sd_potatomash
+        area = da_peoplesquare
+        price = 35.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-01-01')
+    }
+
+    'schedule_sd_huangniluo_peoplesquare_2010-01-01'(ProductAreaPriceSchedule) {
+        product = sd_huangniluo
+        area = da_peoplesquare
+        price = 35.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-01-01')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-01-01')
+    }
+
+    'schedule_sd_huangniluo_peoplesquare_2011-01-02'(ProductAreaPriceSchedule) {
+        product = sd_huangniluo
+        area = da_peoplesquare
+        price = 35.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-01-02')
+    }
+}
+
+post {
+    bean("kitchen_zhangjiang").distributionPoints = [bean('dp_lingyang')]
+
+    def adminRole = new Role(authority: 'ROLE_ADMIN').save(flush: true)
+    def managerRole = new Role(authority: 'ROLE_MANAGER').save(flush: true)
+    def userRole = new Role(authority: 'ROLE_USER').save(flush: true)
+
+    def kitchen = Kitchen.findByName("张江厨房")
+    if(!kitchen){
+        kitchen = new Kitchen(name:"张江厨房")
+        kitchen.distributionPoints = [bean('dp_lingyang')]
+    }
+    def jleo = new Manager();
+    jleo.name = "jleo"
+    jleo.cellNumber = '13764511823'
+    jleo.addToRoles(managerRole)
+    jleo.password = springSecurityService.encodePassword('jleo')
+    jleo.enabled = true
+    jleo.kitchen = kitchen
+    jleo.save(flush: true)
+
+    kitchen.setManager (jleo)
+
+    UserRole.create jleo, managerRole, true
 }

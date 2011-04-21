@@ -6,7 +6,7 @@ class OrderItem {
     Product product
     BigDecimal price
     Integer quantity
-
+    Date shippmentDate
 
     static constraints = {
     }

@@ -9,8 +9,33 @@ class DistributionAreaController {
     }
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [distributionAreaInstanceList: DistributionArea.list(params), distributionAreaInstanceTotal: DistributionArea.count()]
+        def areaList = DistributionArea.findAllByStatus(Location.INUSE)
+        render(contentType: "text/json") {
+            areas = array {
+                for (areaElement in areaList) {
+                    area([
+                            id: areaElement.id,
+                            name: areaElement.name,
+                            longitude: areaElement.longitude,
+                            latitude: areaElement.latitude,
+                            buildings: array {
+                                areaElement.distributionPoints.each {dp ->
+                                    dp.buildings.each {buildingElement ->
+                                        building([
+                                                id: buildingElement.id,
+                                                name: buildingElement.name,
+                                                longitude: buildingElement.longitude,
+                                                latitude: buildingElement.latitude
+                                        ])
+                                    }
+
+                                }
+                            }]
+                    )
+                }
+            }
+        }
+
     }
 
     def create = {
@@ -58,7 +83,7 @@ class DistributionAreaController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (distributionAreaInstance.version > version) {
-                    
+
                     distributionAreaInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'distributionArea.label', default: 'distributionArea')] as Object[], "Another user has updated this distributionArea while you were editing")
                     render(view: "edit", model: [distributionAreaInstance: distributionAreaInstance])
                     return

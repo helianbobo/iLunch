@@ -9,5 +9,7 @@ class ProductAreaPriceSchedule {
     BigDecimal price
 
     static constraints = {
+        toDate(nullable:true)
+        price(min:new BigDecimal("0"))
     }
 }

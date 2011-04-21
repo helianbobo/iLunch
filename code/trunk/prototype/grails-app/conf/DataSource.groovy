@@ -5,6 +5,7 @@ dataSource {
     password = ""
 }
 hibernate {
+    loggingSql = true
     cache.use_second_level_cache = true
     cache.use_query_cache = true
     cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
@@ -19,7 +20,7 @@ environments {
     }
     test {
         dataSource {
-            dbCreate = "update"
+            dbCreate = "create-drop"
             url = "jdbc:hsqldb:mem:testDb"
         }
     }
@@ -27,6 +28,15 @@ environments {
         dataSource {
             dbCreate = "update"
             url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+        }
+    }
+    leo {
+        dataSource {
+            dbCreate = "update" // one of 'create', 'create-drop','update'
+            url = "jdbc:mysql://localhost:3306/ilunch"
+            driverClassName = "com.mysql.jdbc.Driver"
+            username = "root"
+            password = "root"
         }
     }
 }

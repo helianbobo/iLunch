@@ -7,4 +7,8 @@ class Manager extends Person{
     static constraints = {
         kitchen(nullable: true)
     }
+
+    def getArea(){
+        kitchen.distributionPoints*.area[0]
+    }
 }

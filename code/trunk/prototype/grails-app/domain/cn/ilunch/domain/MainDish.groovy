@@ -2,10 +2,13 @@ package cn.ilunch.domain
 
 class MainDish extends Product{
 
-    static expose = 'maindish'
-
     String flavor
 
     static constraints = {
+        flavor(nullable:true)
+    }
+
+    def type(){
+        "主菜"
     }
 }

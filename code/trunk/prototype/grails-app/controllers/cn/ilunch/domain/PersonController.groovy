@@ -8,6 +8,41 @@ class PersonController {
         redirect(action: "list", params: params)
     }
 
+
+    def preference = {
+        def customerId = params.id
+        def customer = Customer.get(customerId)
+
+        if (!customer) {
+            forward(controller: "exception", action: "entityNotFound", params: [id: customerId, entityName: Customer])
+            return
+        }
+        def customerArea = customer.primaryBuilding.distributionPoint.area
+        def customerBuilding = customer.primaryBuilding
+
+        render(contentType: "text/json") {
+            id=customer.id
+            nickname = customer.name
+            phoneNumber = customer.cellNumber
+            points = customer.pointBalance
+            area = [
+                    areaName: customerArea.name,
+                    areaId: customerArea.id,
+                    arealLongitude: customerArea.longitude,
+                    areaLatitude: customerArea.latitude
+            ]
+            building = [
+                    buildId: customerBuilding.id,
+                    buildingLongitude: customerBuilding.longitude,
+                    buildingLatitude: customerBuilding.latitude
+            ]
+        }
+    }
+
+    def saveCart = {
+        session.putValue("cartInfo", params.cartInfo)
+    }
+
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [personInstanceList: Person.list(params), personInstanceTotal: Person.count()]
@@ -58,7 +93,7 @@ class PersonController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (personInstance.version > version) {
-                    
+
                     personInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'person.label', default: 'Person')] as Object[], "Another user has updated this Person while you were editing")
                     render(view: "edit", model: [personInstance: personInstance])
                     return

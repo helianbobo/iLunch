@@ -6,9 +6,11 @@ class DistributionPoint extends Location{
 
     DistributionArea area
     Kitchen kitchen
+    List buildings
 
     static hasMany = [buildings:Building]
 
     static constraints = {
+        status(min: 0,max: 1)
     }
 }

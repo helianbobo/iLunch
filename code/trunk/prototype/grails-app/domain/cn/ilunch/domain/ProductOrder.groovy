@@ -1,21 +1,40 @@
 package cn.ilunch.domain
 
 class ProductOrder {
+    public static String SUBMITTED = "SUBMITTED"
+    public static String COMPLETED = "COMPLETED"
+    public static String PAID = "PAID"
+    public static String CANCELLED = "CANCELLED"
 
-    DistributionPoint point
+    Customer customer
+    DistributionPoint distributionPoint
     String status
-    Date shippingDate
+
+    Date orderDate
+    Date completeDate
+
+    PointChange pointChange
 
     BigDecimal amount
+
+    List shipments
 
     static hasMany = [
             orderItems: OrderItem,
             shipments:Shipment,
             appliedPriceRule: PriceRule,
             payments:Payment
-
     ]
 
     static constraints = {
+        pointChange(nullable:true)
+    }
+
+    boolean acknowledgeable(){
+       status in [SUBMITTED]
+    }
+
+    boolean cancellable(){
+       status in [SUBMITTED, PAID]
     }
 }

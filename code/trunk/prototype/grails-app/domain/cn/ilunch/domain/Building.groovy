@@ -6,5 +6,6 @@ class Building extends Location{
     DistributionPoint distributionPoint
 
     static constraints = {
+        status(min: 0,max: 1)
     }
 }

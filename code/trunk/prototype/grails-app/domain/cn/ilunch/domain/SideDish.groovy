@@ -6,4 +6,8 @@ class SideDish extends Product{
 
     static constraints = {
     }
+
+    def type(){
+        "配菜"
+    }
 }

@@ -48,6 +48,9 @@ grails.logging.jul.usebridge = true
 // packages to include in Spring bean scanning
 grails.spring.bean.packages = []
 
+grails.gorm.failOnError=true
+
+grails.org.hibernate
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
@@ -85,3 +88,19 @@ log4j = {
 
     warn   'org.mortbay.log'
 }
+
+grails.json.legacy.builder=false
+
+cn.ilunch.exception.code = {
+    EntityNotFound = "01"
+    ScheduleNotFound = "02"
+}
+
+cn.ilunch.date.format = 'yyyy-MM-dd'
+cn.ilunch.product.image.location = 'D:/Documents/Downloads/helianbobo-iLunch-b802e58/helianbobo-iLunch-b802e58/code/trunk/prototype/web-app/images'
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'cn.ilunch.domain.Person'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'cn.ilunch.domain.UserRole'
+grails.plugins.springsecurity.authority.className = 'cn.ilunch.domain.Role'
+
+grails.plugins.springsecurity.userLookup.usernamePropertyName = 'cellNumber'
