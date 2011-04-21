@@ -290,7 +290,7 @@ fixture {
 }
 
 post {
-    bean("kitchen_zhangjiang").distributionPoints = [bean('dp_lingyang')]
+    kitchen_zhangjiang.distributionPoints = [dp_lingyang]
 
     def adminRole = new Role(authority: 'ROLE_ADMIN').save(flush: true)
     def managerRole = new Role(authority: 'ROLE_MANAGER').save(flush: true)
@@ -299,7 +299,7 @@ post {
     def kitchen = Kitchen.findByName("张江厨房")
     if(!kitchen){
         kitchen = new Kitchen(name:"张江厨房")
-        kitchen.distributionPoints = [bean('dp_lingyang')]
+        kitchen.distributionPoints = [dp_lingyang]
     }
     def jleo = new Manager();
     jleo.name = "jleo"
