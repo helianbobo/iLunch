@@ -43,6 +43,11 @@ class PersonController {
         session.putValue("cartInfo", params.cartInfo)
     }
 
+ def cart = {
+render([text:session.getValue("cartInfo"), contentType: 'text/plain'])
+        
+    }
+
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [personInstanceList: Person.list(params), personInstanceTotal: Person.count()]
