@@ -1,0 +1,402 @@
+(function($){
+	
+	var undefined;
+	
+	$.extend({
+		/**
+		 * to create/import a namespace
+		 * 
+		 * @param {Object} ns
+		 */
+		ilunch_namespace : function(ns) {
+			if (!ns)
+				throw new Error("name required");
+			if (typeof (ns) != "string")
+				throw new Error("name has to be a string");
+			if (ns.charAt(0) == '.' || ns.charAt(ns.length - 1) == '.' || ns.indexOf("..") != -1)
+				throw new Error("illegal name: " + ns);
+
+			ns = ns.split(".");
+			var o = window;
+			for ( var i = 0; i < ns.length; i++) {
+				o[ns[i]] = o[ns[i]] || {};
+				o = o[ns[i]];
+			}
+			return o;
+		}
+	});
+	
+	// declare package
+	var ilunch = $.ilunch_namespace("cn.ilunch");
+	
+	
+	/**
+	 * validate if certain properties are exist
+	 */
+	ilunch.validateData = function(data, props, name) {
+		for(var i = 0; i < props.length; i++) {
+			if(!data.hasOwnProperty(props[i]) || data[props[i]] == undefined || data[props[i]] == null) {
+				ilunch.fatalError(props[i]+' in '+name+' not found!');
+				return false;
+			}
+		}
+		return true;
+	};
+	
+	/**
+	 * indicates that current processing should be aborted. Needs refine.
+	 */
+	ilunch.fatalError = function(errmsg) {
+		alert(errmsg);
+	};
+	
+	/**
+	 * validate cart json object schema
+	 * for internal use
+	 */
+	_validateCart = function(data) {
+		if(!data || data.length <= 0)
+			return false;
+		if(!ilunch.validateData(data, ['area', 'distributionPoint', 'pointChange', 'products'], 'cart'))
+			return false;
+		for(var i = 0; i < data.products.length; i++) {
+			if(!ilunch.validateData(data.products[i], ['date', 'mainDishes', 'sideDishes'], 'cart.products['+i+']'))
+				return;
+			for(var j = 0; j < data.products[i].mainDishes.length; j++) {
+				if(!ilunch.validateData(data.products[i].mainDishes[j], ['id', 'name', 'quantity'], 'cart.products['+i+'].mainDishes['+j+']'))
+					return false;
+			}
+			for(var j = 0; j < data.products[i].sideDishes.length; j++) {
+				if(!ilunch.validateData(data.products[i].sideDishes[j], ['id', 'name', 'quantity'], 'cart.products['+i+'].sideDishes['+j+']'))
+					return false;
+			}
+		}
+		return true;
+	};
+
+	/////////////////////////////////
+	///////  Global Settings ////////
+	/////////////////////////////////
+	
+	ilunch.VERSION = "1.0";
+
+	ilunch.BUILD_NUMBER = 1;
+
+	ilunch.enableDebug = false;
+
+	ilunch.LOG = function(msg, level) {
+		// TODO support log level
+		if (typeof (console) != 'undefined')
+			console.log(msg);
+	};
+
+	/**
+	 * Change this when needed
+	 */
+	var ROOT = '/prototype';
+	
+	/**
+	 * Ajax global setting goes here
+	 */
+	$.ajaxSetup({
+		timeout: 5000,
+		error: function(jqXHR, textStatus, errorThrown){
+			if(textStatus == 'timeout') {
+				
+			}
+			else if(textStatus == 'error') {
+				alert('error occurred:'+JsonUti.convertToString(jqXHR.responseText));
+			}
+			else if(textStatus == 'abort') {
+				
+			}
+			else {
+				
+			}
+		},
+		statusCode: {
+			404: function(){alert('server returned 404')}
+		}
+	});
+	
+	////////////////////////////////////////
+	//            Data APIs       //////////
+	///////////////////////////////////////
+	
+	ilunch.getMainDishInfo = function(id, handler) {
+		if(id == null || id == undefined) {
+			ilunch.fatalError("Main dish id not found!");
+			return;
+		}
+		params = {
+			id: id
+		};
+		$.getJSON(ROOT+'/product/showDetail', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				if(!ilunch.validateData(data, ['name', 'price', 'serveDate', 'imageUrl', 'story'], 'maindish'))
+					return;
+			}
+			handler(data);
+		});
+	};
+	
+	ilunch.getSideDishInfo = function(id, handler) {
+		if(id == null || id == undefined) {
+			ilunch.fatalError("side dish id not found!");
+			return;
+		}
+		params = {
+			id: id
+		};
+		$.getJSON(ROOT+'/product/showDetail', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				if(!ilunch.validateData(data, ['name', 'flavour', 'price', 'imageUrl', 'story'], 'sidedish'))
+					return;
+			}
+			handler(data);
+		});
+	};
+
+	ilunch.getMainDishListOnIndexPage = function(date, areaId, handler, max) {
+		if(!date || !areaId) {
+			ilunch.fatalError("date or areaId not found!");
+			return;
+		}
+		params = {
+			date:date,
+			areaId:areaId
+		};
+		if(max)
+			params.max = max;
+		$.getJSON(ROOT+'/product/listAllMainDishOnIndexPage', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				data = data.mainDishes;
+				if(!data || data.length <= 0) {
+					ilunch.fatalError("maindishes list is empty");
+					return;
+				}
+				for(var i = 0; i < data.length; i++) {
+					if(!ilunch.validateData(data[i], ['id', 'name', 'price', 'fromDate', 'toDate', 'imageURL'], 'MainDishList['+i+']'))
+						return;
+				}
+			}
+			handler(data);
+		});
+	};
+
+	ilunch.getMainDishListOnSelectionPage = function(fromDate, toDate, areaId, handler) {
+		if(!fromDate || !toDate || !areaId) {
+			ilunch.fatalError('invalide fromDate or toDate or areaId!');
+			return;
+		}
+		params = {
+			date: fromDate,
+			toDate: toDate,
+			areaId: areaId
+		};
+		$.getJSON(ROOT+'/product/listAllMainDishOnSelectionPage', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				data = data.mainDishes;
+				if(!data || data.length <= 0) {
+					ilunch.fatalError("mainDishes list is empty");
+					return;
+				}
+				for(var i = 0; i < data.length; i++) {
+					if(!ilunch.validateData(data[i], ['id', 'name', 'price', 'fromDate', 'toDate', 'imageURL'], 'MainDishList['+i+']'))
+						return;
+				}
+			}
+			handler(data);
+		});
+	};
+	
+	ilunch.getSideDishListOnIndexPage = function(date, areaId, handler, max) {
+		if(!date || !areaId) {
+			ilunch.fatalError("date or areaId not found!");
+			return;
+		}
+		params = {
+			date:date,
+			areaId:areaId
+		};
+		if(max)
+			params.max = max;
+		$.getJSON(ROOT+'/product/listAllSideDishOnIndexPage', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				data = data.sideDishes;
+				if(!data || data.length <= 0) {
+					ilunch.fatalError("sideDishes list is empty");
+					return;
+				}
+				for(var i = 0; i < data.length; i++) {
+					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices', 'imageURL'], 'SideDishList['+i+']'))
+						return;
+					for(var j = 0; j < data.prices.length; j++) {
+						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'SideDishList['+i+'].prices['+j+']'))
+							return;
+					}
+				}
+			}
+			handler(data);
+		});
+	};
+
+	ilunch.getSideDishListOnSelectionPage = function(date, areaId, handler) {
+		if(!date || !areaId) {
+			ilunch.fatalError("date or areaId not found!");
+			return;
+		}
+		params = {
+			date:date,
+			areaId:areaId
+		};
+		$.getJSON(ROOT+'/product/listAllSideDishOnSelectionPage', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				data = data.sideDishes;
+				if(!data || data.length <= 0) {
+					ilunch.fatalError("sideDishes list is empty");
+					return;
+				}
+				for(var i = 0; i < data.length; i++) {
+					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices', 'imageURL'], 'SideDishList['+i+']'))
+						return;
+					for(var j = 0; j < data.prices.length; j++) {
+						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'SideDishList['+i+'].prices['+j+']'))
+							return;
+					}
+				}
+			}
+			handler(data);
+		});
+	};
+	
+	ilunch.getUserInfo = function(id, handler) {
+		if(!id) {
+			ilunch.fatalError("invalid id");
+			return;
+		}
+		params = {
+			id:id	
+		};
+		$.getJSON(ROOT+'/person/preference', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				if(!ilunch.validateData(data, ['id', 'phoneNumber', 'distributionArea', 'building'], 'user'))
+					return;
+				if(!ilunch.validateData(data.distributionArea, ['id', 'name'], 'user.distributionArea'))
+					return;
+				if(!ilunch.validateData(data.building, ['id', 'name', 'longitude', 'latitude'], 'user.building'))
+					return;
+			}
+			handler(data);
+		});
+	};
+	
+	ilunch.getDistributionAreaList = function(handler) {
+		$.getJSON(ROOT+'/distributionArea/list', function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				if(data.length <= 0)
+					return;
+				for(var i = 0; i < data.length; i++) {
+					if(!ilunch.validateData(data[i], ['id', 'name', 'buildings'], 'DAList['+i+']'))
+						return;
+					if(data[i]['buildings'].length <= 0)
+						return;
+					for(var j = 0; j < data[i]['buildings'].length; j++)
+						if(!ilunch.validateData(data[i]['buildings'][j], ['id', 'name'], 'DAList['+i+'].buildings['+j+']'))
+							return;
+				}
+			}
+			handler(data);
+		});
+	};
+	
+	ilunch.getCart = function(startDate, endDate, handler) {
+		if(!startDate || !endDate) {
+			ilunch.fatalError('invalide startDate or endDate!');
+			return;
+		}
+		params = {
+			startDate: startDate,
+			endDate: endDate
+		};
+		$.getJSON(ROOT+'/person/cart', params, function(data) {
+			if(data.error) {
+				
+			}
+			else {
+				if(!_validateCart(data))
+					return;
+			}
+			handler(data);
+		});
+	};
+	
+	ilunch.saveCart = function(data, handler) {
+		if(!data)
+			return;
+		if(!_validateCart($.parseJSON(data)))
+			return;
+		$.ajax(ROOT+'/person/saveCart', {
+			processData:false,
+			data:data,
+			success:function(data) {
+				if(data.error) {
+
+				}
+				else {
+
+				}
+				handler(data);
+			},
+			dataType:"json",
+			type: 'POST'
+		});
+	};
+	
+	ilunch.confirmOrder = function(data, handler) {
+		if(!data)
+			return;
+		if(!_validateCart($.parseJSON(data)))
+			return;
+		$.ajax(ROOT+'/order/confirm', {
+			processData:false,
+			data:data,
+			success:function(data) {
+				if(data.error) {
+
+				}
+				else {
+
+				}
+				handler(data);
+			},
+			dataType:"json",
+			type: 'POST'
+		});
+	};
+	
+})(jQuery);
