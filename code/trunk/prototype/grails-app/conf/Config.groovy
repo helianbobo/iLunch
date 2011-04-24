@@ -97,7 +97,7 @@ cn.ilunch.exception.code = {
 }
 
 cn.ilunch.date.format = 'yyyy-MM-dd'
-cn.ilunch.product.image.location = 'D:/Documents/Downloads/helianbobo-iLunch-b802e58/helianbobo-iLunch-b802e58/code/trunk/prototype/web-app/images'
+cn.ilunch.product.image.location = "C:\\Users\\janexie\\Downloads\\prototype (1)\\prototype\\web-app\\images"
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'cn.ilunch.domain.Person'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'cn.ilunch.domain.UserRole'

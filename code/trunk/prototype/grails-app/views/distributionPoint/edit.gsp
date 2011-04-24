@@ -33,44 +33,19 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="status"><g:message code="distributionPoint.status.label" default="Status" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'status', 'errors')}">
-                                    <g:textField name="status" value="${fieldValue(bean: distributionPointInstance, field: 'status')}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="area"><g:message code="distributionPoint.area.label" default="Area" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'area', 'errors')}">
-                                    <g:select name="area.id" from="${cn.ilunch.domain.DistributionArea.list()}" optionKey="id" value="${distributionPointInstance?.area?.id}"  />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
                                   <label for="buildings"><g:message code="distributionPoint.buildings.label" default="Buildings" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'buildings', 'errors')}">
-                                    
-<ul>
-<g:each in="${distributionPointInstance?.buildings?}" var="b">
-    <li><g:link controller="building" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></li>
-</g:each>
-</ul>
-<g:link controller="building" action="create" params="['distributionPoint.id': distributionPointInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'building.label', default: 'Building')])}</g:link>
-
+                                    <g:select name="buildings" from="${cn.ilunch.domain.Building.list()}" multiple="yes" optionKey="id" size="5" value="${distributionPointInstance?.buildings*.id}" />
                                 </td>
                             </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="kitchen"><g:message code="distributionPoint.kitchen.label" default="Kitchen" /></label>
+                                  <label for="group"><g:message code="distributionPoint.group.label" default="Group" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'kitchen', 'errors')}">
-                                    <g:select name="kitchen.id" from="${cn.ilunch.domain.Kitchen.list()}" optionKey="id" value="${distributionPointInstance?.kitchen?.id}"  />
+                                <td valign="top" class="value ${hasErrors(bean: distributionPointInstance, field: 'group', 'errors')}">
+                                    <g:select name="group.id" from="${cn.ilunch.domain.DistributionArea.list()}" optionKey="id" value="${distributionPointInstance?.group?.id}"  />
                                 </td>
                             </tr>
                         

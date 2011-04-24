@@ -2,7 +2,7 @@ package cn.ilunch.domain
 
 class SideDish extends Product{
 
-    String flavor
+
 
     static constraints = {
     }
@@ -10,4 +10,5 @@ class SideDish extends Product{
     def type(){
         "配菜"
     }
+
 }

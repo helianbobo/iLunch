@@ -18,6 +18,7 @@ class ProductOrder {
     BigDecimal amount
 
     List shipments
+    List orderItems
 
     static hasMany = [
             orderItems: OrderItem,
@@ -28,6 +29,9 @@ class ProductOrder {
 
     static constraints = {
         pointChange(nullable:true)
+        shipments(nullable:true)
+        amount(min:new BigDecimal(0))
+        completeDate(nullable:true)
     }
 
     boolean acknowledgeable(){
