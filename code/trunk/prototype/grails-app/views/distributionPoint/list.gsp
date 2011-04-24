@@ -24,15 +24,13 @@
                         
                             <g:sortableColumn property="id" title="${message(code: 'distributionPoint.id.label', default: 'Id')}" />
                         
-                            <g:sortableColumn property="status" title="${message(code: 'distributionPoint.status.label', default: 'Status')}" />
-                        
-                            <th><g:message code="distributionPoint.area.label" default="Area" /></th>
-                        
-                            <th><g:message code="distributionPoint.kitchen.label" default="Kitchen" /></th>
+                            <th><g:message code="distributionPoint.group.label" default="Group" /></th>
                         
                             <g:sortableColumn property="latitude" title="${message(code: 'distributionPoint.latitude.label', default: 'Latitude')}" />
                         
                             <g:sortableColumn property="longitude" title="${message(code: 'distributionPoint.longitude.label', default: 'Longitude')}" />
+                        
+                            <g:sortableColumn property="name" title="${message(code: 'distributionPoint.name.label', default: 'Name')}" />
                         
                         </tr>
                     </thead>
@@ -42,15 +40,13 @@
                         
                             <td><g:link action="show" id="${distributionPointInstance.id}">${fieldValue(bean: distributionPointInstance, field: "id")}</g:link></td>
                         
-                            <td>${fieldValue(bean: distributionPointInstance, field: "status")}</td>
-                        
-                            <td>${fieldValue(bean: distributionPointInstance, field: "area")}</td>
-                        
-                            <td>${fieldValue(bean: distributionPointInstance, field: "kitchen")}</td>
+                            <td>${fieldValue(bean: distributionPointInstance, field: "group")}</td>
                         
                             <td>${fieldValue(bean: distributionPointInstance, field: "latitude")}</td>
                         
                             <td>${fieldValue(bean: distributionPointInstance, field: "longitude")}</td>
+                        
+                            <td>${fieldValue(bean: distributionPointInstance, field: "name")}</td>
                         
                         </tr>
                     </g:each>

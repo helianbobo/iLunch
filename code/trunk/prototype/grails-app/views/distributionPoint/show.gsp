@@ -30,20 +30,6 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.status.label" default="Status" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: distributionPointInstance, field: "status")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.area.label" default="Area" /></td>
-                            
-                            <td valign="top" class="value"><g:link controller="distributionArea" action="show" id="${distributionPointInstance?.area?.id}">${distributionPointInstance?.area?.encodeAsHTML()}</g:link></td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="distributionPoint.buildings.label" default="Buildings" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
@@ -57,9 +43,9 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="distributionPoint.kitchen.label" default="Kitchen" /></td>
+                            <td valign="top" class="name"><g:message code="distributionPoint.group.label" default="Group" /></td>
                             
-                            <td valign="top" class="value"><g:link controller="kitchen" action="show" id="${distributionPointInstance?.kitchen?.id}">${distributionPointInstance?.kitchen?.encodeAsHTML()}</g:link></td>
+                            <td valign="top" class="value"><g:link controller="distributionArea" action="show" id="${distributionPointInstance?.group?.id}">${distributionPointInstance?.group?.encodeAsHTML()}</g:link></td>
                             
                         </tr>
                     

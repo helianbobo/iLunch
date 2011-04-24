@@ -12,10 +12,10 @@ class Product {
     String largeImageUrl
     String mediumImageUrl
     String smallImageUrl
-    static hasMany = [productAreaPriceSchedules: ProductAreaPriceSchedule]
+    static hasMany = [productAreaPriceSchedules: ProductAreaPriceSchedule, tags:Tag]
 
     List productAreaPriceSchedules
-
+    List tags
     static constraints = {
         originalImageUrl(nullable: true)
         detailImageUrl(nullable: true)
@@ -24,6 +24,7 @@ class Product {
         smallImageUrl(nullable: true)
         status(min: 0, max: 1)
         productAreaPriceSchedules(nullable: true)
+        name(unique: true)
     }
 
     def statusDesc = {

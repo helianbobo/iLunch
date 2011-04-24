@@ -1,7 +1,7 @@
 package cn.ilunch.domain
 
 import cn.ilunch.security.ILunchUserDetails
-import java.awt.geom.Area
+
 import grails.plugins.springsecurity.Secured
 import org.hibernate.criterion.CriteriaSpecification
 
@@ -37,6 +37,13 @@ class ProductController {
                         fromDate: schedule.fromDate.format(dateFormatString),
                         toDate: schedule.toDate.format(dateFormatString)
                 ]
+                tags = array {
+                    for (tagInstance in mainDishInstance.tags) {
+                        tag([value: tagInstance.value])
+                    }
+                }
+                remain = schedule.remain
+                quantity = schedule.quantity
                 imageURL = mainDishInstance.detailImageUrl
                 story = mainDishInstance.story
             }
@@ -64,7 +71,7 @@ class ProductController {
     }
 
     private def queryProductOnSelectionPage(Date fromDate, long areaId, String className, max) {
-        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.small_image_url as smallImageUrl
+        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.small_image_url as smallImageUrl,p.id as id
                     from product_area_price_schedule S2
                     left join product p on p.id = S2.product_id
                     right join (select t.product_id,from_date as fromDate
@@ -108,7 +115,7 @@ class ProductController {
     }
 
     private List queryProductOnIndexPage(Date fromDate, long areaId, String className, max) {
-        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.small_image_url as smallImageUrl
+        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.small_image_url as smallImageUrl, p.id as id
                     from product_area_price_schedule S2
                     left join product p on p.id = S2.product_id
                     right join (select t.product_id ,min(t.from_date) as fromDate
@@ -136,6 +143,7 @@ class ProductController {
             mainDishes = array {
                 for (schedule in result) {
                     dish([
+                            id: schedule[7],
                             name: schedule[4],
                             price: schedule[0],
                             serveDate: [
@@ -279,18 +287,20 @@ class ProductController {
         def c = Product.createCriteria()
         def result = c.list {
             eq('status', Product.INUSE)
-            productAreaPriceSchedules {
-                and {
-                    eq('area', area)
-                    or {
-                        isNull('toDate')
-                        and {
-                            le('fromDate', today)
-                            ge('toDate', today)
+            or {
+                isEmpty('productAreaPriceSchedules')
+                productAreaPriceSchedules {
+                    and {
+                        eq('area', area)
+                        or {
+                            isNull('toDate')
+                            and {
+                                le('fromDate', today)
+                                ge('toDate', today)
+                            }
                         }
                     }
                 }
-
             }
             resultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
         }
@@ -299,7 +309,14 @@ class ProductController {
     }
 
     @Secured(['ROLE_MANAGER'])
-    def create = {
+    def createMainDish = {
+        def productInstance = new Product()
+        productInstance.properties = params
+        return [productInstance: productInstance, principal: springSecurityService.principal]
+    }
+
+    @Secured(['ROLE_MANAGER'])
+    def createSideDish = {
         def productInstance = new Product()
         productInstance.properties = params
         return [productInstance: productInstance, principal: springSecurityService.principal]
@@ -307,25 +324,39 @@ class ProductController {
 
     @Secured(['ROLE_MANAGER'])
     def save = {
+        def isMainDish = Boolean.valueOf(params.isMainDish)
+        def createAction = isMainDish ? "createMainDish" : "createSideDish"
         def areaId = params.areaId
         def area = DistributionArea.get(areaId)
         if (!area) {
             flash.message = "无法找到该地区"
-            redirect(action: "create")
+            redirect(action: createAction)
             return
         }
         def createSchedule = params.createSchedule
         def price = params.price
-        if (!price || createSchedule && (price as float) < 0.0f) {
+        if (createSchedule && (!price || (price as float) < 0.0f)) {
             flash.message = "价格必须大于零"
-            redirect(action: "create")
+            redirect(action: createAction)
+            return
+        }
+
+        def quantity=params.quantity
+         if (createSchedule && (!quantity || (quantity as int) < 0)) {
+            flash.message = "库存必须大于零"
+            redirect(action: createAction)
             return
         }
 
         def name = params.name
         if (!name) {
             flash.message = "菜名不能为空"
-            redirect(action: "create")
+            redirect(action: createAction)
+            return
+        }
+        if (Product.findByName(name)) {
+            flash.message = "菜名不能重复"
+            redirect(action: createAction)
             return
         }
 
@@ -335,7 +366,15 @@ class ProductController {
             def newFile = new File(location + "/${params.name}" + ".jpg")
             f.transferTo(newFile)
         }
-        def productInstance = new Product(name: name, story: params.story, originalImageUrl: Product.convertServerImageURL(params.name))
+
+        def productInstance
+
+        if (isMainDish) {
+            productInstance = new MainDish(name: name, story: params.story, originalImageUrl: Product.convertServerImageURL(params.name))
+        } else {
+            productInstance = new SideDish(name: name, story: params.story, originalImageUrl: Product.convertServerImageURL(params.name))
+        }
+
 
         try {
             Product.withTransaction {
@@ -343,18 +382,27 @@ class ProductController {
                 if (params.createSchedule) {
                     def dateFormatString = grailsApplication.config.cn.ilunch.date.format
                     def fromDate = params.fromDate
-                    def toDate = params.toDate
-                    def schedule = new ProductAreaPriceSchedule(fromDate:fromDate, toDate:toDate,product: productInstance, area: area, price: params.price)
+                    def toDate
+                    if (isMainDish) {
+                        toDate = fromDate
+                    } else {
+                        toDate = params.toDate
+                    }
+
+
+                    def schedule = new ProductAreaPriceSchedule(quantity:quantity,fromDate: fromDate, toDate: toDate, product: productInstance, area: area, price: params.price)
                     productInstance.addToProductAreaPriceSchedules schedule
                     schedule.save()
                 }
             }
         }
         catch (e) {
+            e.printStackTrace()
             flash.message = "保存失败，请联系管理员"
-            redirect(action: "show", id: productInstance.id)
+            redirect(action: createAction)
+            return
         }
-        render(view: "create", model: [productInstance: productInstance])
+        redirect(action: 'list')
     }
 
     def show = {
@@ -375,7 +423,7 @@ class ProductController {
             redirect(action: "list")
         }
         else {
-            return [locationInstance: productInstance]
+            return [productInstance: productInstance]
         }
     }
 

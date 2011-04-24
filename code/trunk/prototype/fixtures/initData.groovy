@@ -114,49 +114,41 @@ fixture {
 
     'md_curryfish'(MainDish) {
         name = '咖喱鱼'
-        flavor = '东南亚'
         story = '东南亚咖喱鱼的传说'
     }
 
     'md_psourcefish'(MainDish) {
         name = '茄汁鱼'
-        flavor = '东南亚'
         story = '东南亚茄汁鱼的传说'
     }
 
     'md_curryricewithfish'(MainDish) {
         name = '炸白身鱼'
-        flavor = '日式'
         story = '炸白身鱼的传说'
     }
 
     'md_curryricewithfriedpork'(MainDish) {
         name = '炸猪排'
-        flavor = '日式'
         story = '炸猪排的传说'
     }
 
     'sd_doujiao'(SideDish) {
         name = '豆角'
-        flavor = '东北'
         story = '东北豆角的传说'
     }
 
     'sd_potatomash'(SideDish) {
         name = '土豆泥'
-        flavor = '德式'
         story = '德式土豆泥的传说'
     }
 
     'sd_liangpi'(SideDish) {
         name = '凉皮'
-        flavor = '陕西'
         story = '陕西凉皮的传说'
     }
 
     'sd_huangniluo'(SideDish) {
         name = '黄泥螺'
-        flavor = '宁波'
         story = '宁波黄泥螺的传说'
     }
 
@@ -290,7 +282,7 @@ fixture {
 }
 
 post {
-    kitchen_zhangjiang.distributionPoints = [dp_lingyang]
+    bean("kitchen_zhangjiang").distributionPoints = [bean('dp_lingyang')]
 
     def adminRole = new Role(authority: 'ROLE_ADMIN').save(flush: true)
     def managerRole = new Role(authority: 'ROLE_MANAGER').save(flush: true)
@@ -299,7 +291,7 @@ post {
     def kitchen = Kitchen.findByName("张江厨房")
     if(!kitchen){
         kitchen = new Kitchen(name:"张江厨房")
-        kitchen.distributionPoints = [dp_lingyang]
+        kitchen.distributionPoints = [bean('dp_lingyang')]
     }
     def jleo = new Manager();
     jleo.name = "jleo"

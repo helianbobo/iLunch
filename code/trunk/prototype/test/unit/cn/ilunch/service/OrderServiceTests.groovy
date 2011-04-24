@@ -9,11 +9,16 @@ import cn.ilunch.domain.DistributionArea
 import cn.ilunch.domain.OrderItem
 import cn.ilunch.domain.Product
 import cn.ilunch.domain.Shipment
+import grails.web.JSONBuilder
+import cn.ilunch.domain.ProductAreaPriceSchedule
+import cn.ilunch.domain.SideDish
+import cn.ilunch.domain.MainDish
 
 class OrderServiceTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
         service = new OrderService()
+
     }
 
     OrderService service
@@ -149,9 +154,9 @@ class OrderServiceTests extends GrailsUnitTestCase {
         final orderItems = [item]
 
         order.orderItems = orderItems
-        try{
+        try {
             service.acknowledgePayment order
-        }catch(OrderStatusException e){
+        } catch (OrderStatusException e) {
             return;
         }
 
@@ -166,31 +171,31 @@ class OrderServiceTests extends GrailsUnitTestCase {
         final orderItems = []
 
         order.orderItems = orderItems
-        try{
+        try {
             service.acknowledgePayment order
-        }catch(OrderStatusException e){
+        } catch (OrderStatusException e) {
             return;
         }
 
         fail("empty order cannot be acknowledged");
     }
 
-    public void testCancelIncancellableOrders(){
+    public void testCancelIncancellableOrders() {
         ProductOrder order = new ProductOrder()
         order.amount = 10.0f
         order.status = ProductOrder.COMPLETED
 
-        try{
+        try {
             service.cancelOrder order
-        }catch(OrderStatusException e){
+        } catch (OrderStatusException e) {
             return;
         }
 
         fail("completed order cannot be cancelled");
     }
 
-    public void testCancelSubmittedOrders(){
-        mockDomain(ProductOrder,[])
+    public void testCancelSubmittedOrders() {
+        mockDomain(ProductOrder, [])
         Customer customer = new Customer()
         customer.cellNumber = "12345678901"
         customer.name = "liuchao"
@@ -208,8 +213,8 @@ class OrderServiceTests extends GrailsUnitTestCase {
         assertEquals(0.0, customer.accountBalance)
     }
 
-    public void testCancelPaidOrders(){
-        mockDomain(ProductOrder,[])
+    public void testCancelPaidOrders() {
+        mockDomain(ProductOrder, [])
         Customer customer = new Customer()
         customer.cellNumber = "12345678901"
         customer.name = "liuchao"
@@ -228,21 +233,21 @@ class OrderServiceTests extends GrailsUnitTestCase {
         assertEquals(10.0f, customer.accountBalance)
     }
 
-    public void testCompleteCancelledOrder(){
+    public void testCompleteCancelledOrder() {
         ProductOrder order = new ProductOrder()
         order.amount = 10.0f
         order.status = ProductOrder.CANCELLED
 
-        try{
+        try {
             service.completeOrder order
-        }catch(OrderStatusException e){
+        } catch (OrderStatusException e) {
             return;
         }
         fail("cancelled order cannot be completed");
     }
 
-    public void testCompleteOrder(){
-        mockDomain(ProductOrder,[])
+    public void testCompleteOrder() {
+        mockDomain(ProductOrder, [])
         ProductOrder order = new ProductOrder()
         order.amount = 10.0f
         order.status = ProductOrder.PAID
@@ -253,5 +258,207 @@ class OrderServiceTests extends GrailsUnitTestCase {
         today.clearTime()
         assertEquals(today, order.completeDate)
         assertEquals(ProductOrder.COMPLETED, order.status)
+    }
+
+    public void testCreateOrder() {
+        Customer customer = new Customer()
+        customer.cellNumber = "12345678901"
+        customer.name = "liuchao"
+        customer.pointBalance = 123
+        mockDomain(Customer, [customer])
+
+        Building building = new Building()
+        building.name = "qq"
+        building.latitude = 123.31
+        building.longitude = 12.31
+
+        customer.primaryBuilding = building
+
+        DistributionPoint dp = new DistributionPoint()
+        dp.name = "dp1"
+
+        building.distributionPoint = dp
+
+        DistributionArea area = new DistributionArea()
+        area.name = "zhangjiang"
+        area.longitude = 23.12
+        area.latitude = 123.23
+        dp.area = area
+
+        mockDomain(Building, [building])
+        mockDomain(DistributionPoint, [dp])
+        mockDomain(DistributionArea, [area])
+        mockDomain(ProductOrder, [])
+        mockDomain(OrderItem, [])
+
+        def dishName = "chicken"
+        def story = "chicken story"
+        final detailImageUrl = "http://www.google.com"
+
+        final sd1 = new Product(id: 4, name: "dishName3", story: "story3", detailImageUrl: "detailImageUrl3")
+        final sd2 = new Product(id: 3, name: "dishName2", story: "story2", detailImageUrl: "detailImageUrl2")
+        final md1 = new Product(id: 2, name: "dishName4", story: "story4", detailImageUrl: "detailImageUrl4")
+        final md2 = new Product(id: 1, name: dishName, story: story, detailImageUrl: detailImageUrl)
+        mockDomain(Product, [sd1, sd2, md1, md2])
+        def priceService = mockFor(cn.ilunch.service.PriceService)
+
+        def today
+        priceService.demand.queryProductSchedule(4) {mainDish, area1, date ->
+            today = Date.parse('yyyy-MM-dd', '2011-04-14')
+            today.clearTime()
+            [new ProductAreaPriceSchedule(price: 5, fromDate: today, toDate: today + 2)]
+        }
+        service.priceService = priceService.createMock()
+        JSONBuilder builder = new JSONBuilder()
+        def json = builder.build {
+            id = 1
+            buildingId = 1
+            pointChange = 10
+            orders = array {
+                order([
+                        date: new Date().format("yyyy-MM-dd"),
+                        mainDishes: array {
+                            mainDish([id: 1, quantity: 5])
+                            mainDish([id: 2, quantity: 4])
+                        },
+                        sideDishes: array {
+                            sideDish([id: 3, quantity: 5])
+                            sideDish([id: 4, quantity: 2])
+                        }
+                ])
+            }
+        }
+        def orderDetails = grails.converters.JSON.parse(json.toString())
+        def orderCreated = service.createOrder(orderDetails, customer, building, 'yyyy-MM-dd')
+
+        assertEquals(20, orderCreated.amount)
+        assertEquals(customer, orderCreated.customer)
+        assertEquals(dp, orderCreated.distributionPoint)
+
+        def orderDate = new Date()
+        orderDate.clearTime()
+        assertEquals(orderDate, orderCreated.orderDate)
+        assertEquals(10, orderCreated.pointChange.point)
+        assertEquals(customer, orderCreated.pointChange.customer)
+        assertEquals(orderCreated, orderCreated.pointChange.productOrder)
+
+        assertEquals(ProductOrder.SUBMITTED, orderCreated.status)
+        assertEquals(4, orderCreated.orderItems.size())
+        assertTrue(orderCreated.orderItems*.product.contains(sd1))
+        assertTrue(orderCreated.orderItems*.product.contains(sd2))
+        assertTrue(orderCreated.orderItems*.product.contains(md1))
+        assertTrue(orderCreated.orderItems*.product.contains(md2))
+
+        def shipmentDate = new Date()
+        shipmentDate.clearTime()
+
+        def mdOrder2 = orderCreated.orderItems.find {
+            it.product.equals(md2)
+        }
+        assertEquals(5, mdOrder2.quantity)
+        assertEquals(shipmentDate, mdOrder2.shippmentDate)
+
+        def mdOrder1 = orderCreated.orderItems.find {
+            it.product.equals(md1)
+        }
+        assertEquals(shipmentDate, mdOrder1.shippmentDate)
+
+        final sdOrder2 = orderCreated.orderItems.find {
+            it.product.equals(sd2)
+        }
+        assertEquals(5, sdOrder2.quantity)
+        assertEquals(shipmentDate, sdOrder2.shippmentDate)
+
+        final sdOrder1 = orderCreated.orderItems.find {
+            it.product.equals(sd1)
+        }
+        assertEquals(2, sdOrder1.quantity)
+        assertEquals(shipmentDate, sdOrder1.shippmentDate)
+    }
+
+    public void testShrinkOrder(){
+        Customer customer = new Customer()
+        customer.cellNumber = "12345678901"
+        customer.name = "liuchao"
+        customer.pointBalance = 123
+        mockDomain(Customer, [customer])
+
+        Building building = new Building()
+        building.name = "qq"
+        building.latitude = 123.31
+        building.longitude = 12.31
+
+        customer.primaryBuilding = building
+
+        DistributionPoint dp = new DistributionPoint()
+        dp.name = "dp1"
+
+        building.distributionPoint = dp
+
+        DistributionArea area = new DistributionArea()
+        area.name = "zhangjiang"
+        area.longitude = 23.12
+        area.latitude = 123.23
+        dp.area = area
+
+        mockDomain(Building, [building])
+        mockDomain(DistributionPoint, [dp])
+        mockDomain(DistributionArea, [area])
+        mockDomain(ProductOrder, [])
+        mockDomain(OrderItem, [])
+
+        def dishName = "chicken"
+        def story = "chicken story"
+        final detailImageUrl = "http://www.google.com"
+
+        final sd1 = new SideDish(id: 4, name: "dishName3", story: "story3", detailImageUrl: "detailImageUrl3")
+        final sd2 = new SideDish(id: 3, name: "dishName2", story: "story2", detailImageUrl: "detailImageUrl2")
+        final md1 = new MainDish(id: 2, name: "dishName4", story: "story4", detailImageUrl: "detailImageUrl4")
+
+        def priceService = mockFor(cn.ilunch.service.PriceService)
+
+        def today = new Date()
+        priceService.demand.queryProductSchedule(2) {mainDish, area1, date ->
+            [new ProductAreaPriceSchedule(remain:5, quantity:10, price: 5, fromDate: today, toDate: today + 2)]
+        }
+        service.priceService = priceService.createMock()
+
+        ProductOrder oldOrder = new ProductOrder(distributionPoint:area,customer:customer, orderDate:today,pointChange:10, amount:150)
+        OrderItem item = new OrderItem(order:oldOrder,product:md1,quantity: 10, price:10, shippmentDate:today)
+        OrderItem item2 = new OrderItem(order:oldOrder,product:sd1,quantity: 3, price:4, shippmentDate:today)
+        OrderItem item3 = new OrderItem(order:oldOrder,product:sd2,quantity: 5, price:3, shippmentDate:today)
+        OrderItem item4 = new OrderItem(order:oldOrder,product:md1,quantity: 8, price:15, shippmentDate:today+2)
+
+        [item,item4,item2,item3].each{
+            oldOrder.addToOrderItems it
+        }
+
+        def newOrder = service.shrinkOrder(oldOrder)
+        assertEquals(oldOrder.customer, newOrder.customer)
+        assertEquals(oldOrder.distributionPoint, newOrder.distributionPoint)
+        assertEquals(ProductOrder.CANCELLED, oldOrder.status)
+        assertEquals(ProductOrder.SUBMITTED, newOrder.status)
+
+        assertEquals(oldOrder.orderItems[0].quantity-5, newOrder.orderItems[0].quantity)
+        assertEquals(oldOrder.orderItems[0].price, newOrder.orderItems[0].price)
+        assertEquals(today, newOrder.orderItems[0].shippmentDate)
+        assertEquals(newOrder, newOrder.orderItems[0].order)
+
+        assertEquals(newOrder.orderItems[0].price*newOrder.orderItems[0].quantity,oldOrder.orderItems[0].price*(oldOrder.orderItems[0].quantity-5))
+
+        assertEquals(newOrder.orderItems[1].quantity,5)
+        assertEquals(oldOrder.orderItems[1].price, newOrder.orderItems[1].price)
+        assertEquals(today+2, newOrder.orderItems[1].shippmentDate)
+        assertEquals(newOrder, newOrder.orderItems[1].order)
+
+        assertEquals(newOrder.orderItems[1].price*newOrder.orderItems[1].quantity,oldOrder.orderItems[1].price*5)
+
+        assertEquals(5, newOrder.orderItems[3].quantity)
+        assertEquals(oldOrder.orderItems[3].price, newOrder.orderItems[3].price)
+        assertEquals(today, newOrder.orderItems[3].shippmentDate)
+        assertEquals(newOrder, newOrder.orderItems[3].order)
+
+        assertEquals(152, newOrder.amount)
+
     }
 }

@@ -16,25 +16,25 @@ class ProductControllerTests extends JSONRenderControllerUnitTestCase {
         def story = "chicken story"
         final detailImageUrl = "http://www.google.com"
 
-        mockDomain(MainDish, [new MainDish(id: 1, name: dishName, story: story, detailImageUrl: detailImageUrl)])
+        final tags = [new Tag(value: "good"), new Tag(value: "bad")]
+        mockDomain(Tag, tags)
+        mockDomain(MainDish, [new MainDish(id: 1,tags:tags, name: dishName, story: story, detailImageUrl: detailImageUrl)])
         mockDomain(DistributionArea, [new DistributionArea(id: 1)])
 
         def priceService = mockFor(cn.ilunch.service.PriceService)
 
         def today
         priceService.demand.queryProductSchedule(1..1) {mainDish, area, Date date ->
-            today = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-14')
-            today.clearTime()
-            [new ProductAreaPriceSchedule(price: 5, fromDate: today, toDate: today + 2)]
+            today =Date.parse('yyyy-MM-dd','2011-04-14')
+            [new ProductAreaPriceSchedule(remain:5, quantity:50, price:5, fromDate: today, toDate: today + 2)]
         }
         controller.priceService = priceService.createMock()
 
         controller.params.productId = 1
         controller.params.areaId = 1
         controller.showDetail()
-
         //assertEquals "/foo/bar", fc.response.redirectedUrl
-        assertEquals('{"name":"chicken","price":5,"serveDate":{"fromDate":"2011-04-14","toDate":"2011-04-16"},"imageURL":"http://www.google.com","story":"chicken story"}',
+        assertEquals('{"name":"chicken","price":5,"serveDate":{"fromDate":"2011-04-14","toDate":"2011-04-16"},"tags":[{"value":"good"},{"value":"bad"}],"remain":5,"quantity":50,"imageURL":"http://www.google.com","story":"chicken story"}',
                 controller.response.contentAsString)
     }
 

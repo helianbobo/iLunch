@@ -8,7 +8,6 @@ class PriceService {
     static transactional = true
 
     //return -1 if not found
-
     def queryProductSchedule(def product, def area, def date = null) {
         if (date)
             date.clearTime()
