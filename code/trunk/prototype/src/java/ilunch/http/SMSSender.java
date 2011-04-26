@@ -62,12 +62,16 @@ public class SMSSender {
 		}
 		
 		String result = SMSSender.doSend(sb.toString(), content);
-		Pattern p = Pattern.compile(".*"+SMSSender.TMONEY_ID+".*(\\d+).*");
-		Matcher m = p.matcher(result);
-		if(m.matches())
-			if(Integer.parseInt(m.group(1)) < SMSSender.ALERT_BOTTOM_LINE)
-				SMSSender.sendAlert();
-
+		try {
+			Pattern p = Pattern.compile(".*"+SMSSender.TMONEY_ID+".*(\\d+).*");
+			Matcher m = p.matcher(result);
+			if(m.matches())
+				if(Integer.parseInt(m.group(1)) < SMSSender.ALERT_BOTTOM_LINE)
+					SMSSender.sendAlert();
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
 		return SMSSender.parseResult(result);
 	}
 
