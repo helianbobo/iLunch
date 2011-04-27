@@ -25,4 +25,6 @@ public class AlipayConfig {
 	public static String sign_type = "MD5";
 
 	public static String transport = "http";
+	
+	public static String SUCCESS = "true";
 }

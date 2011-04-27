@@ -7,9 +7,6 @@ import com.alipay.config.AlipayConfig;
 import com.alipay.util.AlipayFunction;
 import com.alipay.util.AlipayNotify;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 public class AlipayPaymentService {
 	
 	/**
@@ -46,21 +43,26 @@ public class AlipayPaymentService {
 	 * @param params
 	 * @return null for fail. orderId for success
 	 */
-	public static String parseResponse(Map<String, String> params) {
+	public static String parseResponse(Map<String, String> params) throws AlipayResponseException {
 		if(params == null || params.isEmpty())
-			return null;
+			throw new AlipayResponseException("Invalid params");
 		
 		String sign = params.get("sign");
 		String orderId = params.get("out_trade_no");
-		if(sign == null || orderId == null)
-			return null;
+		String notifyId = params.get("notify_id");
+		if(sign == null || orderId == null || notifyId == null)
+			throw new AlipayResponseException("Insufficent response params!");
+		
+		if(!AlipayNotify.Verify(notifyId).equals(AlipayConfig.SUCCESS))
+			throw new AlipayResponseException("Not a Alipay response!");
 		
 		String mysign = AlipayNotify.GetMysign(params, AlipayConfig.key);
 		if(!mysign.equals(sign))
-			return null;
+			throw new AlipayResponseException("Sign value incorrect!");
 		
 		if(params.get("is_success").equalsIgnoreCase("T") && params.get("trade_status").equalsIgnoreCase("TRADE_FINISHED"))
 			return orderId;
+		
 		return null;
 	}
 	
