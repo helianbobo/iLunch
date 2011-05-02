@@ -25,16 +25,17 @@ class PersonController {
             nickname = customer.name
             phoneNumber = customer.cellNumber
             points = customer.pointBalance
-            area = [
-                    areaName: customerArea.name,
-                    areaId: customerArea.id,
+            distributionArea = [
+                    name: customerArea.name,
+                    id: customerArea.id,
                     arealLongitude: customerArea.longitude,
                     areaLatitude: customerArea.latitude
             ]
             building = [
-                    buildId: customerBuilding.id,
-                    buildingLongitude: customerBuilding.longitude,
-                    buildingLatitude: customerBuilding.latitude
+                    id: customerBuilding.id,
+                    name:customerBuilding.name,
+                    longitude: customerBuilding.longitude,
+                    latitude: customerBuilding.latitude
             ]
         }
     }

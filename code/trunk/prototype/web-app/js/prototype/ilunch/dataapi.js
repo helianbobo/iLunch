@@ -35,7 +35,7 @@
 	 */
 	ilunch.validateData = function(data, props, name) {
 		for(var i = 0; i < props.length; i++) {
-			if(!data.hasOwnProperty(props[i]) || data[props[i]] == undefined || data[props[i]] == null) {
+			if(!data.hasOwnProperty(props[i]) ) {   //|| data[props[i]] == undefined || data[props[i]] == null
 				ilunch.fatalError(props[i]+' in '+name+' not found!');
 				return false;
 			}
@@ -123,40 +123,50 @@
 	//            Data APIs       //////////
 	///////////////////////////////////////
 	
-	ilunch.getMainDishInfo = function(id, handler) {
-		if(id == null || id == undefined) {
+	ilunch.getMainDishInfo = function(productId, areaId, handler) {
+		if(productId == null || productId == undefined) {
 			ilunch.fatalError("Main dish id not found!");
 			return;
 		}
+        if(areaId == null || areaId == undefined) {
+			ilunch.fatalError("Area id not found!");
+			return;
+		}
 		params = {
-			id: id
+			productId: productId,
+            areaId:areaId
 		};
 		$.getJSON(ROOT+'/product/showDetail', params, function(data) {
 			if(data.error) {
 				
 			}
 			else {
-				if(!ilunch.validateData(data, ['name', 'price', 'serveDate', 'imageUrl', 'story'], 'maindish'))
+				if(!ilunch.validateData(data, ['name', 'price', 'startDate','endDate', 'imageURL', 'story','remain','quantity'], 'maindish'))
 					return;
 			}
 			handler(data);
 		});
 	};
 	
-	ilunch.getSideDishInfo = function(id, handler) {
-		if(id == null || id == undefined) {
-			ilunch.fatalError("side dish id not found!");
+	ilunch.getSideDishInfo = function(productId,areaId, handler) {
+		if(productId == null || productId == undefined) {
+			ilunch.fatalError("Side dish id not found!");
+			return;
+		}
+        if(areaId == null || areaId == undefined) {
+			ilunch.fatalError("Area id not found!");
 			return;
 		}
 		params = {
-			id: id
+			productId: productId,
+            areaId:areaId
 		};
 		$.getJSON(ROOT+'/product/showDetail', params, function(data) {
 			if(data.error) {
 				
 			}
 			else {
-				if(!ilunch.validateData(data, ['name', 'flavour', 'price', 'imageUrl', 'story'], 'sidedish'))
+				if(!ilunch.validateData(data, ['name', 'price', 'startDate','endDate', 'imageURL', 'story','remain','quantity'], 'sidedish'))
 					return;
 			}
 			handler(data);
@@ -179,14 +189,18 @@
 				
 			}
 			else {
-				data = data.mainDishes;
+				data = data.products;
 				if(!data || data.length <= 0) {
 					ilunch.fatalError("maindishes list is empty");
 					return;
 				}
 				for(var i = 0; i < data.length; i++) {
-					if(!ilunch.validateData(data[i], ['id', 'name', 'price', 'fromDate', 'toDate', 'imageURL'], 'MainDishList['+i+']'))
+					if(!ilunch.validateData(data[i], ['id', 'name', 'prices', 'imageURL'], 'MainDishList['+i+']'))
 						return;
+                    for(var j = 0; j < data[i].prices.length; j++) {
+						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'MainDishList['+i+'].prices['+j+']'))
+							return;
+					}
 				}
 			}
 			handler(data);
@@ -208,14 +222,18 @@
 				
 			}
 			else {
-				data = data.mainDishes;
+				data = data.products;
 				if(!data || data.length <= 0) {
 					ilunch.fatalError("mainDishes list is empty");
 					return;
 				}
 				for(var i = 0; i < data.length; i++) {
-					if(!ilunch.validateData(data[i], ['id', 'name', 'price', 'fromDate', 'toDate', 'imageURL'], 'MainDishList['+i+']'))
+					if(!ilunch.validateData(data[i], ['id', 'name', 'prices', 'imageURL'], 'MainDishList['+i+']'))
 						return;
+                    for(var j = 0; j < data[i].prices.length; j++) {
+						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'MainDishList['+i+'].prices['+j+']'))
+							return;
+					}
 				}
 			}
 			handler(data);
@@ -238,7 +256,7 @@
 				
 			}
 			else {
-				data = data.sideDishes;
+				data = data.products;
 				if(!data || data.length <= 0) {
 					ilunch.fatalError("sideDishes list is empty");
 					return;
@@ -246,7 +264,7 @@
 				for(var i = 0; i < data.length; i++) {
 					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices', 'imageURL'], 'SideDishList['+i+']'))
 						return;
-					for(var j = 0; j < data.prices.length; j++) {
+					for(var j = 0; j < data[i].prices.length; j++) {
 						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'SideDishList['+i+'].prices['+j+']'))
 							return;
 					}
@@ -270,7 +288,7 @@
 				
 			}
 			else {
-				data = data.sideDishes;
+				data = data.products;
 				if(!data || data.length <= 0) {
 					ilunch.fatalError("sideDishes list is empty");
 					return;
@@ -278,7 +296,7 @@
 				for(var i = 0; i < data.length; i++) {
 					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices', 'imageURL'], 'SideDishList['+i+']'))
 						return;
-					for(var j = 0; j < data.prices.length; j++) {
+					for(var j = 0; j < data[i].prices.length; j++) {
 						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'SideDishList['+i+'].prices['+j+']'))
 							return;
 					}

@@ -6,10 +6,14 @@ class ExceptionControllerTests extends JSONRenderControllerUnitTestCase {
     protected void setUp() {
         super.setUp()
         exceptionController = new ExceptionController()
-        exceptionController.metaClass.grailsApplication = [config: ['cn.ilunch.exception.code.EntityNotFound': "3", 'cn.ilunch.exception.code.ScheduleNotFound': "4"]]
+
+        def configObject = new ConfigObject()
+        configObject.cn.ilunch.exception.code.EntityNotFound = "3"
+        configObject.cn.ilunch.exception.code.ScheduleNotFound = "4"
+
+        exceptionController.metaClass.grailsApplication = [config: configObject]
         fixJsonRender exceptionController
     }
-
 
     void testEntityNotFound() {
         exceptionController.params.entityName = "Entity"

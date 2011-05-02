@@ -14,11 +14,11 @@ class ProductControllerTests extends JSONRenderControllerUnitTestCase {
     void testShow() {
         def dishName = "chicken"
         def story = "chicken story"
-        final detailImageUrl = "http://www.google.com"
+        final originalImageUrl = "http://www.google.com"
 
         final tags = [new Tag(value: "good"), new Tag(value: "bad")]
         mockDomain(Tag, tags)
-        mockDomain(MainDish, [new MainDish(id: 1,tags:tags, name: dishName, story: story, detailImageUrl: detailImageUrl)])
+        mockDomain(Product, [new Product(id: 1,tags:tags, name: dishName, story: story, originalImageUrl: originalImageUrl)])
         mockDomain(DistributionArea, [new DistributionArea(id: 1)])
 
         def priceService = mockFor(cn.ilunch.service.PriceService)
@@ -34,7 +34,7 @@ class ProductControllerTests extends JSONRenderControllerUnitTestCase {
         controller.params.areaId = 1
         controller.showDetail()
         //assertEquals "/foo/bar", fc.response.redirectedUrl
-        assertEquals('{"name":"chicken","price":5,"serveDate":{"fromDate":"2011-04-14","toDate":"2011-04-16"},"tags":[{"value":"good"},{"value":"bad"}],"remain":5,"quantity":50,"imageURL":"http://www.google.com","story":"chicken story"}',
+        assertEquals('{"name":"chicken","price":5,"startDate":"2011-04-14","endDate":"2011-04-16","flavour":[{"value":"good"},{"value":"bad"}],"remain":5,"quantity":50,"imageURL":"http://www.google.com","story":"chicken story"}',
                 controller.response.contentAsString)
     }
 
@@ -43,7 +43,7 @@ class ProductControllerTests extends JSONRenderControllerUnitTestCase {
         def story = "chicken story"
         final detailImageUrl = "http://www.google.com"
 
-        mockDomain(MainDish, [new MainDish(id: 1, name: dishName, story: story, detailImageUrl: detailImageUrl)])
+        mockDomain(Product, [new Product(id: 1, name: dishName, story: story, detailImageUrl: detailImageUrl)])
         mockDomain(DistributionArea, [new DistributionArea(id: 1)])
 
         def priceService = mockFor(cn.ilunch.service.PriceService)
@@ -62,7 +62,7 @@ class ProductControllerTests extends JSONRenderControllerUnitTestCase {
     }
 
     void testShowEntityNotFound() {
-        mockDomain(MainDish, [])
+        mockDomain(Product, [])
         mockDomain(DistributionArea, [])
 
         controller.params.productId = 1

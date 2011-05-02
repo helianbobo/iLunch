@@ -9,6 +9,6 @@ class Manager extends Person{
     }
 
     def getArea(){
-        kitchen.distributionPoints*.area[0]
+        kitchen?.distributionPoints*.area[0]
     }
 }

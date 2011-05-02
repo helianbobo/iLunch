@@ -31,7 +31,7 @@ class PriceServiceTest extends GroovyTestCase {
         assertEquals(18.0, priceService.queryProductSchedule(sideDish, area, new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-06'))[0].price);
         assertEquals(30.0, priceService.queryProductSchedule(curryFish, area, new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-06'))[0].price);
         assertTrue(0 == priceService.queryProductSchedule(curryFish, area, new SimpleDateFormat('yyyy-MM-dd').parse('2011-03-06')).size());
-        assertEquals(45, priceService.queryProductSchedule(psourceFish, area)[0].price);
-        assertEquals(new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-17'), priceService.queryProductSchedule(psourceFish, area)[0].fromDate);
+        assertEquals(40, priceService.queryProductSchedule(psourceFish, area)[0].price);
+        assertEquals(new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-27'), priceService.queryProductSchedule(psourceFish, area)[0].fromDate);
     }
 }

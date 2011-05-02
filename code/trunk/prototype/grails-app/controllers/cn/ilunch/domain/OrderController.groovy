@@ -9,6 +9,7 @@ class OrderController {
     //todo no tesecase for this
     def list = {
         def status = params.status
+
         ILunchUserDetails user = springSecurityService.currentUser
         def cellNumber = user.cellNumber
 

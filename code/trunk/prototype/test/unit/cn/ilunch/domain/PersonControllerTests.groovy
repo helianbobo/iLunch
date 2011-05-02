@@ -43,7 +43,7 @@ class PersonControllerTests extends JSONRenderControllerUnitTestCase {
       mockDomain(DistributionArea,[area])
     controller.params.id = 1
       controller.preference()
-      assertEquals """{"id":1,"nickname":"liuchao","phoneNumber":"12345678901","points":123,"area":{"areaName":"zhangjiang","areaId":1,"arealLongitude":23.12,"areaLatitude":123.23},"building":{"buildId":1,"buildingLongitude":12.31,"buildingLatitude":123.31}}""", controller.response.contentAsString
+      assertEquals """{"id":1,"nickname":"liuchao","phoneNumber":"12345678901","points":123,"distributionArea":{"name":"zhangjiang","id":1,"arealLongitude":23.12,"areaLatitude":123.23},"building":{"id":1,"name":"qq","longitude":12.31,"latitude":123.31}}""", controller.response.contentAsString
 //      println controller.response.contentAsString
   }
 

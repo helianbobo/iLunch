@@ -21,6 +21,9 @@ class BootStrap {
             development {
                 loadData()
             }
+            leo {
+                loadTestData()
+            }
         }
 
     }

@@ -52,7 +52,5 @@ class Product {
         dates
     }
 
-    static def convertServerImageURL(productName){
-        "images/${productName}.jpg"
-    }
+
 }

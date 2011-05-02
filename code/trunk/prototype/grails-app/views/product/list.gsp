@@ -1,4 +1,4 @@
-<%@ page import="cn.ilunch.domain.Product" %>
+<%@ page import="cn.ilunch.domain.DistributionArea; cn.ilunch.domain.Product" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -9,13 +9,17 @@
 <body>
 <div class="nav">
     <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-    <span class="menuButton"><g:link class="create" action="createMainDish" >新增主菜</g:link></span>
+    <span class="menuButton"><g:link class="create" action="createMainDish">新增主菜</g:link></span>
     <span class="menuButton"><g:link class="create" action="createSideDish">新增配菜</g:link></span>
 </div>
 <div class="body">
     <h1><g:message code="default.list.label" args="[entityName]"/></h1>
+
     <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
+    </g:if>
+    <g:if test="${areaId}">
+        ${DistributionArea.get(areaId).name}
     </g:if>
     <div class="list" style="width:100%;">
         <table style="width:900px;vertical-align:middle;">
@@ -49,18 +53,26 @@
 
                     <td>${fieldValue(bean: productInstance, field: "story")}</td>
 
-
-
                     <td>${productInstance.type()}</td>
 
-                <td>
-                    <g:each in="${productInstance.scheduleDates}" var="scheduleDate">
-                        从 ${scheduleDate.fromDate.format("yyyy-MM-dd")} 到 ${scheduleDate.toDate?scheduleDate.toDate.format("yyyy-MM-dd"):"未来"}
-                    </g:each>
+                    <td>
+                        <g:if test="${productInstance.scheduleDates.size() > 0}">
+                            <g:each in="${productInstance.scheduleDates}" var="scheduleDate">
+                                <g:if test="${scheduleDate.toDate >= new Date()-1 || !scheduleDate.toDate}">
+                                    从 ${scheduleDate.fromDate.format("yyyy-MM-dd")} 到 ${scheduleDate.toDate ? scheduleDate.toDate.format("yyyy-MM-dd") : "未来"}<br/>
+                                </g:if>
+                            </g:each>
+                        </g:if>
+                        <g:else>
+                            还没有安排该产品计划，请点击右侧修改排菜安排链接
+                        </g:else>
                     </td>
-                    <td><img src="${fieldValue(bean: productInstance, field: "smallImageUrl")}"/></td>
-                     <td>${productInstance.statusDesc()}</td>
-                    <td><g:link action="edit" id="${productInstance.id}" >修改产品信息</g:link></td>
+                    <td><img src="${fieldValue(bean: productInstance, field: "originalImageUrl")}"/></td>
+                    <td>${productInstance.statusDesc()}</td>
+                    <td><g:link action="edit" id="${productInstance.id}">修改产品信息</g:link>
+                    <g:link action="editSchedule" id="${productInstance.id}">修改排菜安排</g:link>
+                    <g:link action="editTags" id="${productInstance.id}">修改标签</g:link>
+                    </td>
                 </tr>
             </g:each>
             </tbody>

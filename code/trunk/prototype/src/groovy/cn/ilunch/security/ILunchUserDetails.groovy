@@ -18,7 +18,7 @@ class ILunchUserDetails extends GrailsUser {
     String cellNumber
     int points
     String areaName
-    long areaId
+    Long areaId
     double longitude
     double latitude
     long buildId
@@ -32,6 +32,6 @@ class ILunchUserDetails extends GrailsUser {
 
         if(person instanceof Customer)
             this.buildId = person.primaryBuilding?.id
-        this.areaId = person.area.id
+        this.areaId = person.area?.id
     }
 }

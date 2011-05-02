@@ -70,9 +70,9 @@ log4j = {
     // Example of changing the log pattern for the default console
     // appender:
     //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
@@ -91,13 +91,11 @@ log4j = {
 
 grails.json.legacy.builder=false
 
-cn.ilunch.exception.code = {
-    EntityNotFound = "01"
-    ScheduleNotFound = "02"
-}
+cn.ilunch.exception.code.EntityNotFound = "01"
+cn.ilunch.exception.code.ScheduleNotFound = "02"
 
 cn.ilunch.date.format = 'yyyy-MM-dd'
-cn.ilunch.product.image.location = "C:\\Users\\janexie\\Downloads\\prototype (1)\\prototype\\web-app\\images"
+cn.ilunch.product.image.location = "D:\\Documents\\Downloads\\prototype (3)\\prototype\\web-app\\images"
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'cn.ilunch.domain.Person'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'cn.ilunch.domain.UserRole'

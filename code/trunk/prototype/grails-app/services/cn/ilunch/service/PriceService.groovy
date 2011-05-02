@@ -17,6 +17,7 @@ class PriceService {
             and {
                 eq('area', area)
                 eq('product', product)
+                eq('status', ProductAreaPriceSchedule.INUSE)
                 if (date) {
                     or {
                         and {

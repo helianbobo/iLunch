@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="layout" content="main" />
+        <meta name="layout" content="gmain" />
         <g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
         <title><g:message code="default.show.label" args="[entityName]" /></title>
     </head>
@@ -22,77 +22,35 @@
                 <table>
                     <tbody>
                     
+
+                    
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.id.label" default="Id" /></td>
+                            <td valign="top" class="name"><g:message code="product.originalImageUrl.label" default="图片预览" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: productInstance, field: "id")}</td>
+                            <td valign="top" class="value"><image src="${fieldValue(bean: productInstance, field: "originalImageUrl")}"/></td>
                             
                         </tr>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.originalImageUrl.label" default="Original Image Url" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: productInstance, field: "originalImageUrl")}</td>
-                            
-                        </tr>
+
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.detailImageUrl.label" default="Detail Image Url" /></td>
+                            <td valign="top" class="name"><g:message code="product.status.label" default="状态" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: productInstance, field: "detailImageUrl")}</td>
-                            
+                            <td valign="top" class="value"> <g:select name='status' optionKey="value" optionValue="key" from="${[[key:'使用中',value:0],[key:'已删除', value:1]]}" value="${productInstance.status}"></g:select></td>
+
                         </tr>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.largeImageUrl.label" default="Large Image Url" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: productInstance, field: "largeImageUrl")}</td>
-                            
-                        </tr>
+
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.mediumImageUrl.label" default="Medium Image Url" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: productInstance, field: "mediumImageUrl")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.smallImageUrl.label" default="Small Image Url" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: productInstance, field: "smallImageUrl")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.status.label" default="Status" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: productInstance, field: "status")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.productAreaPriceSchedules.label" default="Product Area Price Schedules" /></td>
-                            
-                            <td valign="top" style="text-align: left;" class="value">
-                                <ul>
-                                <g:each in="${productInstance.productAreaPriceSchedules}" var="p">
-                                    <li><g:link controller="productAreaPriceSchedule" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></li>
-                                </g:each>
-                                </ul>
-                            </td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.name.label" default="Name" /></td>
+                            <td valign="top" class="name"><g:message code="product.name.label" default="菜名" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: productInstance, field: "name")}</td>
                             
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.story.label" default="Story" /></td>
+                            <td valign="top" class="name"><g:message code="product.story.label" default="故事" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: productInstance, field: "story")}</td>
                             
@@ -105,7 +63,7 @@
                 <g:form>
                     <g:hiddenField name="id" value="${productInstance?.id}" />
                     <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" /></span>
-                    <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
+
                 </g:form>
             </div>
         </div>

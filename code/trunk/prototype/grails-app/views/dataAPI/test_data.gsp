@@ -33,10 +33,10 @@
 				ilunch.getDistributionAreaList(show);
 			}
 			function getMainDishInfo() {
-				ilunch.getMainDishInfo(1, show);
+				ilunch.getMainDishInfo(3, 1,show);
 			}
 			function getSideDishInfo() {
-				ilunch.getSideDishInfo(1, show);
+				ilunch.getSideDishInfo(1, 1,show);
 			}
 			function getMainDishListOnIndexPage() {
 				ilunch.getMainDishListOnIndexPage('2010-10-10', 1, show);
@@ -51,7 +51,7 @@
 				ilunch.getSideDishListOnSelectionPage('2010-10-10', 1, show);
 			}
 			function getUserInfo() {
-				ilunch.getUserInfo("13764511823", show);
+				ilunch.getUserInfo("3", show);
 			}
 			function getCart() {
 				ilunch.getCart('2010-10-10', '2011-10-10', show);

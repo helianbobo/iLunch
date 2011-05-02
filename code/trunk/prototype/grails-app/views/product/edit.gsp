@@ -13,7 +13,7 @@
     <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]"/></g:link></span>
 </div>
 <div class="body">
-    <h1><g:message code="default.edit.label" args="[entityName]"/></h1>
+    <h1>产品修改</h1>
     <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
     </g:if>
@@ -22,7 +22,7 @@
             <g:renderErrors bean="${productInstance}" as="list"/>
         </div>
     </g:hasErrors>
-    <g:form method="post">
+    <g:form method="post" enctype="multipart/form-data">
         <g:hiddenField name="id" value="${productInstance?.id}"/>
         <g:hiddenField name="version" value="${productInstance?.version}"/>
         <div class="dialog">
@@ -31,20 +31,22 @@
 
                 <tr class="prop">
                     <td valign="top" class="name">
-                        <label for="originalImageUrl"><g:message code="product.originalImageUrl.label" default="Original Image Url"/></label>
+                        <label for="originalImageUrl"><g:message code="product.originalImageUrl.label" default="图片预览"/></label>
                     </td>
                     <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'originalImageUrl', 'errors')}">
-                        <g:textField name="originalImageUrl" value="${productInstance?.originalImageUrl}"/>
+                        <img name="originalImageUrl" src="${productInstance?.originalImageUrl}"/>
+                        <input type="file" name="image"/>
                     </td>
+
                 </tr>
 
 
                 <tr class="prop">
                     <td valign="top" class="name">
-                        <label for="status"><g:message code="product.status.label" default="Status"/></label>
+                        <label for="status"><g:message code="product.status.label" default="状态"/></label>
                     </td>
                     <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'status', 'errors')}">
-                        <g:select name='status' optionKey="value" optionValue="key" from="${[[key:'使用中',value:0],[key:'已删除',        value:1]]}" value="${productInstance.status}"></g:select>   //little li li is a genius
+                        <g:select name='status' optionKey="value" optionValue="key" from="${[[key:'使用中',value:0],[key:'已删除',        value:1]]}" value="${productInstance.status}"></g:select>
 
                     </td>
                 </tr>
@@ -52,7 +54,7 @@
 
                 <tr class="prop">
                     <td valign="top" class="name">
-                        <label for="name"><g:message code="product.name.label" default="Name"/></label>
+                        <label for="name"><g:message code="product.name.label" default="菜名"/></label>
                     </td>
                     <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'name', 'errors')}">
                         <g:textField name="name" value="${productInstance?.name}"/>
@@ -61,7 +63,7 @@
 
                 <tr class="prop">
                     <td valign="top" class="name">
-                        <label for="story"><g:message code="product.story.label" default="Story"/></label>
+                        <label for="story"><g:message code="product.story.label" default="故事"/></label>
                     </td>
                     <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'story', 'errors')}">
                         <g:textField name="story" value="${productInstance?.story}"/>
@@ -72,8 +74,7 @@
             </table>
         </div>
         <div class="buttons">
-            <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}"/></span>
-            <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/></span>
+            <span class="button"><g:actionSubmit class="save" action="update" value="保存"/></span>
         </div>
     </g:form>
 </div>
