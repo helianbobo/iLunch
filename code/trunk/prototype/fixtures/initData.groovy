@@ -115,25 +115,25 @@ fixture {
     'md_curryfish'(MainDish) {
         name = '咖喱鱼'
         story = '东南亚咖喱鱼的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_15.jpg"
     }
 
     'md_psourcefish'(MainDish) {
         name = '茄汁鱼'
         story = '东南亚茄汁鱼的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_15.jpg"
     }
 
     'md_curryricewithfish'(MainDish) {
         name = '炸白身鱼'
         story = '炸白身鱼的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_15.jpg"
     }
 
     'md_curryricewithfriedpork'(MainDish) {
         name = '炸猪排'
         story = '炸猪排的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_15.jpg"
     }
 
     'sd_doujiao'(SideDish) {

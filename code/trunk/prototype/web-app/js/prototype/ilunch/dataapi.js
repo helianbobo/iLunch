@@ -417,4 +417,49 @@
 		});
 	};
 	
+	////////////////////////////////////////
+	//            Utils          //////////
+	///////////////////////////////////////
+	
+	ilunch.digitToCNSS = function(d) {
+		if(d < 1 || d > 7)
+			return;
+		var cnss = '';
+		switch(d) {
+		case 1:
+			cnss = '一';
+			break;
+		case 2:
+			cnss = '二';
+			break;
+		case 3:
+			cnss = '三';
+			break;
+		case 4:
+			cnss = '四';
+			break;
+		case 5:
+			cnss = '五';
+			break;
+		case 6:
+			cnss = '六';
+			break;
+		case 7:
+			cnss = '日';
+			break;
+		default:
+			break;
+		}
+		return cnss;
+	};
+	
+	ilunch.doubleDigit = function(d) {
+		if(d < 0)
+			return;
+		if(d >= 10)
+			return d+'';
+		if(d > 0 && d < 10)
+			return '0'+d;
+	};
+	
 })(jQuery);

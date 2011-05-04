@@ -42,7 +42,7 @@
 				ilunch.getMainDishListOnIndexPage('2010-10-10', 1, show);
 			}
 			function getMainDishListOnSelectionPage() {
-				ilunch.getMainDishListOnSelectionPage('2010-10-10', '2011-10-10', 1, show);
+				ilunch.getMainDishListOnSelectionPage('2012-10-10', '2012-10-10', 1, show);
 			}
 			function getSideDishListOnIndexPage() {
 				ilunch.getSideDishListOnIndexPage('2010-10-10', 1, show);
