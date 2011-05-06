@@ -45,7 +45,11 @@ class PersonController {
     }
 
  def cart = {
-render([text:session.getValue("cartInfo"), contentType: 'text/plain'])
+     if(!session.getValue("cartInfo")){
+        forward(controller: "exception", action: "cartNotFound")
+                return
+     }
+            render([text:session.getValue("cartInfo"), contentType: 'text/plain'])
         
     }
 
