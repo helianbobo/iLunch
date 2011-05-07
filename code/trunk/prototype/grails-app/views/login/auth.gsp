@@ -1,6 +1,6 @@
 <head>
-<meta name='layout' content='main' />
-<title>Login</title>
+<meta name='layout' content='gmain' />
+<title>登录</title>
 <style type='text/css' media='screen'>
 #login {
 	margin:15px 0px; padding:0px;

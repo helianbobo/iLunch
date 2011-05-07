@@ -27,7 +27,16 @@
                         <li><a href="#" class="h_m_5"></a></li>
                     </ul>
                 </div>--}%
-                <div class="login"><a href="#">登录</a> | <a href="#">注册</a></div>
+                <div class="login">
+                    <sec:ifLoggedIn>
+                        <g:link controller="logout" action="index">登出</g:link>
+                    </sec:ifLoggedIn>
+                    <sec:ifNotLoggedIn>
+                        <g:link controller="login" action="auth">登录</g:link>
+                    </sec:ifNotLoggedIn>
+
+
+                </div>
                 <div class="clear"></div>
             </div>
         </div>
