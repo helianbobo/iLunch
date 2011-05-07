@@ -15,6 +15,7 @@ import cn.ilunch.domain.UserRole
 
 
 fixture {
+
     'person_chenkai'(Manager) {
         name = '陈凯'
         cellNumber = '18600186000'

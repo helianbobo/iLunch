@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="nav">
-    <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+    <span class="menuButton"><a class="home" href="${createLink(uri: '/console')}"><g:message code="default.home.label"/></a></span>
     <span class="menuButton"><g:link class="create" action="createMainDish">新增主菜</g:link></span>
     <span class="menuButton"><g:link class="create" action="createSideDish">新增配菜</g:link></span>
 </div>

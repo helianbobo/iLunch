@@ -8,6 +8,15 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-  <head><title>管理</title></head>
-  <body>你想做什么</body>
+<head>
+    <meta name="layout" content="gmain"/>
+    <title>管理</title>
+</head>
+<body>
+
+
+    <g:link controller="product" action="index">产品管理</g:link>
+
+
+</body>
 </html>

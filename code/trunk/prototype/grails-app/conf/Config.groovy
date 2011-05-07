@@ -96,7 +96,7 @@ cn.ilunch.exception.code.ScheduleNotFound = "02"
 cn.ilunch.exception.code.CartNotFound = "03"
 
 cn.ilunch.date.format = 'yyyy-MM-dd'
-cn.ilunch.product.image.location = "D:\\Documents\\Downloads\\prototype (3)\\prototype\\web-app\\images"
+cn.ilunch.product.image.location = "${userHome}/ilunch/images/products"
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'cn.ilunch.domain.Person'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'cn.ilunch.domain.UserRole'
