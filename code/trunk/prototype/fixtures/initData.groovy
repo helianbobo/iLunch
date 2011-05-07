@@ -314,4 +314,6 @@ post {
     kitchen.setManager (jleo)
 
     UserRole.create jleo, managerRole, true
+    UserRole.create jleo, adminRole, true
+    UserRole.create jleo, userRole, true
 }

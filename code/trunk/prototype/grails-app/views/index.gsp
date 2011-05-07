@@ -26,7 +26,7 @@
                         <li><a href="#" class="h_m_5"></a></li>
                     </ul>
                 </div>
-                <div class="login"><a href="#">登录</a> | <a href="#">注册</a></div>
+                <div class="login"><g:render template="/shared/authLink"/></div>
                 <div class="clear"></div>
             </div>
         </div>
