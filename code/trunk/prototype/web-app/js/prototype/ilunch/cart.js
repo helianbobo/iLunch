@@ -11,9 +11,18 @@
 	ilunch.Cart = function(cart){
 		this.__classname__ = "ilunch.Cart";
 		
-		this.cart = {};
+		//TODO remove unnecesary field in cart
 		if(typeof(cart)==='string')
 			cart = $.parseJSON(cart);
+		else if(!cart) {
+			cart = 	{
+						area : "",
+						distributionPoint : '',
+						pointChange : 0,
+						products : []
+					};
+		}
+		this.cart = {};
 		$.extend(true, this.cart, cart);
 		
 		this._currentWeekCursor = 0;
@@ -27,7 +36,7 @@
 		var endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()+4);
 		retval = [];
 		for(var i = 0; i < this.cart.products.length; i++) {
-			var pdate = new Date(this.cart.products[i].date);
+			var pdate = ilunch.makeDate(this.cart.products[i].date);
 			if(pdate <= endDate && pdate >= startDate)
 				retval.push(this.cart.products[i]);
 		}
@@ -81,7 +90,7 @@
 	 * @return refer to getCurrentWeekOrder()
 	 */
 	ilunch.Cart.prototype.getWeekOrder = function(aDate) {
-		var d = new Date(aDate);
+		var d = ilunch.makeDate(aDate);
 		return this._getWeekOrder(new Date(d.getFullYear(), d.getMonth(), d.getDate()-((d.getDay()+6)%7)));
 	};
 	
@@ -94,8 +103,8 @@
 		var dateIndex = -1;
 		var products = this.cart.products;
 		for(var i = 0; i < products.length; i++) {
-			var pDate = new Date(products[i].date);
-			var oDate = new Date(date);
+			var pDate = ilunch.makeDate(products[i].date);
+			var oDate = ilunch.makeDate(date);
 			if((pDate >= oDate) && (pDate <= oDate)) {
 				dateIndex = i;
 				var dishes = products[i][isMainDish?'mainDishes':'sideDishes'];
@@ -131,8 +140,8 @@
 	ilunch.Cart.prototype.deleteOrder = function(isMainDish, date, id) {
 		var products = this.cart.products;
 		for(var i = 0; i < products.length; i++) {
-			var pDate = new Date(products[i].date);
-			var oDate = new Date(date);
+			var pDate = ilunch.makeDate(products[i].date);
+			var oDate = ilunch.makeDate(date);
 			if((pDate >= oDate) && (pDate <= oDate)) {
 				var dishes = products[i][isMainDish?'mainDishes':'sideDishes'];
 				for(var j = 0; j < dishes.length; j++) {
@@ -154,6 +163,22 @@
 		return this.cart;
 	};
 	
+	ilunch.Cart.prototype.getOrderByIdAndDate = function(id, date, isMainDish) {
+		var products = this.cart.products;
+		for(var i = 0; i < products.length; i++) {
+			var pDate = ilunch.makeDate(products[i].date);
+			var oDate = ilunch.makeDate(date);
+			if((pDate >= oDate) && (pDate <= oDate)) {
+				var dishes = products[i][isMainDish?'mainDishes':'sideDishes'];
+				for(var j = 0; j < dishes.length; j++) {
+					if(dishes[j].id == id) {
+						return dishes[j];
+					}
+				}
+			}
+		}
+	};
+	
 	/**
 	 * Serialize cart to JSON string
 	 * 
@@ -171,7 +196,10 @@
 		strarr.push('"products":[');
 		for(var i = 0; i < this.cart.products.length; i++) {
 			strarr.push('{');
-			strarr.push('"date":"'+this.cart.products[i].date+'",');
+			var d = this.cart.products[i].date;
+			if(typeof(d) == 'object')
+				d = (d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
+			strarr.push('"date":"'+d+'",');
 			strarr.push('"mainDishes":[');
 			for(var j = 0; j < this.cart.products[i].mainDishes.length; j++) {
 				strarr.push('{');

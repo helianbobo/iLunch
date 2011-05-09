@@ -105,7 +105,7 @@
 				
 			}
 			else if(textStatus == 'error') {
-				alert('error occurred:'+JsonUti.convertToString(jqXHR.responseText));
+				document.write('error occurred:'+JsonUti.convertToString(jqXHR.responseText));
 			}
 			else if(textStatus == 'abort') {
 				
@@ -352,18 +352,10 @@
 		});
 	};
 	
-	ilunch.getCart = function(startDate, endDate, handler) {
-		if(!startDate || !endDate) {
-			ilunch.fatalError('invalide startDate or endDate!');
-			return;
-		}
-		params = {
-			startDate: startDate,
-			endDate: endDate
-		};
-		$.getJSON(ROOT+'/person/cart', params, function(data) {
+	ilunch.getCart = function(handler) {
+		$.getJSON(ROOT+'/person/cart', function(data) {
 			if(data.error) {
-				
+				data = null;
 			}
 			else {
 				if(!_validateCart(data))
@@ -379,9 +371,18 @@
 		if(!_validateCart($.parseJSON(data)))
 			return;
 		$.ajax(ROOT+'/person/saveCart', {
-			processData:false,
-			data:data,
+//			processData:false,
+			data:{cartInfo:data},
 			success:function(data) {
+				if(data.error) {
+
+				}
+				else {
+
+				}
+				handler(data);
+			},
+			complete:function(data) {
 				if(data.error) {
 
 				}
@@ -422,7 +423,7 @@
 	///////////////////////////////////////
 	
 	ilunch.digitToCNSS = function(d) {
-		if(d < 1 || d > 7)
+		if(d < 0 || d > 6)
 			return;
 		var cnss = '';
 		switch(d) {
@@ -444,7 +445,7 @@
 		case 6:
 			cnss = '六';
 			break;
-		case 7:
+		case 0:
 			cnss = '日';
 			break;
 		default:
@@ -460,6 +461,14 @@
 			return d+'';
 		if(d > 0 && d < 10)
 			return '0'+d;
+	};
+	
+	ilunch.makeDate = function(dStr) {
+		if(typeof(dStr) == 'object')
+			return dStr;
+		var p = /(\d+)-(\d+)-(\d+)/;
+		var r = p.exec(dStr);
+		return new Date(parseInt(r[1]), parseInt(r[2])-1, parseInt(r[3]));
 	};
 	
 })(jQuery);

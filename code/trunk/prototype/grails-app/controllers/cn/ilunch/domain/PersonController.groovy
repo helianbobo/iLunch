@@ -42,6 +42,7 @@ class PersonController {
 
     def saveCart = {
         session.putValue("cartInfo", params.cartInfo)
+		render "{'status':'OK'}"
     }
 
  def cart = {

@@ -22,6 +22,7 @@
         <div class="place">
           <p>上海凌空科技园</p>
           <p><a href="#">[切换其他地区]</a></p>
+          <input id="area_id" type="hidden" value="1" />
         </div>
         <div class="clear"></div>
         <div class="h_menu">
@@ -51,8 +52,8 @@
       </div>
       <div class="clear"></div>
         <div class="clear"></div>
-      <div class="dd_list_bottom">共计：#元</div>
-      <div class="dd_next_1"><input class="next_1" onmouseover="this.className='next_1_1'" onmouseout="this.className='next_1'" name="" type="button" value="" /></div>
+      <div class="dd_list_bottom">共计：<span id="in_total"></span>元</div>
+      <div class="dd_next_1"><input id="btn_confirm" class="next_1" onmouseover="this.className='next_1_1'" onmouseout="this.className='next_1'" name="" type="button" value="" /></div>
     </div>
   </div>
   <!--footer begin-->
