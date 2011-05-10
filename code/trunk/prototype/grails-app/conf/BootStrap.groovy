@@ -13,6 +13,8 @@ class BootStrap {
 
     def springSecurityService
 
+    def grailsApplication
+
     def init = { servletContext ->
         environments {
             test {
@@ -20,6 +22,11 @@ class BootStrap {
             }
             development {
                 loadData()
+            }
+            production{
+                if(grailsApplication.config.dataSource.dbCreate != 'update'){
+                    loadData()
+                }
             }
             leo {
                 loadTestData()
