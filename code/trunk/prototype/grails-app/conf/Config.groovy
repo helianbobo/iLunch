@@ -122,3 +122,5 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/dataAPI/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/**': ['ROLE_ADMIN']
 ]
+
+grails.config.locations = [ "classpath:config.properties"]

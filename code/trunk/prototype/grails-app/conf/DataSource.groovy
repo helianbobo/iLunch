@@ -28,7 +28,10 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+            url = "jdbc:mysql://219.136.252.35:3308/ilunch"
+            driverClassName = "com.mysql.jdbc.Driver"
+            username = "ilunch"
+            password = "ilunch"
         }
     }
     leo {
