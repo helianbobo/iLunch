@@ -422,6 +422,25 @@
 	//            Utils          //////////
 	///////////////////////////////////////
 	
+	ilunch.getPriceByDate = function(prices, date) {
+		for(var i = 0; i < prices.length; i++) {
+			if(!prices[i])
+				continue;
+			if(!prices[i].startDate)
+				continue;
+			var sd = ilunch.makeDate(prices[i].startDate);
+			var ed = (!prices[i].endDate) ? null : ilunch.makeDate(prices[i].endDate);
+			if(sd <= date && (!ed || ed >= date))
+				return prices[i].price;
+		}
+	};
+	
+	ilunch.getOrderById = function(orderList, id) {
+		for(var i = 0; i < orderList.length; i++)
+			if(orderList[i].id == id)
+				return orderList[i];
+	};
+	
 	ilunch.digitToCNSS = function(d) {
 		if(d < 0 || d > 6)
 			return;
@@ -469,6 +488,10 @@
 		var p = /(\d+)-(\d+)-(\d+)/;
 		var r = p.exec(dStr);
 		return new Date(parseInt(r[1]), parseInt(r[2])-1, parseInt(r[3]));
+	};
+	
+	ilunch.dateToString = function(d) {
+		return ''+d.getFullYear()+'-'+ilunch.doubleDigit(d.getMonth()+1)+'-'+ilunch.doubleDigit(d.getDate());
 	};
 	
 })(jQuery);

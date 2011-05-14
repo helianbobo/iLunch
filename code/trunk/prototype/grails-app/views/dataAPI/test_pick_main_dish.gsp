@@ -53,7 +53,11 @@
       <div class="clear"></div>
         <div class="clear"></div>
       <div class="dd_list_bottom">共计：<span id="in_total"></span>元</div>
-      <div class="dd_next_1"><input id="btn_confirm" class="next_1" onmouseover="this.className='next_1_1'" onmouseout="this.className='next_1'" name="" type="button" value="" /></div>
+      <div class="dd_next_1">
+      <form id="confirm_form" method="post">
+      <input id="btn_confirm" class="next_1" onmouseover="this.className='next_1_1'" onmouseout="this.className='next_1'" name="" type="button" value="" />
+      </form>
+      </div>
     </div>
   </div>
   <!--footer begin-->

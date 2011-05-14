@@ -86,7 +86,7 @@ $(document).ready(function($){
 						'<input onclick="inc_quantity(##MD_ID##)" class="jiayi" name="" type="button" value="" />'+
 						'份  <span class="stress">##PRICE##元/份</span>'+
 					 '</div>'+
-					 '<input class="xuangou" onclick="md_order(##MD_ID##,\'##YY##-##MM##-##DD##\',\'##MD_NAME##\');" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
+					 '<input class="xuangou" onclick="md_order(##MD_ID##,\'##YY##-##MM##-##DD##\',\'##MD_NAME##\',\'##IMG##\');" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
 	
 	var disorderTmplt = '<div class="cai_sl">已选购##SEL_N##份共##SEL_PRICE##元</div>'+
 						'<input onclick="md_disorder(##MD_ID##,\'##YY##-##MM##-##DD##\');" class="fangqi" onmouseover="this.className=\'fangqi_1\'" onmouseout="this.className=\'fangqi\'" name="" type="button" value="" />';
@@ -154,20 +154,26 @@ $(document).ready(function($){
 							var ww = ilunch.digitToCNSS(j+1);
 							var md = getMainDishByDate(date);
 							if(md) {
-								var sel_md = cart.getOrderByIdAndDate(md.id, new Date(currentY, currentM, date), true);
-								var price = md.prices[0].price;
+								var thisDate = new Date(currentY, currentM, date);
+								var sel_md = cart.getOrderByIdAndDate(md.id, thisDate, true);
+								var price = ilunch.getPriceByDate(md.prices, thisDate);
 								var md_name = md.name;
 								var img = md.imageURL;
-								if(sel_md) {
-									var divText = selDishTmplt;
-									in_total.html(parseInt(in_total.html())+price*sel_md.quantity);
-									divText = divText.replace(/##MD_ID##/g, md.id).replace(/##SEL_N##/g, sel_md.quantity).replace(/##SEL_PRICE##/g, price*sel_md.quantity);
+								if(thisDate < d) {
+									var divText = oldDishTmplt;
 								}
 								else {
-									var divText = dishTmplt;
-									divText = divText.replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price);
+									if(sel_md) {
+										var divText = selDishTmplt;
+										in_total.html(parseInt(in_total.html())+price*sel_md.quantity);
+										divText = divText.replace(/##MD_ID##/g, md.id).replace(/##SEL_N##/g, sel_md.quantity).replace(/##SEL_PRICE##/g, price*sel_md.quantity);
+									}
+									else {
+										var divText = dishTmplt;
+										divText = divText.replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price);
+									}
 								}
-								divText = divText.replace(/##MD_NAME##/g, md_name).replace('##IMG##', img);
+								divText = divText.replace(/##MD_NAME##/g, md_name).replace(/##IMG##/g, img);
 							}
 							else
 								var divText = nodishTmplt;
@@ -184,6 +190,7 @@ $(document).ready(function($){
 			}
 			//render logic end
 			
+			busy = false;
 			clearInterval(processor);
 			//TODO release screen lock here
 		}
@@ -192,14 +199,18 @@ $(document).ready(function($){
 	//wait for data to be ready
 	var processor = setInterval(renderMDList, 50);
 	
+	//TODO change to use getOrderByDate
 	function getMainDishByDate(date) {
 		for(var i in mainDishList) {
-			var d = ilunch.makeDate(mainDishList[i].prices[0].startDate);
-			if(d.getDate() == date && currentM == d.getMonth())
-				return mainDishList[i];
+			for(var j = 0; j < mainDishList[i].prices.length; j++) {
+				var d = ilunch.makeDate(mainDishList[i].prices[j].startDate);
+				if(d.getDate() == date && currentM == d.getMonth())
+					return mainDishList[i];
+			}
 		}
 	}
 	
+	//TODO change to use getOrderById
 	function getMDById(id) {
 		id = parseInt(id);
 		for(var i in mainDishList) {
@@ -220,10 +231,10 @@ $(document).ready(function($){
 				''+currentY+'-'+(1+currentM)+'-'+lastDateOfMonth.getDate(),
 				areaId,
 				function(data) {
+					//TODO convert to array
 					mainDishList = data;
 				}
 		);
-		busy = false;
 		processor = setInterval(renderMDList, 50);
 	});
 	
@@ -239,24 +250,26 @@ $(document).ready(function($){
 					mainDishList = data;
 				}
 		);
-		busy = false;
 		processor = setInterval(renderMDList, 50);
 	});
 	
 	$('#btn_confirm').click(function() {
 		ilunch.saveCart(cart.toString(), function(data){
-			if(data)
+			if(data) {
+				$('#confirm_form').attr({"action":"/prototype/dataAPI/pickSideDish"});
+				$('#confirm_form').submit();
 				return true;
+			}
 		});
 	});
 	
-	md_order = function(id, date, name) {
+	md_order = function(id, date, name, imageURL) {
 		var md = getMDById(id);
 		var quantity = parseInt($('#quantity_'+id).val());
 		date = ilunch.makeDate(date);
 		if(md && quantity > 0) {
-			cart.addOrder(true, date, id, name, quantity);
-			var price = md.prices[0].price;
+			var price = ilunch.getPriceByDate(md.prices, date);
+			cart.addOrder(true, date, id, name, imageURL, price, quantity);
 			$('#order_'+id).empty();
 			$('#order_'+id).append(disorderTmplt.replace(/##MD_ID##/g, id).replace(/##SEL_N##/g, quantity).replace(/##SEL_PRICE##/g, price*quantity).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
 					ilunch.doubleDigit(date.getMonth()+1)).replace(/##DD##/g, ilunch.doubleDigit(date.getDate())));
@@ -270,9 +283,9 @@ $(document).ready(function($){
 		if(md) {
 			var quantity = cart.getOrderByIdAndDate(id, date, true).quantity;
 			cart.deleteOrder(true, date, id);
-			var price = md.prices[0].price;
+			var price = ilunch.getPriceByDate(md.prices, date);
 			$('#order_'+id).empty();
-			$('#order_'+id).append(orderTmplt.replace(/##MD_NAME##/g, md.name).replace('##IMG##', md.imageURL).replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
+			$('#order_'+id).append(orderTmplt.replace(/##MD_NAME##/g, md.name).replace(/##IMG##/g, md.imageURL).replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
 					ilunch.doubleDigit(date.getMonth()+1)).replace(/##DD##/g, ilunch.doubleDigit(date.getDate())));
 			in_total.html(parseInt(in_total.html())-price*quantity);
 			if(parseInt(in_total.html()) < 0)

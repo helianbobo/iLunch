@@ -40,7 +40,7 @@
 			if(pdate <= endDate && pdate >= startDate)
 				retval.push(this.cart.products[i]);
 		}
-		return retval;
+		return {startDate:startDate, endDate:endDate, products:retval};
 	};
 	
 	ilunch.Cart.prototype._getWeekOrderByCurrentCursor = function() {
@@ -55,7 +55,7 @@
 	 * Get products within the week indicated by current week cursor. 
 	 * current week cursor is initialized to 0 representing current week.
 	 * 
-	 * @return [{date:xxx,mainDishes:[...],sideDishes:[...]},{...},...]
+	 * @return {startDate, endDate, products:[{date:xxx,mainDishes:[...],sideDishes:[...]},{...},...]}
 	 */
 	ilunch.Cart.prototype.getCurrentWeekOrder = function() {
 		return this._getWeekOrderByCurrentCursor();
@@ -99,7 +99,7 @@
 	 * 
 	 * @param isMainDish - true for maindish and false for sidedish
 	 */
-	ilunch.Cart.prototype.addOrder = function(isMainDish, date, id, name, quantity) {
+	ilunch.Cart.prototype.addOrder = function(isMainDish, date, id, name, imageURL, price, quantity) {
 		var dateIndex = -1;
 		var products = this.cart.products;
 		for(var i = 0; i < products.length; i++) {
@@ -117,10 +117,10 @@
 			}
 		}
 		if(dateIndex >= 0) {
-			products[dateIndex].mainDishes.push({id:id, name:name, quantity:quantity});
+			products[dateIndex][isMainDish?'mainDishes':'sideDishes'].push({id:id, name:name, imageURL:imageURL, price:price, quantity:quantity});
 		}
 		else {
-			var dish = {id:id, name:name, quantity:quantity};
+			var dish = {id:id, name:name, imageURL:imageURL, price:price, quantity:quantity};
 			var data = {
 					date: date,
 					mainDishes:[],
@@ -179,6 +179,43 @@
 		}
 	};
 	
+	ilunch.Cart.prototype.getOrderById = function(id, isMainDish) {
+		var products = this.cart.products;
+		for(var i = 0; i < products.length; i++) {
+			var dishes = products[i][isMainDish?'mainDishes':'sideDishes'];
+			for(var j = 0; j < dishes.length; j++) {
+				if(dishes[j].id == id) {
+					return dishes[j];
+				}
+			}
+		}
+	};
+	
+	ilunch.Cart.prototype.getOrdersByDate = function(date, isMainDish) {
+		var products = this.cart.products;
+		for(var i = 0; i < products.length; i++) {
+			var pDate = ilunch.makeDate(products[i].date);
+			var oDate = ilunch.makeDate(date);
+			if((pDate >= oDate) && (pDate <= oDate)) {
+				var dishes = products[i][isMainDish?'mainDishes':'sideDishes'];
+				return dishes;
+			}
+		}
+		return [];
+	};
+	
+	ilunch.Cart.prototype.getTotalMoney = function() {
+		var ct = 0;
+		var products = this.cart.products;
+		for(var i = 0; i < products.length; i++) {
+			for(var j = 0; j < products[i].mainDishes.length; j++)
+				ct += (products[i].mainDishes[j].price*products[i].mainDishes[j].quantity);
+			for(var j = 0; j < products[i].sideDishes.length; j++)
+				ct += (products[i].sideDishes[j].price*products[i].sideDishes[j].quantity);
+		}
+		return ct;
+	};
+	
 	/**
 	 * Serialize cart to JSON string
 	 * 
@@ -190,7 +227,7 @@
 		if(this.cart.area != null && this.cart.area != undefined)
 			strarr.push('"area":"'+this.cart.area+'",');
 		if(this.cart.distributionPoint != null && this.cart.distributionPoint != undefined)
-			strarr.push('"distributionPoint":"'+this.distributionPoint+'",');
+			strarr.push('"distributionPoint":"'+this.cart.distributionPoint+'",');
 		if(this.cart.pointChange != null && this.cart.pointChange != undefined)
 			strarr.push('"pointChange":'+this.cart.pointChange+',');
 		strarr.push('"products":[');
@@ -205,6 +242,8 @@
 				strarr.push('{');
 				strarr.push('"id":'+this.cart.products[i].mainDishes[j].id+',');
 				strarr.push('"name":"'+this.cart.products[i].mainDishes[j].name+'",');
+				strarr.push('"imageURL":"'+this.cart.products[i].mainDishes[j].imageURL+'",');
+				strarr.push('"price":"'+this.cart.products[i].mainDishes[j].price+'",');
 				strarr.push('"quantity":'+this.cart.products[i].mainDishes[j].quantity);
 				strarr.push('}');
 				if(j != this.cart.products[i].mainDishes.length-1)
@@ -217,6 +256,8 @@
 				strarr.push('{');
 				strarr.push('"id":'+this.cart.products[i].sideDishes[j].id+',');
 				strarr.push('"name":"'+this.cart.products[i].sideDishes[j].name+'",');
+				strarr.push('"imageURL":"'+this.cart.products[i].sideDishes[j].imageURL+'",');
+				strarr.push('"price":"'+this.cart.products[i].sideDishes[j].price+'",');
 				strarr.push('"quantity":'+this.cart.products[i].sideDishes[j].quantity);
 				strarr.push('}');
 				if(j != this.cart.products[i].sideDishes.length-1)

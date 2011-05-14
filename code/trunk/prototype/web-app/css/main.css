@@ -286,9 +286,9 @@ p { margin:0; padding:0; }
 .pc_time .on { color:#ff8400; }
 
 .pc_p li { float:left; position:relative; width:60px; height:60px; margin:5px 2px 5px 4px;_margin:5px 3px 5px 2px;}
-.pc_p li img { border:3px #fff solid; }
+.pc_p li .sdpic { border:3px #fff solid; width:54px; height:54px;}
 .pc_p .n { position:absolute; top:3px; right:3px; z-index:999; background:#ff0000; display:block; width:15px; height:10px; text-align:center; color:#fff; font-size:9px; font-family:Tahoma, Geneva, sans-serif; line-height:9px; }
-.pc_p .no { position:absolute; bottom:3px; right:3px; z-index:999; background:#ff0000; }
+.pc_p .no { position:absolute; bottom:3px; right:3px; z-index:999; background:#ff0000; width:12px; height:12px;}
 .title_1 { background:#c6e7f8; text-align:center; color:#0582c2; font-size:14px; font-weight:bold; height:40px; line-height:40px; }
 
 .page { color:#666; padding:0 0 0 20px; background:#fff; line-height:30px; float:left; width:649px; height:33px;}

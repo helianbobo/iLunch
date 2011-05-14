@@ -140,25 +140,25 @@ fixture {
     'sd_doujiao'(SideDish) {
         name = '豆角'
         story = '东北豆角的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_8.jpg"
     }
 
     'sd_potatomash'(SideDish) {
         name = '土豆泥'
         story = '德式土豆泥的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_8.jpg"
     }
 
     'sd_liangpi'(SideDish) {
         name = '凉皮'
         story = '陕西凉皮的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_8.jpg"
     }
 
     'sd_huangniluo'(SideDish) {
         name = '黄泥螺'
         story = '宁波黄泥螺的传说'
-        originalImageUrl = "images/aaaa.jpg"
+        originalImageUrl = "images/pic_8.jpg"
     }
 
     'schedule_sd_doujiao_2010-11-05->2011-04-05'(ProductAreaPriceSchedule) {

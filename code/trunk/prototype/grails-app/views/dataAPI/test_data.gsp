@@ -54,10 +54,61 @@
 				ilunch.getUserInfo("3", show);
 			}
 			function getCart() {
-				ilunch.getCart('2010-10-10', '2011-10-10', show);
+				ilunch.getCart(show);
 			}
 			function saveCart() {
-				ilunch.saveCart(show);
+				ilunch.saveCart(new ilunch.Cart(
+					{
+						area : "张江高科",
+						distributionPoint : '凌阳大厦',
+						pointChange : 10,
+						products : [
+							{
+								date : '2011-05-10',
+								mainDishes : [
+									{
+										id : 3,
+										name :  '茄汁鱼',
+										imageURL : "images/pic_15.jpg",
+										price : 35,
+										quantity : 3
+									}
+								],
+								sideDishes : [
+									{
+										id : 2,
+										name :  "豆角",
+										imageURL : "images/pic_8.jpg",
+										price : 35,
+										quantity : 2
+									}
+								]
+							},
+							{
+								date : '2011-05-12',
+								mainDishes : [
+									{
+										id : 5,
+										name :  "咖喱鱼",
+										imageURL : "images/pic_15.jpg",
+										price : 35,
+										quantity : 4
+									}
+								],
+								sideDishes : [
+									{
+										id : 4,
+										name :  "凉皮",
+										imageURL : "images/pic_8.jpg",
+										price : 35,
+										quantity : 5
+									}
+								]
+							}
+						]
+					}).toString(), 
+					show
+				);
 			}
 			function confirmOrder() {
 				ilunch.confirmOrder(show);
