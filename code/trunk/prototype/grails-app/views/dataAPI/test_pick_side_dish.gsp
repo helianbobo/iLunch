@@ -9,33 +9,7 @@
   </head>
   <body>
     <div class="container" style="background:#def5ff">
-      <!--header begin-->
-      <div class="header_body">
-        <div class="header_wide">
-          <div class="header">
-            <div class="logo"></div>
-            <div class="slogan"></div>
-            <div class="place">
-              <p>上海凌空科技园</p>
-              <p><a href="#">[切换其他地区]</a></p>
-              <input id="area_id" type="hidden" value="1"/>
-            </div>
-            <div class="clear"></div>
-            <div class="h_menu">
-              <ul>
-                <li><a href="#" class="h_m_1"></a></li>
-                <li class="on"><a href="#" class="h_m_2"></a></li>
-                <li><a href="#" class="h_m_3"></a></li>
-                <li><a href="#" class="h_m_4"></a></li>
-                <li><a href="#" class="h_m_5"></a></li>
-              </ul>
-            </div>
-            <div class="login"><g:render template="/shared/authLink"/></div>
-            <div class="clear"></div>
-          </div>
-        </div>
-      </div>
-      <!--header end-->
+      <g:render template="/shared/header" model="[current:2]"/>
       <div class="content">
         <div class="c_c">
           <div class="dd_2"></div>
@@ -150,11 +124,7 @@
           </div>
         </div>
       </div>
-      <!--footer begin-->
-      <div class="footer">
-        <p>© 2011 ilunch.com 沪ICP证070791号 沪公海网安备310108000700号</p>
-      </div>
-      <!--footer end-->
+      <g:render template="/shared/footer"/>
     </div>
   </body>
 </html>
