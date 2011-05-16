@@ -7,7 +7,6 @@
 </head>
 
 <body>
-<div class="container">
 
     <g:render template="/shared/header" model="[current:1]"/>
 
@@ -95,9 +94,5 @@
         </div>
         <div class="clear"></div>
     </div>
-
-  <g:render template="/shared/footer"/>
-
-</div>
 </body>
 </html>
