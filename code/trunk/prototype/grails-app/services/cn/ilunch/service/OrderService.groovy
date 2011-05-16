@@ -7,7 +7,7 @@ import cn.ilunch.domain.OrderItem
 
 import cn.ilunch.domain.Product
 import cn.ilunch.domain.DistributionArea
-import cn.ilunch.domain.EntityNotFoundException
+import cn.ilunch.exception.EntityNotFoundException
 import cn.ilunch.domain.ProductAreaPriceSchedule
 import cn.ilunch.domain.MainDish
 

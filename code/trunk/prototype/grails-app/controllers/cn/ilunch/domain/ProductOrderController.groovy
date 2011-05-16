@@ -1,5 +1,7 @@
 package cn.ilunch.domain
 
+import cn.ilunch.exception.EntityNotFoundException
+
 
 class ProductOrderController {
 

@@ -1,7 +1,6 @@
 package cn.ilunch.service
 
-import javax.swing.text.html.parser.Entity
-import cn.ilunch.domain.EntityNotFoundException
+import cn.ilunch.exception.EntityNotFoundException
 import cn.ilunch.domain.ProductAreaPriceSchedule
 
 class RepositoryService {
