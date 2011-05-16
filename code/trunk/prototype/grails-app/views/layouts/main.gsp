@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
     <title>ilunch - <g:layoutTitle default=""/></title>
@@ -12,13 +12,15 @@
     <g:layoutHead/>
     <g:javascript library="application"/>
 
+</head>
+<body>
 
-
-
-  </head>
-  <body>
+<div class="container">
 
     <g:layoutBody/>
 
-  </body>
+    <g:render template="/shared/footer"/>
+</div>
+
+</body>
 </html>

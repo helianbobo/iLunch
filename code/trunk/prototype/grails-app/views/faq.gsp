@@ -5,7 +5,7 @@
     <meta name="layout" content="main"/>
   </head>
   <body>
-    <div class="container" style="background:#def5ff">
+
       <g:render template="/shared/header" model="[current:5]"/>
 
       <div class="content">
@@ -43,8 +43,6 @@
         </div>
       </div>
 
-      <g:render template="/shared/footer"/>
-    </div>
 
   </body>
 </html>

@@ -10,7 +10,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'confirm_order.js')}"></script>
   </head>
   <body>
-    <div class="container" style="background:#def5ff">
+
       <g:render template="/shared/header" model="[current:2]"/>
 
       <div class="content">
@@ -104,7 +104,6 @@
           </div>
         </div>
       </div>
-      <g:render template="/shared/footer"/>
-    </div>
+
   </body>
 </html>
