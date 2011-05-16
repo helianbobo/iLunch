@@ -1,6 +1,10 @@
 package cn.ilunch.domain
 
+import javax.servlet.http.HttpServletResponse
+
 class PersonController {
+
+    def springSecurityService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -8,10 +12,21 @@ class PersonController {
         redirect(action: "list", params: params)
     }
 
+    def loggedInUserPreference = {
+        if(springSecurityService.isLoggedIn()){
+            def id = springSecurityService.currentUser.id
+            forward(action: 'preference', params:[id:id])
+        }else{
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
+        }
+
+    }
 
     def preference = {
         def customerId = params.id
         def customer = Customer.get(customerId)
+
+        println customerId
 
         if (!customer) {
             forward(controller: "exception", action: "entityNotFound", params: [id: customerId, entityName: Customer])

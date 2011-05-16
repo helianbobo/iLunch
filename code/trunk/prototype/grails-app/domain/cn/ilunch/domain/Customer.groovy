@@ -24,5 +24,6 @@ class Customer extends Person {
     }
 
     static constraints = {
+        primaryBuilding(nullable: true)
     }
 }

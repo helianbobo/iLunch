@@ -111,6 +111,8 @@ grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptU
 grails.plugins.springsecurity.interceptUrlMap = [
         '/secure/**': ['ROLE_ADMIN'],
         '/admin.gsp': ['ROLE_ADMIN'],
+        '/myorder.gsp': ['IS_AUTHENTICATED_FULLY'],
+        '/person/loggedInUserPreference': ['IS_AUTHENTICATED_FULLY'],
         '/product/**': ['ROLE_MANAGER', 'ROLE_ADMIN'],
         '/console': ['ROLE_MANAGER', 'ROLE_ADMIN'],
         '/js/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
@@ -121,6 +123,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/product/showDetail': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/person/cart': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/person/saveCart': ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/person/preference': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/faq.gsp': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/aboutus.gsp': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/agreement.gsp': ['IS_AUTHENTICATED_ANONYMOUSLY'],

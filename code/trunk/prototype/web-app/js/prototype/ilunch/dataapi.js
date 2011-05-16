@@ -305,7 +305,27 @@
 			handler(data);
 		});
 	};
-	
+
+    ilunch.getCurrentUserInfo = function(handler) {
+
+		params = {
+		};
+		$.getJSON(ROOT+'/person/loggedInUserPreference', params, function(data) {
+			if(data.error) {
+
+			}
+			else {
+				if(!ilunch.validateData(data, ['id', 'phoneNumber', 'distributionArea', 'building'], 'user'))
+					return;
+				if(!ilunch.validateData(data.distributionArea, ['id', 'name'], 'user.distributionArea'))
+					return;
+				if(!ilunch.validateData(data.building, ['id', 'name', 'longitude', 'latitude'], 'user.building'))
+					return;
+			}
+			handler(data);
+		});
+	};
+
 	ilunch.getUserInfo = function(id, handler) {
 		if(!id) {
 			ilunch.fatalError("[getUserInfo]invalid id");

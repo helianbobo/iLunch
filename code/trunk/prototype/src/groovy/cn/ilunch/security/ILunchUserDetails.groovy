@@ -27,11 +27,13 @@ class ILunchUserDetails extends GrailsUser {
     String buildingName
 
     ILunchUserDetails(String cellNumber, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<GrantedAuthority> authorities, Person person) {
-        super(cellNumber, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities,person.id)
+        super(cellNumber, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities, person.id)
         this.cellNumber = cellNumber
 
-        if(person instanceof Customer)
+        if (person instanceof Customer) {
+            this.id = person.id
             this.buildId = person.primaryBuilding?.id
+        }
         this.areaId = person.area?.id
     }
 }

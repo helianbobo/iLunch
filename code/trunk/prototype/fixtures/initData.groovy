@@ -16,7 +16,19 @@ import cn.ilunch.domain.UserRole
 
 fixture {
 
-    'person_chenkai'(Manager) {
+    'adminRole'(Role){
+        authority = 'ROLE_ADMIN'
+    }
+
+    'managerRole'(Role){
+        authority = 'ADMIN_ADMIN'
+    }
+
+    'userRole'(Role){
+        authority = 'USER_ADMIN'
+    }
+
+    'person_chenkai'(Customer) {
         name = '陈凯'
         cellNumber = '18600186000'
         password = "password"
@@ -24,6 +36,7 @@ fixture {
         accountExpired = false
         accountLocked = false
         passwordExpired = false
+
     }
 
     'person_chenyu'(Manager) {
@@ -34,6 +47,7 @@ fixture {
         accountExpired = false
         accountLocked = false
         passwordExpired = false
+
     }
 
     'da_zhangjiang'(DistributionArea) {
@@ -104,7 +118,7 @@ fixture {
         cellNumber = '18621077586'
         primaryBuilding = building_lingyang
         buildings = [building_lingyang]
-        password = "password"
+        password = springSecurityService.encodePassword('jleo')
         enabled = true
         accountExpired = false
         accountLocked = false
@@ -291,11 +305,7 @@ fixture {
 }
 
 post {
-    kitchen_zhangjiang.distributionPoints = [dp_lingyang]
 
-    def adminRole = new Role(authority: 'ROLE_ADMIN').save(flush: true)
-    def managerRole = new Role(authority: 'ROLE_MANAGER').save(flush: true)
-    def userRole = new Role(authority: 'ROLE_USER').save(flush: true)
 
     def kitchen = Kitchen.findByName("张江厨房")
     if(!kitchen){
@@ -316,4 +326,5 @@ post {
     UserRole.create jleo, managerRole, true
     UserRole.create jleo, adminRole, true
     UserRole.create jleo, userRole, true
+    UserRole.create person_liuchao, userRole, true
 }
