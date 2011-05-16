@@ -88,7 +88,6 @@
           </div>
         </div>
       </div>
-      <g:render template="/shared/footer"/>
-    </div>
+      
   </body>
 </html>
