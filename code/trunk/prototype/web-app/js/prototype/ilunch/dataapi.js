@@ -47,7 +47,7 @@
 	 * indicates that current processing should be aborted. Needs refine.
 	 */
 	ilunch.fatalError = function(errmsg) {
-		alert(errmsg);
+		alert("FATAL ERROR(NEEDS REFINE): "+errmsg);
 	};
 	
 	/**
@@ -308,7 +308,7 @@
 	
 	ilunch.getUserInfo = function(id, handler) {
 		if(!id) {
-			ilunch.fatalError("invalid id");
+			ilunch.fatalError("[getUserInfo]invalid id");
 			return;
 		}
 		params = {
@@ -422,6 +422,7 @@
 	//            Utils          //////////
 	///////////////////////////////////////
 	
+	//TODO Deprecated
 	ilunch.getPriceByDate = function(prices, date) {
 		for(var i = 0; i < prices.length; i++) {
 			if(!prices[i])

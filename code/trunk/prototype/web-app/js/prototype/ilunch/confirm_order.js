@@ -16,8 +16,12 @@ $(document).ready(function($){
 	if(!areaId || areaId == '')
 		ilunch.fatalError("area id not found!");
 	var userId = $('#user_id').val();
-	if(!userId)
-		ilunch.fatalError("ERROR: not logged on!");
+	if(!userId || userId == '') {
+		ilunch.fatalError("user_id elem not found! Probably not logged on!");
+		//TODO delete
+		ilunch.fatalError("Setting userId to 3 for testing purpose");
+		userId = 3;
+	}
 	var user = null;
 	
 	///////////////////////////////////////////////////////
@@ -31,9 +35,11 @@ $(document).ready(function($){
 	var currentDay = null;
 
 	var currentDateElem = $('#current_date');
-	if(!currentDateElem)
+	if(currentDateElem.length <= 0)
 		ilunch.fatalError('current_date elem not found!');
 	var orderInfoElem = $('#order_info');
+	if(orderInfoElem.length <= 0)
+		ilunch.fatalError('orderInfoElem elem not found!');
 	var in_total = $('#in_total');
 	in_total.html('0');
 	

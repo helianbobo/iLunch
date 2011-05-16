@@ -23,22 +23,6 @@
               </div>
               <div class="zf_list">
                 <ul id="order_info">
-                  <li>
-                    <p><span class="stress">价格10元</span>尝鲜套餐：地中海之珠 + 酸酸豆角 + 蔬菜沙拉 + 苹果汁</p>
-                    <p>配送时间：周一  2011-03-11</p>
-                  </li>
-                  <li>
-                    <p><span class="stress">价格10元</span>尝鲜套餐：地中海之珠 + 酸酸豆角 + 蔬菜沙拉 + 苹果汁</p>
-                    <p>配送时间：周一  2011-03-11</p>
-                  </li>
-                  <li>
-                    <p><span class="stress">价格10元</span>尝鲜套餐：地中海之珠 + 酸酸豆角 + 蔬菜沙拉 + 苹果汁</p>
-                    <p>配送时间：周一  2011-03-11</p>
-                  </li>
-                  <li iclass="lxr">
-                    <p>联系电话：13800138000   联系人：老王</p>
-                    <p>配送地址：上海凌空园区 腾讯大厦 正门外</p>
-                  </li>
                 </ul>
                 <div class="pay_online">
                   <p><span class="stress">一共需支付：<span id="in_total"></span>元<a href="@"><img src="/prototype/images/pay_online.png"/></a></span></p>

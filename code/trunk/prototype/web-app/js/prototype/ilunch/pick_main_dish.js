@@ -24,10 +24,10 @@ $(document).ready(function($){
 	var headOffset = null;
 
 	var listElem = $('#md_list');
-	if(!listElem)
-		ilunch.fatalError('list elem not found!');
+	if(listElem.length <= 0)
+		ilunch.fatalError('md_list elem not found!');
 	var currentDateElem = $('#current_date');
-	if(!currentDateElem)
+	if(currentDateElem.length <= 0)
 		ilunch.fatalError('current_date elem not found!');
 	var in_total = $('#in_total');
 	in_total.html('0');
@@ -58,14 +58,19 @@ $(document).ready(function($){
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
 	
-	ilunch.getMainDishListOnSelectionPage(
-			''+currentY+'-'+(1+currentM)+'-'+'01', 
-			''+currentY+'-'+(1+currentM)+'-'+lastDateOfMonth.getDate(),
-			areaId,
-			function(data) {
-				mainDishList = data;
-			}
-	);
+	function _getMainDishListOnSelectionPage() {
+		ilunch.getMainDishListOnSelectionPage(
+				''+currentY+'-'+(1+currentM)+'-'+'01', 
+				''+currentY+'-'+(1+currentM)+'-'+lastDateOfMonth.getDate(),
+				areaId,
+				function(data) {
+					//TODO convert to array
+					mainDishList = data;
+				}
+		);
+	}
+	
+	_getMainDishListOnSelectionPage();
 	
 	ilunch.getCart(
 			function(data) {
@@ -112,7 +117,7 @@ $(document).ready(function($){
 	
 	var oldDishTmplt = ('<div class="dl_c_li">'+
 							'<div class="date"><span class="stress">##DATE##</span></div>'+
-							'<div class="cai_p"><a href="#"><img src="/prototype/##IMG##" /></a></div>'+
+							'<div class="cai_p"><a href="#"><img class="old_md" src="/prototype/##IMG##" /></a></div>'+
 							'<div class="cai_t">##MD_NAME##</div>'+
 							'<div class="cai_s">'+
 								'<div class="cai_sl">订餐时间已过</div>'+
@@ -198,8 +203,7 @@ $(document).ready(function($){
 
 	//wait for data to be ready
 	var processor = setInterval(renderMDList, 50);
-	
-	//TODO change to use getOrderByDate
+
 	function getMainDishByDate(date) {
 		for(var i in mainDishList) {
 			for(var j = 0; j < mainDishList[i].prices.length; j++) {
@@ -226,15 +230,7 @@ $(document).ready(function($){
 		d.setMonth(currentM-1);
 		initialize();
 		mainDishList = null;
-		ilunch.getMainDishListOnSelectionPage(
-				''+currentY+'-'+(1+currentM)+'-'+'01', 
-				''+currentY+'-'+(1+currentM)+'-'+lastDateOfMonth.getDate(),
-				areaId,
-				function(data) {
-					//TODO convert to array
-					mainDishList = data;
-				}
-		);
+		_getMainDishListOnSelectionPage();
 		processor = setInterval(renderMDList, 50);
 	});
 	
@@ -242,14 +238,7 @@ $(document).ready(function($){
 		d.setMonth(currentM+1);
 		initialize();
 		mainDishList = null;
-		ilunch.getMainDishListOnSelectionPage(
-				''+currentY+'-'+(1+currentM)+'-'+'01', 
-				''+currentY+'-'+(1+currentM)+'-'+lastDateOfMonth.getDate(),
-				areaId,
-				function(data) {
-					mainDishList = data;
-				}
-		);
+		_getMainDishListOnSelectionPage();
 		processor = setInterval(renderMDList, 50);
 	});
 	

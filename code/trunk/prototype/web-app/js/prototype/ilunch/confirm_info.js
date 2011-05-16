@@ -29,13 +29,15 @@ $(document).ready(function($){
 	var currentDay = null;
 
 	var currentDateElem = $('#current_date');
-	if(!currentDateElem)
+	if(currentDateElem.length <= 0)
 		ilunch.fatalError('current_date elem not found!');
 	var userInfoElem = $('#user_info');
-	if(!userInfoElem)
+	if(userInfoElem.length <= 0)
 		ilunch.fatalError('user_info elem not found!');
 	var in_total = $('#in_total');
 	in_total.html('0');
+	if($('#area_name').length <= 0)
+		ilunch.fatalError('area_name elem not found!');
 	
 	function initialize() {
 		currentM = d.getMonth();

@@ -30,10 +30,10 @@ $(document).ready(function($){
 	var flavors = [];
 	
 	var listElem = $('#sd_list');
-	if(!listElem)
+	if(listElem.length <= 0)
 		ilunch.fatalError('list elem not found!');
 	var currentDateElem = $('#current_date');
-	if(!currentDateElem)
+	if(currentDateElem.length <= 0)
 		ilunch.fatalError('current_date elem not found!');
 	var in_total = $('#in_total');
 	in_total.html('0');

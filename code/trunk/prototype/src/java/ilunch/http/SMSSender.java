@@ -28,8 +28,8 @@ public class SMSSender {
 	
 
 	private static final String API_URL = "http://service.winic.org/sys_port/gateway/?";
-	private static final String UID = "user123";
-	private static final String PWD = "password";
+	private static final String UID = "idealllee";
+	private static final String PWD = "ilunchTest123";
 	
 	private static final String ALERT_TO = "18621181017";
 	private static final String ALSERT_CONTENT = "[iLunch.cn]短信平台余额剩余即将用尽，请及时充值";
@@ -120,7 +120,7 @@ public class SMSSender {
 			sb.append("id=").append(SMSSender.UID);
 			sb.append("&pwd=").append(SMSSender.PWD);
 			sb.append("&to=").append(phoneNumberParam);
-			sb.append("&content=").append(URLEncoder.encode(content, "utf-8"));
+			sb.append("&content=").append(URLEncoder.encode(content, "GB2312"));
 			URL url = new URL(sb.toString());
 			httpconn = (HttpURLConnection) url.openConnection();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(httpconn.getInputStream()));
@@ -146,9 +146,9 @@ public class SMSSender {
 	public static void main(String[] args) {
 		String[] ps = {
 				"18621181017",
-				"13654587911"
+				"18621077586"
 		};
-		System.out.println(SMSSender.sendSMS(ps, "你妈喊你吃饭啦！"));
+		System.out.println(SMSSender.sendSMS(ps, "[ilunch测试]Hi,你妈喊你回家吃饭啦ABCD1234~!@#$%^&*()"));
 	}
 
 }
