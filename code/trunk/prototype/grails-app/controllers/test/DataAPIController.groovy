@@ -21,4 +21,8 @@ class DataAPIController {
 	def confirmOrder = {
 		render(view:"test_confirm_order")
 	}
+	
+	def orderSuccess = {
+		render(view:"test_order_success")
+	}
 }

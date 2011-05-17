@@ -129,6 +129,7 @@ $(document).ready(function($){
 				var contact = user.nickname;
 				var points = user.points;
 				userInfoElem.append(loggedOnTmplt.replace(/##PHONE_NO##/g, phone).replace(/##CONTACT##/g, contact));
+				//TODO validate pointChange balance
 				$('#change_point').html(points);
 				$('#point_control').css({"display":"block"});
 				$('#logon_tip').css({"display":"none"});

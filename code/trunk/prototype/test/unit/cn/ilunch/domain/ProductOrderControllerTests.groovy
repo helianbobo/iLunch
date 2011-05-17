@@ -1,7 +1,8 @@
 package cn.ilunch.domain
 
-import grails.web.JSONBuilder
 import grails.converters.JSON
+import grails.web.JSONBuilder
+import cn.ilunch.exception.EntityNotFoundException
 
 class ProductOrderControllerTests extends JSONRenderControllerUnitTestCase {
     JSON json

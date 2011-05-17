@@ -92,7 +92,7 @@ $(document).ready(function($){
 
 	var busy1 = false;
 	renderOrderInfo = function() {
-		if(!busy1 && user) {
+		if(!busy1 && user && cart) {
 			busy1 = true;
 			
 			//render log start...
@@ -242,21 +242,25 @@ $(document).ready(function($){
 	});
 
 	$('#btn_confirm_next').click(function() {
+		ilunch.saveCart(cart.toString(), function(data){
+			
+		});
 		//TODO lock screen
 		var success = null;
-		ilunch.confirmOrder(cart.toOrderString(), function(result) {
-			if(result) {
+		ilunch.confirmOrder(cart.toOrderString(userId), function(result) {
+			if(result == 0) {
 				success = true;
 			}
-			else {
+			else if(result == "04"){
 				success = false;
+				ilunch.fatalError("使用的积分超过余额！");
 			}
 		});
 		function wait() {
 			if(success != null) {
 
 				if(success) {
-					$('#confirm_form').attr({"action":"/prototype/dataAPI/submitOrder"});
+					$('#confirm_form').attr({"action":"/prototype/dataAPI/orderSuccess"});
 					$('#confirm_form').submit();
 				}
 

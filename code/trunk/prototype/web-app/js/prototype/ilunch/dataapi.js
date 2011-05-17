@@ -424,15 +424,15 @@
 			data:data,
 			success:function(data) {
 				if(data.error) {
-					ilunch.fatalError("[confirmOrder]Fail to confirm order! Err:"+data.errMsg);
-					data = false;
+					ilunch.fatalError("[confirmOrder]Fail to confirm order! Err:"+data.error.message);
+					data = data.error.errorCode;
 				}
 				else {
-					data = true;
+					data = 0;
 				}
 				handler(data);
 			},
-//			dataType:"json",
+			dataType:"json",
 			type: 'POST',
 			contentType : 'application/json'
 		});

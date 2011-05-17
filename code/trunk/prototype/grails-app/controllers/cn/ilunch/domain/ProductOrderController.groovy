@@ -1,5 +1,5 @@
 package cn.ilunch.domain
-
+import cn.ilunch.exception.EntityNotFoundException
 
 class ProductOrderController {
 
@@ -7,7 +7,7 @@ class ProductOrderController {
 
     def confirm = {
         def orderDetailsJSON = request.getJSON()
-        def orderDetails = grails.converters.JSON.parse(orderDetailsJSON)
+        def orderDetails = orderDetailsJSON
 
         def userId = orderDetails.id
         def buildingId = orderDetails.buildingId
