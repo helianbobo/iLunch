@@ -18,4 +18,10 @@ def cartNotFound = {
             error(message: "cart not found", errorCode: grailsApplication.config.cn.ilunch.exception.code.CartNotFound.toString())
         }
     }
+
+    def notEnoughPointChange = {
+        render(contentType: "text/json") {
+            error(message: "not enough point change", errorCode: grailsApplication.config.cn.ilunch.exception.code.NotEnoughPointChange.toString())
+        }
+    }
 }
