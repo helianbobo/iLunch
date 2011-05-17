@@ -96,6 +96,7 @@ grails.json.legacy.builder = false
 cn.ilunch.exception.code.EntityNotFound = "01"
 cn.ilunch.exception.code.ScheduleNotFound = "02"
 cn.ilunch.exception.code.CartNotFound = "03"
+cn.ilunch.exception.code.NotEnoughPointChange = "04"
 
 cn.ilunch.date.format = 'yyyy-MM-dd'
 cn.ilunch.product.image.location = "${userHome}/ilunch/images/products"
