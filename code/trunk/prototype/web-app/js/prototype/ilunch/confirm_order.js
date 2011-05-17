@@ -240,14 +240,33 @@ $(document).ready(function($){
 			}
 		});
 	});
-	
+
 	$('#btn_confirm_next').click(function() {
-		ilunch.saveCart(cart.toString(), function(data){
-			if(data) {
-				$('#confirm_form').attr({"action":"/prototype/dataAPI/submitOrder"});
-				$('#confirm_form').submit();
-				return true;
+		//TODO lock screen
+		var success = null;
+		ilunch.confirmOrder(cart.toOrderString(), function(result) {
+			if(result) {
+				success = true;
+			}
+			else {
+				success = false;
 			}
 		});
+		function wait() {
+			if(success != null) {
+
+				if(success) {
+					$('#confirm_form').attr({"action":"/prototype/dataAPI/submitOrder"});
+					$('#confirm_form').submit();
+				}
+
+				clearInterval(p);
+				//TODO unlock screen
+
+			}
+
+		}
+		var p = setInterval(wait, 50);
+		return true;
 	});
 });

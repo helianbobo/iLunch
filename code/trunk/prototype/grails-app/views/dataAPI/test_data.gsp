@@ -111,7 +111,26 @@
 				);
 			}
 			function confirmOrder() {
-				ilunch.confirmOrder(show);
+				ilunch.confirmOrder(new ilunch.Cart(
+						{
+							area : "张江高科",
+							buildingId : 6,
+							distributionPoint : '凌阳大厦',
+							pointChange : 10,
+							products : [
+								{
+									date : '2011-05-26',
+									mainDishes : [],
+									sideDishes : [
+										{
+											id : 2,
+											quantity : 2
+										}
+									]
+								}
+							]
+						}).toOrderString(3), 
+						show);
 			}
 			
 		</script>

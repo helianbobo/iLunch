@@ -419,22 +419,22 @@
 	ilunch.confirmOrder = function(data, handler) {
 		if(!data)
 			return;
-		if(!_validateCart($.parseJSON(data)))
-			return;
-		$.ajax(ROOT+'/order/confirm', {
+		$.ajax(ROOT+'/productOrder/confirm', {
 			processData:false,
 			data:data,
 			success:function(data) {
 				if(data.error) {
-
+					ilunch.fatalError("[confirmOrder]Fail to confirm order! Err:"+data.errMsg);
+					data = false;
 				}
 				else {
-
+					data = true;
 				}
 				handler(data);
 			},
-			dataType:"json",
-			type: 'POST'
+//			dataType:"json",
+			type: 'POST',
+			contentType : 'application/json'
 		});
 	};
 	

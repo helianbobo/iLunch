@@ -286,7 +286,7 @@ p { margin:0; padding:0; }
 .title1_select a.on { color:#6fc800; }
 .title1_select a.on:hover{ color:#6fc800; font-size:12px; font-weight:bold; text-decoration:underline; }
 
-
+.old_md { filter: Alpha(opacity=10); -moz-opacity:.1; opacity:0.1; }
 
 .pc_2 { float:left; width:331px;  }
 .pc_2 .title { height:41px;_height:30px; line-height:40px; text-align:center; color:#0183c1; font-weight:bold; font-size:14px; background:url(../images/pc_2_title.png) left top no-repeat;_padding-top:10px; }

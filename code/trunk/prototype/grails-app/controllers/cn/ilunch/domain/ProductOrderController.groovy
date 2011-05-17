@@ -9,19 +9,19 @@ class ProductOrderController {
 
     def confirm = {
         def orderDetailsJSON = request.getJSON()
-        def orderDetails = grails.converters.JSON.parse(orderDetailsJSON)
+        def orderDetails = orderDetailsJSON
 
         def userId = orderDetails.id
         def buildingId = orderDetails.buildingId
-
+		
         def customer = Customer.get(userId)
         def building = Building.get(buildingId)
-
+		
         if (!customer) {
             forward(controller: "exception", action: "entityNotFound", params: [id: userId, entityName: Customer])
             return;
         }
-
+		
         if (!building) {
             forward(controller: "exception", action: "entityNotFound", params: [id: buildingId, entityName: Building])
             return;

@@ -228,6 +228,8 @@
 			strarr.push('"area":"'+this.cart.area+'",');
 		if(this.cart.distributionPoint != null && this.cart.distributionPoint != undefined)
 			strarr.push('"distributionPoint":"'+this.cart.distributionPoint+'",');
+		if(this.cart.buildingId != null && this.cart.buildingId != undefined)
+			strarr.push('"buildingId":'+this.cart.buildingId+',');
 		if(this.cart.pointChange != null && this.cart.pointChange != undefined)
 			strarr.push('"pointChange":'+this.cart.pointChange+',');
 		strarr.push('"products":[');
@@ -258,6 +260,54 @@
 				strarr.push('"name":"'+this.cart.products[i].sideDishes[j].name+'",');
 				strarr.push('"imageURL":"'+this.cart.products[i].sideDishes[j].imageURL+'",');
 				strarr.push('"price":"'+this.cart.products[i].sideDishes[j].price+'",');
+				strarr.push('"quantity":'+this.cart.products[i].sideDishes[j].quantity);
+				strarr.push('}');
+				if(j != this.cart.products[i].sideDishes.length-1)
+					strarr.push(',');
+			}
+			strarr.push(']');
+			
+			strarr.push('}');
+			if(i != this.cart.products.length-1)
+				strarr.push(',');
+		}
+		strarr.push(']');
+		strarr.push();
+		strarr.push('}');
+		return strarr.join('');
+	};
+	
+	ilunch.Cart.prototype.toOrderString = function(userId) {
+		var strarr = [];
+		strarr.push('{');
+		if(userId != null && userId != undefined)
+			strarr.push('"id":'+userId+',');
+		if(this.cart.buildingId != null && this.cart.buildingId != undefined)
+			strarr.push('"buildingId":'+this.cart.buildingId+',');
+		if(this.cart.pointChange != null && this.cart.pointChange != undefined)
+			strarr.push('"pointChange":'+this.cart.pointChange+',');
+		strarr.push('"orders":[');
+		for(var i = 0; i < this.cart.products.length; i++) {
+			strarr.push('{');
+			var d = this.cart.products[i].date;
+			if(typeof(d) == 'object')
+				d = (d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
+			strarr.push('"date":"'+d+'",');
+			strarr.push('"mainDishes":[');
+			for(var j = 0; j < this.cart.products[i].mainDishes.length; j++) {
+				strarr.push('{');
+				strarr.push('"id":'+this.cart.products[i].mainDishes[j].id+',');
+				strarr.push('"quantity":'+this.cart.products[i].mainDishes[j].quantity);
+				strarr.push('}');
+				if(j != this.cart.products[i].mainDishes.length-1)
+					strarr.push(',');
+			}
+			strarr.push('],');
+			
+			strarr.push('"sideDishes":[');
+			for(var j = 0; j < this.cart.products[i].sideDishes.length; j++) {
+				strarr.push('{');
+				strarr.push('"id":'+this.cart.products[i].sideDishes[j].id+',');
 				strarr.push('"quantity":'+this.cart.products[i].sideDishes[j].quantity);
 				strarr.push('}');
 				if(j != this.cart.products[i].sideDishes.length-1)

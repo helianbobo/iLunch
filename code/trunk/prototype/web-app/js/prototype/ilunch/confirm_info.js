@@ -230,15 +230,16 @@ $(document).ready(function($){
 				$('#sel_building').html(selBuilding);
 				cart.getCart().distributionPoint = selBuilding;
 				cart.getCart().area = $('#area_name').html();
+				cart.getCart().buildingId = parseInt($("#building_list").find("option:selected").val());
 			});
 			
 			$('#building_list').empty();
 			for(var i = 0; i < daList.length; i++) {
 				if(daList[i].id == areaId) {
 					if(daList[i].buildings[0])
-						$('#building_list').append('<option selected="selected">'+daList[i].buildings[0].name+'</option>');
+						$('#building_list').append('<option value="'+daList[i].buildings[0].id+'" selected="selected">'+daList[i].buildings[0].name+'</option>');
 					for(var j = 1; j < daList[i].buildings.length; j++) {
-						$('#building_list').append('<option>'+daList[i].buildings[j].name+'</option>');
+						$('#building_list').append('<option value="'+daList[i].buildings[j].id+'">'+daList[i].buildings[j].name+'</option>');
 					}
 				}
 			}
