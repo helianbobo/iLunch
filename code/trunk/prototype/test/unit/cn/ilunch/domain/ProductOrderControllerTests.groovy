@@ -2,7 +2,6 @@ package cn.ilunch.domain
 
 import grails.web.JSONBuilder
 import grails.converters.JSON
-import cn.ilunch.exception.EntityNotFoundException
 
 class ProductOrderControllerTests extends JSONRenderControllerUnitTestCase {
     JSON json
@@ -240,7 +239,7 @@ class ProductOrderControllerTests extends JSONRenderControllerUnitTestCase {
         }
         def orderService = mockFor(cn.ilunch.service.OrderService)
 
-        orderService.demand.createOrder(1) {orderDetails, c, b,format ->
+        orderService.demand.createOrder(0) {orderDetails, c, b,format ->
             throw new EntityNotFoundException([a:'b'])
         }
 
@@ -251,5 +250,35 @@ class ProductOrderControllerTests extends JSONRenderControllerUnitTestCase {
         assertEquals('exception', controller.forwardArgs.controller)
         assertEquals('entityNotFound', controller.forwardArgs.action)
         assertEquals('b', controller.forwardArgs.params.a)
+    }
+
+    void testConfirmNotEnoughPointChange() {
+
+        Customer customer = new Customer()
+        customer.cellNumber = "12345678901"
+        customer.name = "liuchao"
+        customer.pointBalance = 1
+        mockDomain(Customer, [customer])
+
+        Building building = new Building()
+        building.name = "qq"
+        building.latitude = 123.31
+        building.longitude = 12.31
+
+        customer.primaryBuilding = building
+
+        mockDomain(Building, [building])
+
+        def orderService = mockFor(cn.ilunch.service.OrderService)
+
+        orderService.demand.createOrder(0) {orderDetails, c, b,format ->
+            new ProductOrder(id:1)
+        }
+
+        controller.orderService = orderService.createMock()
+
+        controller.confirm()
+        assertEquals('exception', controller.forwardArgs.controller)
+        assertEquals('notEnoughPointChange', controller.forwardArgs.action)
     }
 }
