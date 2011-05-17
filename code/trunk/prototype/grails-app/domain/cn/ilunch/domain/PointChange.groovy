@@ -5,9 +5,8 @@ class PointChange {
     Customer customer
     BigDecimal point
     String reason
-    ProductOrder productOrder
-
+    static belongsTo = [productOrder: ProductOrder]
     static constraints = {
-        reason(nullable:true)
+        reason(nullable: true)
     }
 }
