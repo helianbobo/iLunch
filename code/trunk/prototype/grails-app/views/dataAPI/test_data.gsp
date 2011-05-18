@@ -18,6 +18,9 @@
 		<button onclick="getCart();">getCart</button>
 		<button onclick="saveCart();">saveCart</button>
 		<button onclick="confirmOrder();">confirmOrder</button>
+		<button onclick="login();">login</button>
+		<button onclick="getCurrentUser();">getCurrentUser</button>
+		
 		</div>
 		<div>
 		<textarea id="show" cols="100" rows="100"></textarea>
@@ -131,6 +134,13 @@
 							]
 						}).toOrderString(3), 
 						show);
+			}
+			
+			function login() {
+				ilunch.login('13764511823', 'jleo', false, show);
+			}
+			function getCurrentUser() {
+				ilunch.getCurrentUserInfo(show);	
 			}
 			
 		</script>

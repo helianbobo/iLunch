@@ -438,6 +438,39 @@
 		});
 	};
 	
+	ilunch.login = function(username, password, rememberMe, handler) {
+		if(!username || username == '')
+			return '请填写用户名';
+		if(!password || password == '')
+			return '请填写密码';
+		var params = {
+			'j_username' : username,
+			'j_password' : password,
+		};
+		if(rememberMe)
+			params._spring_security_remember_me = 'on';
+		
+		$.ajax(ROOT+'/j_spring_security_check', 
+			{
+				data : params, 
+				type : 'POST',
+				dataType : "json",
+				success : function(data) {
+					if(data.error) {
+						
+					}
+					else {
+						
+					}
+					handler(data);
+				},
+				statusCode: {
+					401: function(){alert('server returned 401')}
+				}
+			}
+		);
+	};
+	
 	////////////////////////////////////////
 	//            Utils          //////////
 	///////////////////////////////////////

@@ -15,7 +15,7 @@ $(document).ready(function($){
 	var areaId = $('#area_id').val();
 	if(!areaId || areaId == '')
 		ilunch.fatalError("area id not found!");
-	var userId = $('#user_id').val();
+//	var userId = $('#user_id').val();
 	var user = null;
 	
 	///////////////////////////////////////////////////////
@@ -56,11 +56,9 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
-	if(userId) {
-		ilunch.getUserInfo(userId, function(data){
-			user = data;
-		});
-	}
+	ilunch.getCurrentUserInfo(function(data) {
+		user = data;
+	});
 	
 	ilunch.getCart(
 			function(data) {
@@ -119,12 +117,12 @@ $(document).ready(function($){
 	
 	var busy1 = false;
 	renderUserInfo = function() {
-		if(!busy1 && (!userId || (userId && user))) {
+		if(!busy1 && user) {
 			busy1 = true;
 			
 			//render log start...
 			userInfoElem.empty();
-			if(userId && user) {
+			if(user.id) {
 				var phone = user.phoneNumber;
 				var contact = user.nickname;
 				var points = user.points;
@@ -294,6 +292,95 @@ $(document).ready(function($){
 			}
 		});
 	});
+	
+	$('#logon_lnk').click(function(e) {
+		$('#logon_dialog').css({"left":e.clientX+"px","top":e.clientY+"px"});
+		$('#logon_dialog').show();
+	});
+	
+	$('#logon_dialog_cancel').click(function() {
+		$('#logon_dialog').hide();
+	}); 
+	
+	$('#logon_dialog_reg_btn').click(function() {
+		var x = $('#logon_dialog').css("left");
+		var y = $('#logon_dialog').css("top");
+		$('#logon_dialog').hide();
+		$('#reg_dialog').css({"left":x,"top":y});
+		$('#reg_dialog').show();
+	});
+	
+	$('#reg_dialog_logon_btn').click(function() {
+		var x = $('#reg_dialog').css("left");
+		var y = $('#reg_dialog').css("top");
+		$('#reg_dialog').hide();
+		$('#logon_dialog').css({"left":x,"top":y});
+		$('#logon_dialog').show();
+	});
+	
+	$('#reg_dialog_cancel').click(function() {
+		$('#reg_dialog').hide();
+	}); 
+	
+	$('#logon_dialog_confirm').click(function() {
+		var un = $('#logon_dialog_un').val();
+		if(!un || un == '') {
+			$('#dialog_err').html('请填写手机号码');
+			return;
+		}
+		// get pwd
+		var pwd = $('#logon_dialog_pwd').val();
+		if(!pwd || pwd == '') {
+			$('#dialog_err').html('请填写密码');
+			return;
+		}
+		// call logon API
+		//TODO lock screen
+		var status = null;
+		ilunch.login(un, pwd, true, function(data) {
+			if(data.error)
+				status = data.error;
+			else if(data.success)
+				status = 'OK';
+		});
+		function wait() {
+			if(status != null) {
+				if(status == 'OK') {
+					//assign userId and user
+					ilunch.getCurrentUserInfo(function(data) {
+						user = data;
+					});
+					//TODO re-render userinfo
+					processor1 = setInterval(renderUserInfo, 50);
+					$('#dialog_err').html('');
+					$('#logon_dialog').hide();
+				}
+				else {
+					// show error msg
+					$('#dialog_err').html(status);
+				}
+				//TODO unlock screen
+				clearInterval(p);
+			}
+		}
+		var p = setInterval(wait, 50);
+	}); 
+	
+	$('#reg_dialog_confirm').click(function() {
+		//TODO get un
+		
+		//TODO get pwd
+		
+		//TODO call reg API
+		
+		//TODO show error msg [optional]
+		
+		//TODO assign userId and user
+		
+		//TODO re-render userinfo
+		
+		$('#reg_dialog').hide();
+	}); 
 	
 	register = function() {
 		//TODO ajax post form

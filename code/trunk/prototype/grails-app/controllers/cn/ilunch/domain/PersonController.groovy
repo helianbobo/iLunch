@@ -1,6 +1,6 @@
 package cn.ilunch.domain
 
-import javax.servlet.http.HttpServletResponse
+import grails.converters.JSON
 
 class PersonController {
 
@@ -17,7 +17,8 @@ class PersonController {
             def id = springSecurityService.currentUser.id
             forward(action: 'preference', params:[id:id])
         }else{
-            response.status = HttpServletResponse.SC_UNAUTHORIZED
+//            response.status = HttpServletResponse.SC_UNAUTHORIZED
+			render([error: "not logged on"] as JSON)
         }
 
     }
