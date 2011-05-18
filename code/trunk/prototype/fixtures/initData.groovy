@@ -267,12 +267,103 @@ fixture {
         toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-05')
     }
 
+
+
+
+
+     'schedule_md_curryfish_2011-05-06'(ProductAreaPriceSchedule) {
+        product = md_curryfish
+        area = da_zhangjiang
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-06')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-06')
+    }
+
+    'schedule_md_psourcefish_2011-05-16'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 40.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-16')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-16')
+    }
+
+    'schedule_md_psourcefish_2010-05-17'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 40.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-05-17')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-17')
+    }
+    'schedule_md_psourcefish_2011-05-18'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 45.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-18')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-18')
+    }
+    'schedule_md_psourcefish_2011-05-19'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 40.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-19')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-19')
+    }
+
+    'schedule_md_psourcefish_peoplesquare_2011-05-20'(ProductAreaPriceSchedule) {
+        product = md_psourcefish
+        area = da_zhangjiang
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-20')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-20')
+    }
+
+    'schedule_md_curryfish_peoplesquare_2011-05-23'(ProductAreaPriceSchedule) {
+        product = md_curryfish
+        area = da_zhangjiang
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-23')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-23')
+    }
+
+    'schedule_md_curryricewithfish_peoplesquare_2011-05-24'(ProductAreaPriceSchedule) {
+        product = md_curryricewithfish
+        area = da_zhangjiang
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-24')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-24')
+    }
+
+    'schedule_md_curryricewithfriedpork_peoplesquare_2011-05-25'(ProductAreaPriceSchedule) {
+        product = md_curryricewithfriedpork
+        area = da_zhangjiang
+        price = 30.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-25')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-25')
+    }
+
+    'schedule_md_curryfish_peoplesquare_2011-05-26'(ProductAreaPriceSchedule) {
+        product = md_curryfish
+        area = da_zhangjiang
+        price = 35.0
+        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-26')
+        toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-26')
+    }
+
+
+
+
+
+
+
+
     'schedule_md_liangpi_peoplesquare_2010-01-01'(ProductAreaPriceSchedule) {
         product = sd_liangpi
         area = da_peoplesquare
         price = 35.0
         fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2010-01-01')
     }
+
+
 
     'schedule_sd_doujiao_peoplesquare_2010-01-01'(ProductAreaPriceSchedule) {
         product = sd_doujiao

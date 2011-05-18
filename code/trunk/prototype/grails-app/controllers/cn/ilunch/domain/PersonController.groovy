@@ -27,8 +27,6 @@ class PersonController {
         def customerId = params.id
         def customer = Customer.get(customerId)
 
-        println customerId
-
         if (!customer) {
             forward(controller: "exception", action: "entityNotFound", params: [id: customerId, entityName: Customer])
             return
