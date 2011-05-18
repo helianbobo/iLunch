@@ -334,6 +334,10 @@ $(document).ready(function($){
 	});
 	
 	$('#btn_confirm_next').click(function() {
+		if(cart.isEmpty()) {
+			alert("请至少添加一道主菜/配菜！");
+			return;
+		}
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
 				$('#confirm_form').attr({"action":"/prototype/dataAPI/confirmInfo"});

@@ -284,6 +284,10 @@ $(document).ready(function($){
 	});
 	
 	$('#btn_confirm_next').click(function() {
+		if(!user.id) {
+			alert("请先登录!");
+			return;
+		}
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
 				$('#confirm_form').attr({"action":"/prototype/dataAPI/confirmOrder"});

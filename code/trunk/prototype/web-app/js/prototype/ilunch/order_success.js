@@ -10,13 +10,13 @@ $(document).ready(function($){
 	
 	var cart = null;
 	var userId = $('#user_id').val();
-	if(!userId || userId == '') {
-		ilunch.fatalError("user_id elem not found! Probably not logged on!");
-		//TODO delete
-		ilunch.fatalError("Setting userId to 3 for testing purpose");
-		userId = 3;
-	}
-	var user = null;
+//	if(!userId || userId == '') {
+//		ilunch.fatalError("user_id elem not found! Probably not logged on!");
+//		//TODO delete
+//		ilunch.fatalError("Setting userId to 3 for testing purpose");
+//		userId = 3;
+//	}
+//	var user = null;
 	
 	///////////////////////////////////////////////////////
 	////////////////// initialization /////////////////////
@@ -44,7 +44,7 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
-	ilunch.getUserInfo(userId, function(data){
+	ilunch.getCurrentUserInfo(function(data){
 		user = data;
 	});
 
@@ -71,7 +71,7 @@ $(document).ready(function($){
 
 	var busy1 = false;
 	renderOrderInfo = function() {
-		if(!busy1 && user && cart) {
+		if(!busy1 && user.id && cart) {
 			busy1 = true;
 			
 			//render log start...

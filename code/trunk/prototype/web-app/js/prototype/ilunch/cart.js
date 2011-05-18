@@ -325,4 +325,14 @@
 		return strarr.join('');
 	};
 	
+	ilunch.Cart.prototype.isEmpty = function() {
+		var isEmpty = true;
+		var products = this.cart.products;
+		for(var i = 0; i < products.length; i++) {
+			if(products[i].mainDishes.length > 0 || products[i].sideDishes.length > 0)
+				return false;
+		}
+		return isEmpty;
+	};
+	
 })(jQuery);

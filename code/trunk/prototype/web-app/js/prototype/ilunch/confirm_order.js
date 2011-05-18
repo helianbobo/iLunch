@@ -15,13 +15,13 @@ $(document).ready(function($){
 	var areaId = $('#area_id').val();
 	if(!areaId || areaId == '')
 		ilunch.fatalError("area id not found!");
-	var userId = $('#user_id').val();
-	if(!userId || userId == '') {
-		ilunch.fatalError("user_id elem not found! Probably not logged on!");
-		//TODO delete
-		ilunch.fatalError("Setting userId to 3 for testing purpose");
-		userId = 3;
-	}
+//	var userId = $('#user_id').val();
+//	if(!userId || userId == '') {
+//		ilunch.fatalError("user_id elem not found! Probably not logged on!");
+//		//TODO delete
+//		ilunch.fatalError("Setting userId to 3 for testing purpose");
+//		userId = 3;
+//	}
 	var user = null;
 	
 	///////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
-	ilunch.getUserInfo(userId, function(data){
+	ilunch.getCurrentUserInfo(function(data){
 		user = data;
 	});
 
@@ -92,7 +92,7 @@ $(document).ready(function($){
 
 	var busy1 = false;
 	renderOrderInfo = function() {
-		if(!busy1 && user && cart) {
+		if(!busy1 && user.id && cart) {
 			busy1 = true;
 			
 			//render log start...
@@ -247,7 +247,7 @@ $(document).ready(function($){
 		});
 		//TODO lock screen
 		var success = null;
-		ilunch.confirmOrder(cart.toOrderString(userId), function(result) {
+		ilunch.confirmOrder(cart.toOrderString(user.id), function(result) {
 			if(result == 0) {
 				success = true;
 			}
