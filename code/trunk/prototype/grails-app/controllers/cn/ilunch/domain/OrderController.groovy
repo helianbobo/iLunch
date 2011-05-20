@@ -24,7 +24,11 @@ class OrderController {
             maxResults(params.max)
             order("orderDate", "desc")
         }
-        return [orderList: orderList]
+        def shipments = []
+        orderList.each{
+           shipments.addAll(it.shipments)
+        }
+        return [shipments: shipments]
     }
 
     def cancel = {

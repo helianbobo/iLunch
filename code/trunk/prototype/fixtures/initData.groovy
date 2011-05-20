@@ -31,7 +31,7 @@ fixture {
     'person_chenkai'(Customer) {
         name = '陈凯'
         cellNumber = '18600186000'
-        password = "password"
+        password = springSecurityService.encodePassword('password')
         enabled = true
         accountExpired = false
         accountLocked = false
@@ -42,7 +42,7 @@ fixture {
     'person_chenyu'(Manager) {
         name = '晨煜'
         cellNumber = '18600186001'
-        password = "password"
+        password = springSecurityService.encodePassword('password')
         enabled = true
         accountExpired = false
         accountLocked = false

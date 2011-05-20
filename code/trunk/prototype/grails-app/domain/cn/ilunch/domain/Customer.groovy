@@ -20,7 +20,7 @@ class Customer extends Person {
 	}
 
     def getArea(){
-        primaryBuilding.distributionPoint.area
+        primaryBuilding?.distributionPoint?.area
     }
 
     static constraints = {

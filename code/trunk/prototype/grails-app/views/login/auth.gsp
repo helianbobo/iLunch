@@ -1,7 +1,7 @@
 <head>
     <meta name='layout' content='main'/>
     <title>登录</title>
-    %{--<style type='text/css' media='screen'>
+    %{--<style  ttype='text/css' media='screen'>
     #login {
         margin: 15px 0px;
         padding: 0px;

@@ -21,7 +21,7 @@ class ILunchUserDetails extends GrailsUser {
     Long areaId
     double longitude
     double latitude
-    long buildId
+    Long buildId
     double buildingLongitude
     double buildingLatitude
     String buildingName
@@ -29,9 +29,10 @@ class ILunchUserDetails extends GrailsUser {
     ILunchUserDetails(String cellNumber, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<GrantedAuthority> authorities, Person person) {
         super(cellNumber, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities, person.id)
         this.cellNumber = cellNumber
+        this.id = person.id
 
         if (person instanceof Customer) {
-            this.id = person.id
+
             this.buildId = person.primaryBuilding?.id
         }
         this.areaId = person.area?.id
