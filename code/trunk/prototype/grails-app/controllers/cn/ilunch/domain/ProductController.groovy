@@ -147,22 +147,25 @@ class ProductController {
         def priceMap = [:]
         result.each {it ->
             def id = it[7]
-            def value = it[9]
+            def tag = it[9]
             def p = new Expando()
             p.price = it[0]
             p.fromDate = it[2].format(dateFormatString)
             p.toDate = it[3]?.format(dateFormatString)
             def key = "id" + id
             if (tagMap.containsKey(key)) {
-                tagMap[key] << value
-                def found = priceMap[key].find{
-                   it.fromDate == p.fromDate
+                tagMap[key] << tag
+            } else {
+                if (tag)
+                    tagMap.put(key, [tag] as Set)
+            }
+            if (priceMap.containsKey(key)) {
+                def found = priceMap[key].find {
+                    it.fromDate == p.fromDate
                 }
-                if(!found)
+                if (!found)
                     priceMap[key] << p
             } else {
-                if (value)
-                    tagMap.put(key, [value] as Set)
                 priceMap.put(key, [p] as Set)
             }
         }
@@ -173,7 +176,7 @@ class ProductController {
         render(contentType: "text/json") {
             products = array {
                 for (schedule in result) {
-                    if (addedSchedule.add(schedule[7]))
+                    if (addedSchedule.add(schedule[7])) {
                         dish([
                                 id: schedule[7],
                                 name: schedule[4],
@@ -196,6 +199,8 @@ class ProductController {
                                 story: schedule[5]]
 
                         )
+                    }
+
                 }
             }
         }
