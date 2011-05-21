@@ -13,12 +13,12 @@ class PersonController {
     }
 
     def loggedInUserPreference = {
-        if(springSecurityService.isLoggedIn()){
+        if (springSecurityService.isLoggedIn()) {
             def id = springSecurityService.currentUser.id
-            forward(action: 'preference', params:[id:id])
-        }else{
+            forward(action: 'preference', params: [id: id])
+        } else {
 //            response.status = HttpServletResponse.SC_UNAUTHORIZED
-			render([error: "not logged on"] as JSON)
+            render([error: "not logged on"] as JSON)
         }
 
     }
@@ -31,41 +31,45 @@ class PersonController {
             forward(controller: "exception", action: "entityNotFound", params: [id: customerId, entityName: Customer])
             return
         }
-        def customerArea = customer.primaryBuilding.distributionPoint.area
+        def customerArea = customer.primaryBuilding?.distributionPoint?.area
         def customerBuilding = customer.primaryBuilding
 
         render(contentType: "text/json") {
-            id=customer.id
+            id = customer.id
             nickname = customer.name
             phoneNumber = customer.cellNumber
             points = customer.pointBalance
-            distributionArea = [
-                    name: customerArea.name,
-                    id: customerArea.id,
-                    arealLongitude: customerArea.longitude,
-                    areaLatitude: customerArea.latitude
-            ]
-            building = [
-                    id: customerBuilding.id,
-                    name:customerBuilding.name,
-                    longitude: customerBuilding.longitude,
-                    latitude: customerBuilding.latitude
-            ]
+            if (customerArea) {
+                distributionArea = [
+                        name: customerArea.name,
+                        id: customerArea.id,
+                        arealLongitude: customerArea.longitude,
+                        areaLatitude: customerArea.latitude
+                ]
+            }
+            if (customerBuilding) {
+                building = [
+                        id: customerBuilding.id,
+                        name: customerBuilding.name,
+                        longitude: customerBuilding.longitude,
+                        latitude: customerBuilding.latitude
+                ]
+            }
         }
     }
 
     def saveCart = {
         session.putValue("cartInfo", params.cartInfo)
-		render "{'status':'OK'}"
+        render "{'status':'OK'}"
     }
 
- def cart = {
-     if(!session.getValue("cartInfo")){
-        forward(controller: "exception", action: "cartNotFound")
-                return
-     }
-            render([text:session.getValue("cartInfo"), contentType: 'text/plain'])
-        
+    def cart = {
+        if (!session.getValue("cartInfo")) {
+            forward(controller: "exception", action: "cartNotFound")
+            return
+        }
+        render([text: session.getValue("cartInfo"), contentType: 'text/plain'])
+
     }
 
     def list = {
