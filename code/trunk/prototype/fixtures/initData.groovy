@@ -16,39 +16,19 @@ import cn.ilunch.domain.UserRole
 
 fixture {
 
-    'adminRole'(Role){
+    'adminRole'(Role) {
         authority = 'ROLE_ADMIN'
     }
 
-    'managerRole'(Role){
+    'managerRole'(Role) {
         authority = 'ADMIN_ADMIN'
     }
 
-    'userRole'(Role){
+    'userRole'(Role) {
         authority = 'USER_ADMIN'
     }
 
-    'person_chenkai'(Customer) {
-        name = '陈凯'
-        cellNumber = '18600186000'
-        password = springSecurityService.encodePassword('password')
-        enabled = true
-        accountExpired = false
-        accountLocked = false
-        passwordExpired = false
 
-    }
-
-    'person_chenyu'(Manager) {
-        name = '晨煜'
-        cellNumber = '18600186001'
-        password = springSecurityService.encodePassword('password')
-        enabled = true
-        accountExpired = false
-        accountLocked = false
-        passwordExpired = false
-
-    }
 
     'da_zhangjiang'(DistributionArea) {
         name = "张江高科"
@@ -66,27 +46,9 @@ fixture {
         name = "张江厨房"
     }
 
-    "kitchen_peoplesquare"(Kitchen) {
-        name = "人民广场厨房"
-        manager = person_chenyu
-    }
-
-    'dp_worldtradetower'(DistributionPoint) {
-        name = "世贸大厦楼下"
-        latitude = '31.205093'
-        longitude = '121.598160'
-        area = da_peoplesquare
-        kitchen = kitchen_peoplesquare
-    }
 
 
 
-    'building_worldtradetower'(Building) {
-        name = '世贸大厦'
-        latitude = '31.205093'
-        longitude = '121.598160'
-        distributionPoint = dp_worldtradetower
-    }
 
     'dp_lingyang'(DistributionPoint) {
         name = "凌阳大厦大堂"
@@ -111,6 +73,50 @@ fixture {
         latitude = '31.205093'
         longitude = '121.598160'
         distributionPoint = dp_lingyang
+    }
+
+    'person_chenkai'(Customer) {
+        name = '陈凯'
+        cellNumber = '18600186000'
+        password = springSecurityService.encodePassword('password')
+        enabled = true
+        accountExpired = false
+        accountLocked = false
+        passwordExpired = false
+        primaryBuilding = building_qq
+    }
+
+    'person_chenyu'(Manager) {
+        name = '晨煜'
+        cellNumber = '18600186001'
+        password = springSecurityService.encodePassword('password')
+        enabled = true
+        accountExpired = false
+        accountLocked = false
+        passwordExpired = false
+
+    }
+
+    "kitchen_peoplesquare"(Kitchen) {
+        name = "人民广场厨房"
+        manager = person_chenyu
+    }
+
+     'dp_worldtradetower'(DistributionPoint) {
+        name = "世贸大厦楼下"
+        latitude = '31.205093'
+        longitude = '121.598160'
+        area = da_peoplesquare
+        kitchen = kitchen_peoplesquare
+    }
+
+
+
+    'building_worldtradetower'(Building) {
+        name = '世贸大厦'
+        latitude = '31.205093'
+        longitude = '121.598160'
+        distributionPoint = dp_worldtradetower
     }
 
     'person_liuchao'(Customer) {
@@ -271,7 +277,7 @@ fixture {
 
 
 
-     'schedule_md_curryfish_2011-05-06'(ProductAreaPriceSchedule) {
+    'schedule_md_curryfish_2011-05-06'(ProductAreaPriceSchedule) {
         product = md_curryfish
         area = da_zhangjiang
         price = 30.0
@@ -399,8 +405,8 @@ post {
 
 
     def kitchen = Kitchen.findByName("张江厨房")
-    if(!kitchen){
-        kitchen = new Kitchen(name:"张江厨房")
+    if (!kitchen) {
+        kitchen = new Kitchen(name: "张江厨房")
         kitchen.distributionPoints = [dp_lingyang]
     }
     def jleo = new Manager();
@@ -412,7 +418,7 @@ post {
     jleo.kitchen = kitchen
     jleo.save(flush: true)
 
-    kitchen.setManager (jleo)
+    kitchen.setManager(jleo)
 
     UserRole.create jleo, managerRole, true
     UserRole.create jleo, adminRole, true
