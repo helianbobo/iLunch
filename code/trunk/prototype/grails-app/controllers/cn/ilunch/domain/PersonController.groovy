@@ -17,7 +17,6 @@ class PersonController {
             def id = springSecurityService.currentUser.id
             forward(action: 'preference', params: [id: id])
         } else {
-//            response.status = HttpServletResponse.SC_UNAUTHORIZED
             render([error: "not logged on"] as JSON)
         }
 

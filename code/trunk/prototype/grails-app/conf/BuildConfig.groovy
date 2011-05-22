@@ -31,4 +31,4 @@ grails.project.dependency.resolution = {
     }
 }
 
-grails.plugin.location."spock-functional-test" = "../spock-functional-test"
+//grails.plugin.location."spock-functional-test" = "../spock-functional-test"
