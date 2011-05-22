@@ -115,6 +115,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/myorder.gsp': ['IS_AUTHENTICATED_FULLY'],
         '/person/loggedInUserPreference': ['IS_AUTHENTICATED_FULLY'],
         '/product/**': ['ROLE_MANAGER', 'ROLE_ADMIN'],
+        '/order/**': ['ROLE_USER', 'ROLE_ADMIN','ROLE_MANAGER'],
         '/console': ['ROLE_MANAGER', 'ROLE_ADMIN'],
         '/js/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/css/**': ['IS_AUTHENTICATED_ANONYMOUSLY'],
