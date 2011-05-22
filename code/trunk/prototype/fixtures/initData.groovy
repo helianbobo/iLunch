@@ -21,11 +21,11 @@ fixture {
     }
 
     'managerRole'(Role) {
-        authority = 'ADMIN_ADMIN'
+        authority = 'ROLE_MANAGER'
     }
 
     'userRole'(Role) {
-        authority = 'USER_ADMIN'
+        authority = 'ROLE_USER'
     }
 
 
@@ -424,4 +424,5 @@ post {
     UserRole.create jleo, adminRole, true
     UserRole.create jleo, userRole, true
     UserRole.create person_liuchao, userRole, true
+    UserRole.create person_chenkai, userRole, true
 }

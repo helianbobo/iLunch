@@ -10,8 +10,8 @@ class OrderController {
     def list = {
         def status = params.status
 
-        ILunchUserDetails user = springSecurityService.currentUser
-        def cellNumber = user.cellNumber
+        Customer customer = springSecurityService.currentUser
+        def cellNumber = customer.cellNumber
 
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
@@ -20,7 +20,7 @@ class OrderController {
             if (status)
                 eq('status', status)
 
-            eq('customer.cellNumber', cellNumber)
+            eq('customer', customer)
             maxResults(params.max)
             order("orderDate", "desc")
         }
