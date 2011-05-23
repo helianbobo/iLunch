@@ -31,9 +31,11 @@ class ExceptionControllerTests extends JSONRenderControllerUnitTestCase {
         assertEquals '{"error":{"message":"Price schedule not found of product Entity in area 5 on date 2011-04-12","errorCode":"4"}}', exceptionController.response.contentAsString
     }
 
-void testCartNotFound() {
+    void testCartNotFound() {
 
         exceptionController.cartNotFound()
         assertEquals '{"error":{"message":"cart not found","errorCode":"5"}}', exceptionController.response.contentAsString
     }
+
+
 }

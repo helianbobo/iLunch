@@ -61,21 +61,43 @@
                                 <th>状态</th>
                                 <th>支付</th>
                             </tr>
+                            <g:each in="${orders}" status="i" var="order">
+                                <g:form action="acknowledge">
+                                    <tr>
+                                        <g:hiddenField name="id" value="${order.id}"/>
+                                        <td><input name="" type="checkbox" value=""/></td>
+                                        <td>${order.orderDate.format("yyyy/MM/dd HH:mm:ss")}</td>
+                                        <td></td>
+                                        <td>${order.amount}元</td>
+                                        <td>${order.distributionPoint.name}</td>
+                                        <td>未生成</td>
+                                        <td>${order.displayStatus}</td>
+                                        <td>
+                                            <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
+                                        </td>
+
+                                    </tr>
+                                </g:form>
+                            </g:each>
                             <g:each in="${shipments}" status="i" var="shipment">
+
                                 <tr>
                                     <td><input name="" type="checkbox" value=""/></td>
-                                    <td>${shipment.order.orderDate.format("yyyy/MM/dd HH:mm:ss")}</td>
+                                    <td>${shipment.shipmentDate.format("yyyy/MM/dd")}</td>
                                     <td>${shipment.displayingProductName}</td>
-                                    <td>${shipment.amount}元</td>
-                                    <td>${shipment.order.distributionPoint.name}</td>
-                                    <td>${shipment.serialNumber?:"未生成"}
+                                    <td>${shipment.getAmount()}元</td>
+                                    <td>${shipment.productOrder.distributionPoint.name}</td>
+                                    <td>${shipment.serialNumber ?: "未生成"}
                                         <div class="pa">[发至手机]</div></td>
-                                    <td>${shipment.displayStatus}</td>
+                                    <td>${shipment.getDisplayStatus()}</td>
                                     <td><input class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" name="" type="button"/></td>
                                 </tr>
+
                             </g:each>
                         </table>
+
                         <div class="notice"><input class="td" onmouseover="this.className = 'td_1'" onmouseout="this.className = 'td'" name="" type="button"/>注：退餐服务只针对状态在“订餐中”的订单。如果您要退订“配餐中”的订单，请<a href="#">点击这里</a>。</div>
+
                         <div class="page"><input class="p_up" onmouseover="this.className = 'p_up_1'" onmouseout="this.className = 'p_up'" name="" type="button" value=""/> <input class="p_down" onmouseover="this.className = 'p_down_1'" onmouseout="this.className = 'p_down'" name="" type="button" value=""/> 当前1/3页</div>
                     </div>
                 </div>

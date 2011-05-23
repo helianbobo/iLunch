@@ -119,6 +119,9 @@ class OrderService {
 
         orderDetails.orders.each {order ->
             def shippmentDate = Date.parse(dateFormatString, order.date)
+            if(shippmentDate < today+2){
+               throw new DeprecatedOrderException([shippmentDate:shippmentDate])
+            }
             order.mainDishes.each {mainDish ->
                 OrderItem orderItem = createOrderItem(mainDish, shippmentDate, productOrder, area)
                 amount += orderItem.price

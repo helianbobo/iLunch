@@ -24,4 +24,10 @@ def cartNotFound = {
             error(message: "not enough point change", errorCode: grailsApplication.config.cn.ilunch.exception.code.NotEnoughPointChange.toString())
         }
     }
+
+    def deprecatedOrder = {
+        render(contentType: "text/json") {
+            error(message: "The dish you ordered must be served at least 2 days later", errorCode: grailsApplication.config.cn.ilunch.exception.code.DeprecatedOrder.toString())
+        }
+    }
 }

@@ -4,9 +4,9 @@ class Shipment {
 
     Date shipmentDate
     String status
-    ProductOrder order
+    static belongsTo = [productOrder: ProductOrder]
     List orderItems
-    String serialNumber
+    String serialNumber= "TEST123456"
 
     static String CREATED = "CREATED"
     static String SHIPPED = "SHIPPED"
@@ -19,8 +19,9 @@ class Shipment {
     def getDisplayingProductName(){
         def productNames = ""
         orderItems.each{
-            productNames += it.name + ","
+            productNames += it.product.name + ","
         }
+        productNames
     }
 
     def getDisplayStatus = {
@@ -30,5 +31,9 @@ class Shipment {
             case SHIPPED:
                 "已配送"
         }
+    }
+
+    def getAmount = {
+        orderItems*.price.sum()
     }
 }

@@ -1,5 +1,6 @@
 package cn.ilunch.domain
 import cn.ilunch.exception.EntityNotFoundException
+import cn.ilunch.service.DeprecatedOrderException
 
 class ProductOrderController {
 
@@ -41,7 +42,8 @@ class ProductOrderController {
         } catch (EntityNotFoundException e) {
             forward(controller: "exception", action: "entityNotFound", params: e.exceptionInfoMap)
         }
+        catch (DeprecatedOrderException e) {
+            forward(controller: "exception", action: "deprecatedOrder", params: [:])
+        }
     }
-
-
 }

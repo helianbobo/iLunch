@@ -7,9 +7,10 @@ package cn.ilunch.exception
  * Time: 2:00 PM
  * To change this template use File | Settings | File Templates.
  */
-class EntityNotFoundException extends RuntimeException{
+class EntityNotFoundException extends RuntimeException {
     def exceptionInfoMap
-     public EntityNotFoundException(maps){
-         exceptionInfoMap = maps
-     }
+
+    public EntityNotFoundException(maps) {
+        exceptionInfoMap = maps
+    }
 }

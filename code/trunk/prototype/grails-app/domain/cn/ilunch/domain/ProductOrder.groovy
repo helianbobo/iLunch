@@ -22,23 +22,39 @@ class ProductOrder {
 
     static hasMany = [
             orderItems: OrderItem,
-            shipments:Shipment,
+            shipments: Shipment,
             appliedPriceRule: PriceRule,
-            payments:Payment
+            payments: Payment
     ]
 
     static constraints = {
-        pointChange(nullable:true)
-        shipments(nullable:true)
-        amount(min:new BigDecimal(0))
-        completeDate(nullable:true)
+        pointChange(nullable: true)
+        shipments(nullable: true)
+        amount(min: new BigDecimal(0))
+        completeDate(nullable: true)
     }
 
-    boolean acknowledgeable(){
-       status in [SUBMITTED]
+    boolean acknowledgeable() {
+        status in [SUBMITTED]
     }
 
-    boolean cancellable(){
-       status in [SUBMITTED, PAID]
+    boolean cancellable() {
+        status in [SUBMITTED, PAID]
+    }
+
+    def getDisplayStatus() {
+        switch (status) {
+            case SUBMITTED:
+                return "未付款"
+
+            case PAID:
+                return "已支付"
+
+            case COMPLETED:
+                return "已完成"
+            case CANCELLED:
+                return "已取消"
+        }
+        return "未知"
     }
 }
