@@ -9,10 +9,10 @@
 <body>
 <div class="nav">
     <span class="menuButton"><g:link action="indexQueryByDP">根据配送点查询</g:link></span>
-    <span class="menuButton"><g:link action="indexQueryByArea">根据配送区查询</g:link></span>
+    <span class="menuButton"><g:link action="indexQueryByArea">根据配送点查询</g:link></span>
 </div>
 <div class="body">
-    <g:form action="listShipmentByDateAndDP">
+    <g:form action="listShipmentByDateAndArea">
         从
         <g:datePicker name="fromDate" precision="day"></g:datePicker>
         <br/>
@@ -20,7 +20,7 @@
         <g:datePicker name="toDate" precision="day"></g:datePicker>
         <br/>
         配送点
-        <g:select noSelection="['-1':'所有']" name="dpId" from="${distributionPoints}" optionKey="id" optionValue="name"></g:select>
+        <g:select noSelection="['-1':'所有']" name="areaId" from="${areas}" optionKey="id" optionValue="name"></g:select>
         <g:submitButton name="submit" value="查询"/>
     </g:form>
 </div>

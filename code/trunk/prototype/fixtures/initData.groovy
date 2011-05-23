@@ -55,6 +55,14 @@ fixture {
         kitchen = kitchen_zhangjiang
     }
 
+    'dp_wallstreet'(DistributionPoint) {
+        name = "华尔街"
+        latitude = '31.205093'
+        longitude = '121.598160'
+        area = da_zhangjiang
+        kitchen = kitchen_zhangjiang
+    }
+
     'building_lingyang'(Building) {
         name = '凌阳大厦'
         latitude = '31.205093'
@@ -67,6 +75,13 @@ fixture {
         latitude = '31.205093'
         longitude = '121.598160'
         distributionPoint = dp_lingyang
+    }
+
+    'building_empire'(Building) {
+        name = '帝国大厦'
+        latitude = '31.205093'
+        longitude = '121.598160'
+        distributionPoint = dp_wallstreet
     }
 
     'person_chenkai'(Customer) {
@@ -350,11 +365,18 @@ fixture {
         toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-26')
     }
 
-    (Date.parse("yyyyMMdd", "20110527")..Date.parse("yyyyMMdd", "20111231")).each {date ->
+    (Date.parse("yyyyMMdd", "20110527")..Date.parse("yyyyMMdd", "20110930")).each {date ->
         "schedule_md_curryfish_peoplesquare_${date.format('yyyy-MM-dd')}"(ProductAreaPriceSchedule) {
             product = md_curryfish
             area = da_peoplesquare
             price = 35.0
+            fromDate = date
+            toDate = date
+        }
+        "schedule_md_psourcefish_zhangjiang_${date.format('yyyy-MM-dd')}"(ProductAreaPriceSchedule) {
+            product = md_psourcefish
+            area = da_zhangjiang
+            price = 12.0
             fromDate = date
             toDate = date
         }

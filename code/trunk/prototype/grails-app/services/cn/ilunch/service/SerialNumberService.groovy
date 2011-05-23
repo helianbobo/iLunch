@@ -14,21 +14,24 @@ class SerialNumberService {
 
     def getCode(long l, Date date) {
         Random ran = new Random();
-        ran.setSeed(l);
-        String key = "";
-        6.times {
-            key += REPOSITORY[ran.nextInt(REPOLENGTH)];
-        }
-
         ran.setSeed(date.getTime());
+        String key = "";
         4.times {
             key += REPOSITORY[ran.nextInt(REPOLENGTH)];
         }
 
+        ran.setSeed(l);
+        2.times {
+            key += REPOSITORY[ran.nextInt(REPOLENGTH)];
+        }
+        ran.setSeed(System.currentTimeMillis())
+        4.times {
+            key += REPOSITORY[ran.nextInt(REPOLENGTH)];
+        }
         key
     }
 
-    def send(sn){
+    def send(sn) {
 
     }
 }
