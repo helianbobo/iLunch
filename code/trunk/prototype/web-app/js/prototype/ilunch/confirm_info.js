@@ -288,6 +288,16 @@ $(document).ready(function($){
 			alert("请先登录!");
 			return;
 		}
+		
+		var usedPoints = parseInt($('#change_point_input').val());
+		if(usedPoints >= 0) {
+			if(usedPoints > user.points) {
+				ilunch.fatalError("使用的积分不得超过您所有拥有的积分！");
+				return;
+			}
+			cart.getCart().pointChange = usedPoints;
+		}
+		
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
 				$('#confirm_form').attr({"action":"/prototype/dataAPI/confirmOrder"});
