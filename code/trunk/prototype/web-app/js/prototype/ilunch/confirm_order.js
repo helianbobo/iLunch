@@ -255,6 +255,10 @@ $(document).ready(function($){
 				success = false;
 				ilunch.fatalError("使用的积分超过余额！");
 			}
+			else if(result == "05") {
+				success = false;
+				ilunch.fatalError("只能订购两天之后的餐品！");
+			}
 		});
 		function wait() {
 			if(success != null) {

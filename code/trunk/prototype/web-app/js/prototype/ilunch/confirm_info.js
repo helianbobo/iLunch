@@ -223,7 +223,7 @@ $(document).ready(function($){
 			
 			//render log start...
 
-			$('#building_list').select(function(e) {
+			$('#building_list').change(function(e) {
 				//TODO change sel_building value
 				selBuilding = $("#building_list").find("option:selected").text();
 				$('#sel_building').html(selBuilding);
@@ -242,7 +242,7 @@ $(document).ready(function($){
 					}
 				}
 			}
-			$('#building_list').select();
+			$('#building_list').change();
 			//render logic end
 			
 			//TODO release screen lock here
