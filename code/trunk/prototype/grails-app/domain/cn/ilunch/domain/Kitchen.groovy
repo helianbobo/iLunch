@@ -4,10 +4,10 @@ class Kitchen {
 
     String name
     Manager manager
+    DistributionArea area
 
     static hasMany = [
-            distributionPoints:DistributionPoint
-
+            distributionPoints: DistributionPoint
     ]
 
     static constraints = {

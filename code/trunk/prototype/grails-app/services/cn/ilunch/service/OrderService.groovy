@@ -16,6 +16,7 @@ class OrderService {
     static transactional = true
     def grailsApplication
     def priceService
+    def serialNumberService
 
     def shrinkOrder(ProductOrder oldOrder) {
         oldOrder.status = ProductOrder.CANCELLED
@@ -27,15 +28,15 @@ class OrderService {
         def amount = 0.0
         oldOrder.orderItems.each {oldItem ->
             OrderItem item = null;
-            if (!(oldItem.product instanceof  MainDish)) {
-                item = new OrderItem(shippmentDate:oldItem.shippmentDate, order: newOrder, product: oldItem.order, price: oldItem.price, quantity: oldItem.quantity)
+            if (!(oldItem.product instanceof MainDish)) {
+                item = new OrderItem(shippmentDate: oldItem.shippmentDate, order: newOrder, product: oldItem.order, price: oldItem.price, quantity: oldItem.quantity)
             } else {
                 def schedule = priceService.queryProductSchedule(oldItem.product, oldOrder.distributionPoint.area, oldItem.shippmentDate)[0]
                 if (!schedule) {
                     throw new EntityNotFoundException([entity: ProductAreaPriceSchedule, product: product, area: distributionPoint.area, date: shippmentDate])
                 }
                 def quantity = schedule.remain >= oldItem.quantity ? oldItem.quantity : schedule.remain
-                item = new OrderItem(shippmentDate:oldItem.shippmentDate,order: newOrder, product: oldItem.order, price: oldItem.price, quantity: quantity)
+                item = new OrderItem(shippmentDate: oldItem.shippmentDate, order: newOrder, product: oldItem.order, price: oldItem.price, quantity: quantity)
             }
             amount += (item.quantity * item.price)
             newOrder.addToOrderItems item
@@ -61,7 +62,7 @@ class OrderService {
 
         dateItemRegistry.each {date, items ->
             Shipment shipment = new Shipment(shipmentDate: date, status: Shipment.CREATED, order: productOrder, orderItems: items)
-
+            shipment.serialNumber = serialNumberService.getCode(productOrder.distributionPoint.id, date)
             productOrder.addToShipments shipment
         }
 
@@ -119,8 +120,8 @@ class OrderService {
 
         orderDetails.orders.each {order ->
             def shippmentDate = Date.parse(dateFormatString, order.date)
-            if(shippmentDate < today+2){
-               throw new DeprecatedOrderException([shippmentDate:shippmentDate])
+            if (shippmentDate < today + 2) {
+                throw new DeprecatedOrderException([shippmentDate: shippmentDate])
             }
             order.mainDishes.each {mainDish ->
                 OrderItem orderItem = createOrderItem(mainDish, shippmentDate, productOrder, area)

@@ -73,18 +73,23 @@ class PersonController {
 
 
     def register = {
-        def customer = new Customer();
+
         if (params.cellNumber.length() != 11) {
-            forward(controller: "exception", action: "cellphoneNumberInvalid", params: [id: userId, number: params.cellNumber])
+            forward(controller: "exception", action: "cellphoneNumberInvalid", params: [number: params.cellNumber])
             return
         }
         def allDigit = params.cellNumber.every {
             Character.isDigit(it.charAt(0))
         }
         if (params.cellNumber.length() != 11 && allDigit) {
-            forward(controller: "exception", action: "cellphoneNumberInvalid", params: [id: userId, number: params.cellNumber])
+            forward(controller: "exception", action: "cellphoneNumberInvalid", params: [number: params.cellNumber])
             return
         }
+        if(Customer.findByCellNumber(params.cellNumber)){
+            forward(controller: "exception", action: "cellphoneNumberRegistered", params: [number: params.cellNumber])
+            return
+        }
+        def customer = new Customer();
         customer.cellNumber = params.cellNumber
         customer.enabled = true
         customer.password = springSecurityService.encodePassword(params.password)

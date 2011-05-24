@@ -13,7 +13,8 @@ class ExceptionController {
             error(message: "Price schedule not found of product ${params.product} in area ${params.area} on date ${params.date}", errorCode: grailsApplication.config.cn.ilunch.exception.code.ScheduleNotFound.toString())
         }
     }
-def cartNotFound = {
+
+    def cartNotFound = {
         render(contentType: "text/json") {
             error(message: "cart not found", errorCode: grailsApplication.config.cn.ilunch.exception.code.CartNotFound.toString())
         }
@@ -34,6 +35,12 @@ def cartNotFound = {
     def cellphoneNumberInvalid = {
         render(contentType: "text/json") {
             error(message: "cellphone number must be 11 digits", errorCode: grailsApplication.config.cn.ilunch.exception.code.CellphoneNumberInvalid.toString())
+        }
+    }
+
+    def cellphoneNumberRegistered = {
+        render(contentType: "text/json") {
+            error(message: "cellphone number has been used", errorCode: grailsApplication.config.cn.ilunch.exception.code.CellphoneNumberRegistered.toString())
         }
     }
 }

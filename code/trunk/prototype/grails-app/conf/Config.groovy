@@ -99,6 +99,7 @@ cn.ilunch.exception.code.CartNotFound = "03"
 cn.ilunch.exception.code.NotEnoughPointChange = "04"
 cn.ilunch.exception.code.DeprecatedOrder = "05"
 cn.ilunch.exception.code.CellphoneNumberInvalid = "06"
+cn.ilunch.exception.code.CellphoneNumberRegistered = "07"
 
 cn.ilunch.date.format = 'yyyy-MM-dd'
 cn.ilunch.product.image.location = "${userHome}/ilunch/images/products"
@@ -129,6 +130,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/person/cart': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/person/saveCart': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/person/preference': ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/shipment/**': ['ROLE_ADMIN','ROLE_MANAGER'],
         '/faq.gsp': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/aboutus.gsp': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/agreement.gsp': ['IS_AUTHENTICATED_ANONYMOUSLY'],

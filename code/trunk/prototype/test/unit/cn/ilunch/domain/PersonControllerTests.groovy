@@ -54,6 +54,22 @@ class PersonControllerTests extends JSONRenderControllerUnitTestCase {
         assertEquals 'testInfo', controller.session.attributes.cartInfo
     }
 
+    void testRegisterWithUsedNumber() {
+
+        mockDomain(Role, [new Role(authority: 'ROLE_USER')])
+        mockDomain(UserRole, [])
+        mockDomain(Customer, [new Customer(cellNumber: "12345678901")])
+        def number1 = Customer.findAll().size()
+        controller.params.cellNumber = "12345678901"
+        controller.params.password = "test123"
+        controller.springSecurityService = [encodePassword: {it -> return it}]
+        controller.register()
+
+        assertEquals('exception', controller.forwardArgs.controller)
+        assertEquals('cellphoneNumberRegistered', controller.forwardArgs.action)
+        assertEquals("12345678901", controller.forwardArgs.params.number)
+    }
+
     void testRegister() {
 
         mockDomain(Role, [new Role(authority: 'ROLE_USER')])
