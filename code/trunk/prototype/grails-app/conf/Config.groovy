@@ -129,6 +129,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/product/showDetail': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/person/cart': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/person/saveCart': ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/person/register': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/person/preference': ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/shipment/**': ['ROLE_ADMIN','ROLE_MANAGER'],
         '/faq.gsp': ['IS_AUTHENTICATED_ANONYMOUSLY'],
