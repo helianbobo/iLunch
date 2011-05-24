@@ -62,22 +62,33 @@
                                 <th>支付</th>
                             </tr>
                             <g:each in="${orders}" status="i" var="order">
-                                <g:form action="acknowledge">
-                                    <tr>
-                                        <g:hiddenField name="id" value="${order.id}"/>
-                                        <td><input name="" type="checkbox" value=""/></td>
-                                        <td>${order.orderDate.format("yyyy/MM/dd HH:mm:ss")}</td>
-                                        <td></td>
-                                        <td>${order.amount}元</td>
-                                        <td>${order.distributionPoint.name}</td>
-                                        <td>未生成</td>
-                                        <td>${order.displayStatus}</td>
-                                        <td>
-                                            <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
-                                        </td>
 
-                                    </tr>
-                                </g:form>
+                                <tr>
+
+                                    <td><input name="" type="checkbox" value=""/></td>
+                                    <td>${order.orderDate.format("yyyy/MM/dd HH:mm:ss")}</td>
+                                    <td></td>
+                                    <td>${order.amount}元</td>
+                                    <td>${order.distributionPoint.name}</td>
+                                    <td>未生成</td>
+                                    <td>${order.displayStatus}</td>
+                                    <td>
+                                        <g:if test="${order.status=='SUBMITTED'}">
+                                            <g:form action="acknowledge" style="display:inline;">
+                                                <g:hiddenField name="id" value="${order.id}"/>
+                                                <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
+                                            </g:form>
+                                        </g:if>
+                                        <g:if test="${order.status!='CANCELLED'}">
+                                            <g:form action="cancel">
+                                                <g:hiddenField name="id" value="${order.id}"/>
+                                                <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
+                                            </g:form>
+                                        </g:if>
+                                    </td>
+
+                                </tr>
+
                             </g:each>
                             <g:each in="${shipments}" status="i" var="shipment">
 
@@ -90,7 +101,9 @@
                                     <td>${shipment.serialNumber ?: "未生成"}
                                         <div class="pa">[发至手机]</div></td>
                                     <td>${shipment.getDisplayStatus()}</td>
-                                    <td><input class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" name="" type="button"/></td>
+                                    <td><input class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" name="" type="button"/>
+                                        <input class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" name="" type="button"/>
+                                    </td>
                                 </tr>
 
                             </g:each>

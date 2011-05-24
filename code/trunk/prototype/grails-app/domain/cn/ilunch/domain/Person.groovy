@@ -15,6 +15,7 @@ class Person {
 	static constraints = {
 		cellNumber blank: false, unique: true
 		password blank: false
+		name nullable:true
 	}
 
 	static mapping = {

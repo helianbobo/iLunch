@@ -12,44 +12,60 @@ class PersonControllerTests extends JSONRenderControllerUnitTestCase {
         super.setUp()
         fixJsonRender controller
     }
-  void testPreference() {
-      Customer customer = new Customer()
-      customer.cellNumber = "12345678901"
-      customer.name = "liuchao"
-      customer.pointBalance = 123
-      mockDomain(Customer, [customer])
 
-      Building building = new Building()
-      building.name = "qq"
-      building.latitude = 123.31
-      building.longitude = 12.31
+    void testPreference() {
+        Customer customer = new Customer()
+        customer.cellNumber = "12345678901"
+        customer.name = "liuchao"
+        customer.pointBalance = 123
+        mockDomain(Customer, [customer])
+
+        Building building = new Building()
+        building.name = "qq"
+        building.latitude = 123.31
+        building.longitude = 12.31
 
 
-      customer.primaryBuilding = building
+        customer.primaryBuilding = building
 
-      DistributionPoint dp = new DistributionPoint()
-      dp.name="dp1"
+        DistributionPoint dp = new DistributionPoint()
+        dp.name = "dp1"
 
-      building.distributionPoint = dp
+        building.distributionPoint = dp
 
-       DistributionArea area = new DistributionArea()
-      area.name = "zhangjiang"
-      area.longitude = 23.12
-      area.latitude = 123.23
-      dp.area = area
+        DistributionArea area = new DistributionArea()
+        area.name = "zhangjiang"
+        area.longitude = 23.12
+        area.latitude = 123.23
+        dp.area = area
 
-      mockDomain(Building,[building])
-      mockDomain(DistributionPoint,[dp])
-      mockDomain(DistributionArea,[area])
-    controller.params.id = 1
-      controller.preference()
-      assertEquals """{"id":1,"nickname":"liuchao","phoneNumber":"12345678901","points":123,"distributionArea":{"name":"zhangjiang","id":1,"arealLongitude":23.12,"areaLatitude":123.23},"building":{"id":1,"name":"qq","longitude":12.31,"latitude":123.31}}""", controller.response.contentAsString
+        mockDomain(Building, [building])
+        mockDomain(DistributionPoint, [dp])
+        mockDomain(DistributionArea, [area])
+        controller.params.id = 1
+        controller.preference()
+        assertEquals """{"id":1,"nickname":"liuchao","phoneNumber":"12345678901","points":123,"distributionArea":{"name":"zhangjiang","id":1,"arealLongitude":23.12,"areaLatitude":123.23},"building":{"id":1,"name":"qq","longitude":12.31,"latitude":123.31}}""", controller.response.contentAsString
 //      println controller.response.contentAsString
-  }
+    }
 
-    void testSaveCard(){
+    void testSaveCard() {
         controller.params.cartInfo = "testInfo"
         controller.saveCart()
         assertEquals 'testInfo', controller.session.attributes.cartInfo
+    }
+
+    void testRegister() {
+
+        mockDomain(Role, [new Role(authority: 'ROLE_USER')])
+        mockDomain(UserRole, [])
+        mockDomain(Customer, [])
+        def number1 = Customer.findAll().size()
+        controller.params.cellNumber = "12345678901"
+        controller.params.password = "test123"
+        controller.springSecurityService = [encodePassword: {it -> return it}]
+        controller.register()
+
+        def number2 = Customer.findAll().size()
+        assertTrue(number2-number1==1)
     }
 }

@@ -75,7 +75,7 @@ class OrderController {
         def productOrder = ProductOrder.get(orderId)
         orderService.cancelOrder(productOrder)
 
-        redirect(action: "list")
+        redirect(action: "listWithinMonth")
     }
 
     def acknowledge = {

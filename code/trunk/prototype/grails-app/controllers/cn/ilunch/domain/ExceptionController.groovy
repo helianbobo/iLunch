@@ -30,4 +30,10 @@ def cartNotFound = {
             error(message: "The dish you ordered must be served at least 2 days later", errorCode: grailsApplication.config.cn.ilunch.exception.code.DeprecatedOrder.toString())
         }
     }
+
+    def cellphoneNumberInvalid = {
+        render(contentType: "text/json") {
+            error(message: "cellphone number must be 11 digits", errorCode: grailsApplication.config.cn.ilunch.exception.code.CellphoneNumberInvalid.toString())
+        }
+    }
 }

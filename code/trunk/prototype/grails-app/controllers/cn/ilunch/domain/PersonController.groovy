@@ -71,6 +71,32 @@ class PersonController {
 
     }
 
+
+    def register = {
+        def customer = new Customer();
+        if (params.cellNumber.length() != 11) {
+            forward(controller: "exception", action: "cellphoneNumberInvalid", params: [id: userId, number: params.cellNumber])
+            return
+        }
+        def allDigit = params.cellNumber.every {
+            Character.isDigit(it.charAt(0))
+        }
+        if (params.cellNumber.length() != 11 && allDigit) {
+            forward(controller: "exception", action: "cellphoneNumberInvalid", params: [id: userId, number: params.cellNumber])
+            return
+        }
+        customer.cellNumber = params.cellNumber
+        customer.enabled = true
+        customer.password = springSecurityService.encodePassword(params.password)
+        customer.save(flush:true,failOnError:true)
+
+        def role = Role.findByAuthority('ROLE_USER')
+        UserRole.create customer, role, true
+
+        render(contentType: "text/json") {
+            result = "success"
+        }
+    }
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [personInstanceList: Person.list(params), personInstanceTotal: Person.count()]
