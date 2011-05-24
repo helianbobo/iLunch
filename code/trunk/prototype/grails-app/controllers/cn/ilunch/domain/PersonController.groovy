@@ -81,7 +81,7 @@ class PersonController {
         def allDigit = params.cellNumber.every {
             Character.isDigit(it.charAt(0))
         }
-        if (params.cellNumber.length() != 11 && !allDigit) {
+        if (params.cellNumber.length() != 11 || !allDigit) {
             forward(controller: "exception", action: "cellphoneNumberInvalid", params: [number: params.cellNumber])
             return
         }
