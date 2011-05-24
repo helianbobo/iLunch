@@ -147,6 +147,8 @@
 				for(var j = 0; j < dishes.length; j++) {
 					if(dishes[j].id == id) {
 						dishes.splice(j, 1);
+						if(products[i].mainDishes.length == 0 && products[i].sideDishes.length == 0)
+							products.splice(i, 1);
 						return;
 					}
 				}
