@@ -110,7 +110,7 @@ $(document).ready(function($){
 			var contact = user.nickname;
 			var points = user.points;
 			$('#info_tab').html($('#info_tab').html().replace(/##PHONE_NO##/g, phone)
-					.replace(/##CONTACT##/g, contact).replace(/##AREA_NAME##/g, areaName).replace(/##BUILDING_NAME##/g, buildingName));
+					.replace(/##CONTACT##/g, contact?contact:"未提供联系人姓名").replace(/##AREA_NAME##/g, areaName).replace(/##BUILDING_NAME##/g, buildingName));
 			//render logic end
 			
 			//TODO release screen lock here

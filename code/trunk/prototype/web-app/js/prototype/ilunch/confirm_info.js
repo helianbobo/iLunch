@@ -80,23 +80,7 @@ $(document).ready(function($){
 	////////////////// define templates ///////////////////
 	///////////////////////////////////////////////////////
 	
-	var notLoggedTmplt = '<div class="no_reg">'+
-        					'<table width="610" border="0" cellspacing="0" cellpadding="0">'+
-							  '<tr>'+
-							    '<td width="100">您的手机号码：</td>'+
-							    '<td width="285"><input id="phone" name="" type="text" class="srk" maxlength="36" /><div class="tishi">请输入您的手机号码，方便您接收取餐短信通知</div></td>'+
-							    '<td><div class="done"></div></td>'+
-							  '</tr>'+
-							  '<tr>'+
-							    '<td>您的密码：</td>'+
-							    '<td><input id="pwd" name="" type="password" class="srk" maxlength="36" /><div class="tishi">设置密码，方便您保留订餐信息</div></td>'+
-							    '<td><div class="wrong">密码包括数字、字母，区分大小写</div></td>'+
-							  '</tr>'+
-							  '<tr>'+
-							    '<td colspan="3"><input onclick="register();" class="reg_button" onmouseover="this.className=\'reg_button_1\'" onmouseout="this.className=\'reg_button\'" name="" type="button" /></td>'+
-							    '</tr>'+
-							'</table>'+
-						 '</div>';
+	var notLoggedTmplt = '';
 	
 	var loggedOnTmplt = '<div class="al_reg">'+
 							'<div class="lxfs">'+
@@ -126,9 +110,9 @@ $(document).ready(function($){
 				var phone = user.phoneNumber;
 				var contact = user.nickname;
 				var points = user.points;
-				userInfoElem.append(loggedOnTmplt.replace(/##PHONE_NO##/g, phone).replace(/##CONTACT##/g, contact));
+				userInfoElem.append(loggedOnTmplt.replace(/##PHONE_NO##/g, phone).replace(/##CONTACT##/g, contact?contact:"未提供联系人姓名"));
 				//TODO validate pointChange balance
-				$('#change_point').html(points);
+				$('#change_point').html(points?points:0);
 				$('#point_control').css({"display":"block"});
 				$('#logon_tip').css({"display":"none"});
 			}
@@ -290,13 +274,12 @@ $(document).ready(function($){
 		}
 		
 		var usedPoints = parseInt($('#change_point_input').val());
-		if(usedPoints >= 0) {
-			if(usedPoints > user.points) {
-				ilunch.fatalError("使用的积分不得超过您所有拥有的积分！");
-				return;
-			}
-			cart.getCart().pointChange = usedPoints;
+		usedPoints = usedPoints ? usedPoints : 0; 
+		if(usedPoints > user.points) {
+			ilunch.fatalError("使用的积分不得超过您所有拥有的积分！");
+			return;
 		}
+		cart.getCart().pointChange = usedPoints;
 		
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
@@ -354,17 +337,18 @@ $(document).ready(function($){
 		ilunch.login(un, pwd, true, function(data) {
 			if(data.error)
 				status = data.error;
-			else if(data.success)
-				status = 'OK';
+			else if(data.success) {
+				//assign userId and user
+				ilunch.getCurrentUserInfo(function(data) {
+					user = data;
+					status = 'OK';
+				});
+			}
 		});
 		function wait() {
 			if(status != null) {
 				if(status == 'OK') {
-					//assign userId and user
-					ilunch.getCurrentUserInfo(function(data) {
-						user = data;
-					});
-					//TODO re-render userinfo
+					// re-render userinfo
 					processor1 = setInterval(renderUserInfo, 50);
 					$('#dialog_err').html('');
 					$('#logon_dialog').hide();
@@ -381,32 +365,65 @@ $(document).ready(function($){
 	}); 
 	
 	$('#reg_dialog_confirm').click(function() {
-		//TODO get un
-		
-		//TODO get pwd
-		
-		//TODO call reg API
-		
-		//TODO show error msg [optional]
-		
-		//TODO assign userId and user
-		
-		//TODO re-render userinfo
-		
-		$('#reg_dialog').hide();
+		// get un
+		var un = $('#reg_dialog_phone').val();
+		if(!un || un == '') {
+			$('#dialog_err_reg').html('请填写手机号码！');
+			return;
+		}
+		// get pwd
+		var pwd = $('#reg_dialog_pwd').val();
+		if(!pwd || pwd == '') {
+			$('#dialog_err_reg').html('请填写密码！');
+			return;
+		}
+		var pwd2 = $('#reg_dialog_pwd2').val();
+		if(!pwd || pwd == '') {
+			$('#dialog_err_reg').html('请确认密码！');
+			return;
+		}
+		if(pwd != pwd2) {
+			$('#dialog_err_reg').html('两次输入的密码不一致！');
+			return;
+		}
+		// call reg API
+		//TODO lock screen
+		var status = null;
+		ilunch.register(un, pwd, function(data) {
+			if(data.error)
+				status = data.error.message;
+			else {
+				ilunch.login(un, pwd, true, function(data) {
+					if(data.error)
+						ilunch.fatalError("logon failed!");
+					else if(data.success) {
+						//assign userId and user
+						ilunch.getCurrentUserInfo(function(data) {
+							user = data;
+							status = 'OK';
+						});
+					}
+				});
+			}
+		});
+		function wait2() {
+			if(status != null) {
+				if(status == 'OK') {
+					// re-render userinfo
+					processor1 = setInterval(renderUserInfo, 50);
+					$('#dialog_err_reg').html('');
+					$('#reg_dialog').hide();
+				}
+				else {
+					// show error msg
+					$('#dialog_err_reg').html(status);
+				}
+				//TODO unlock screen
+				clearInterval(p2);
+			}
+		}
+		var p2 = setInterval(wait2, 50);
 	}); 
-	
-	register = function() {
-		//TODO ajax post form
-		
-		//TODO get user info
-//		userId = 3;
-//		ilunch.getUserInfo(userId, function(data){
-//			user = data;
-//		});
-		//re-render user info
-		processor1 = setInterval(renderUserInfo, 50);
-	};
 
 	md_disorder = function(id, date) {
 		date = ilunch.makeDate(date);

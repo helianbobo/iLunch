@@ -315,12 +315,12 @@
 
 			}
 			else {
-				if(!ilunch.validateData(data, ['id', 'phoneNumber', 'distributionArea', 'building'], 'user'))
+				if(!ilunch.validateData(data, ['id', 'phoneNumber'], 'user'))
 					return;
-				if(!ilunch.validateData(data.distributionArea, ['id', 'name'], 'user.distributionArea'))
-					return;
-				if(!ilunch.validateData(data.building, ['id', 'name', 'longitude', 'latitude'], 'user.building'))
-					return;
+//				if(!ilunch.validateData(data.distributionArea, ['id', 'name'], 'user.distributionArea'))
+//					return;
+//				if(!ilunch.validateData(data.building, ['id', 'name', 'longitude', 'latitude'], 'user.building'))
+//					return;
 			}
 			handler(data);
 		});
@@ -451,6 +451,41 @@
 			params._spring_security_remember_me = 'on';
 		
 		$.ajax(ROOT+'/j_spring_security_check', 
+			{
+				data : params, 
+				type : 'POST',
+				dataType : "json",
+				success : function(data) {
+					if(data.error) {
+						
+					}
+					else {
+						
+					}
+					handler(data);
+				},
+				statusCode: {
+					401: function(){alert('server returned 401')}
+				}
+			}
+		);
+	};
+	
+	ilunch.register = function(username, password, handler) {
+		if(!username || username == '') {
+			ilunch.fatalError('[Register]no username found!');
+			return;
+		}
+		if(!password || password == '') {
+			ilunch.fatalError('[Register]no password found!');
+			return;
+		}
+		var params = {
+			'cellNumber' : username,
+			'password' : password,
+		};
+		
+		$.ajax(ROOT+'/person/register', 
 			{
 				data : params, 
 				type : 'POST',

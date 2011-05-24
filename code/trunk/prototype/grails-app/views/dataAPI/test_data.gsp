@@ -20,6 +20,7 @@
 		<button onclick="confirmOrder();">confirmOrder</button>
 		<button onclick="login();">login</button>
 		<button onclick="getCurrentUser();">getCurrentUser</button>
+		<button onclick="register();">register</button>
 		
 		</div>
 		<div>
@@ -141,6 +142,9 @@
 			}
 			function getCurrentUser() {
 				ilunch.getCurrentUserInfo(show);	
+			}
+			function register() {
+				ilunch.register('18621181017', 'abc', show);
 			}
 			
 		</script>

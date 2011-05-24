@@ -31,7 +31,7 @@
 		          <input id="logon_dialog_un" class="log_srk" name="" type="text" />
 		        </li>
 		        <li>用户密码：
-		          <input id="logon_dialog_pwd" class="log_srk" name="" type="text" />
+		          <input id="logon_dialog_pwd" class="log_srk" name="" type="password" />
 		          <div><a href="#">忘记密码了怎么办？</a></div>
 		        </li>
 		        <li>
@@ -53,16 +53,17 @@
 		      <div class="title"><a href="#"><img src="images/close.png" /></a></div>
 		      <ul>
 		        <li><strong>用户注册</strong></li>
+		        <li id="dialog_err_reg"></li>
 		        <li>手机号码：
 		          <input id="reg_dialog_phone" class="reg_srk" name="" type="text" />
 		          <div>手机号码是您登录网站和接受取餐识别码的唯一凭证</div>
 		        </li>
 		        <li>用户密码：
-		          <input id="reg_dialog_pwd" class="reg_srk" name="" type="text" />
+		          <input id="reg_dialog_pwd" class="reg_srk" name="" type="password" />
 		          <div>密码少于12个字符，由英文和数字组成，区分大小写</div>
 		        </li>
 		        <li>确认密码：
-		          <input id="reg_dialog_pwd2" class="reg_srk" name="" type="text" />
+		          <input id="reg_dialog_pwd2" class="reg_srk" name="" type="password" />
 		        </li>
 		        <li>绑定帐号：
 		          <input name="" type="checkbox" value="" />
@@ -84,7 +85,7 @@
           <div class="dd_3"></div>
           <div class="pcbg">
             <div class="pc_l">
-              <div class="title"><p><strong>请添加配送信息：</strong><span id="logon_tip">如果您已经注册过网站会员，请先<a href="#" id="logon_lnk">点击这里登录</a>。</span></p></div>
+              <div class="title"><p><span id="logon_tip">请点击<a href="#" id="logon_lnk">这里</a>登录/注册。</span></p></div>
               <div id="user_info">
                 <div class="no_reg">
                   <table width="610" border="0" cellspacing="0" cellpadding="0">

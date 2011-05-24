@@ -83,11 +83,11 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	var dateDisplayer = '##MM##/##DD## 周##WW## ##TODAY##';
 	
-	var nodishTmplt = '<div class="dl_c_li"><div class="date"><span class="stress">##DATE##</span></div></div>'.replace('##DATE##', dateDisplayer);
+	var nodishTmplt = '<div class="dl_c_li"><div class="date"><span class="##DATE_CSS##">##DATE##</span></div></div>'.replace('##DATE##', dateDisplayer);
 	
 	var orderTmplt = '<div class="cai_sl">'+
 						'<input onclick="dec_quantity(##MD_ID##);" class="jianyi" name="" type="button" value="" />'+
-						'<input id="quantity_##MD_ID##" type="text" class="shuliang" maxlength="3" />'+
+						'<input id="quantity_##MD_ID##" type="text" class="shuliang" maxlength="3" value="1"/>'+
 						'<input onclick="inc_quantity(##MD_ID##)" class="jiayi" name="" type="button" value="" />'+
 						'份  <span class="stress">##PRICE##元/份</span>'+
 					 '</div>'+
@@ -98,7 +98,7 @@ $(document).ready(function($){
 
 	
 	var dishTmplt = ('<div class="dl_c_li">'+
-						'<div class="date"><span class="stress">##DATE##</span></div>'+
+						'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
 						'<div class="cai_p"><a href="#"><img src="/prototype/##IMG##" /></a></div>'+
 						'<div class="cai_t">##MD_NAME##</div>'+
 						'<div id="order_##MD_ID##" class="cai_s">'+
@@ -107,7 +107,7 @@ $(document).ready(function($){
 					'</div>').replace(/##DATE##/g, dateDisplayer);
 	
 	var selDishTmplt = ('<div class="dl_c_li">'+
-							'<div class="date"><span class="stress">##DATE##</span></div>'+
+							'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
 							'<div class="cai_p"><a href="#"><img src="/prototype/##IMG##" /></a></div>'+
 							'<div class="cai_t">##MD_NAME##</div>'+
 							'<div id="order_##MD_ID##" class="cai_s">'+
@@ -116,7 +116,7 @@ $(document).ready(function($){
 						'</div>').replace(/##DATE##/g, dateDisplayer);
 	
 	var oldDishTmplt = ('<div class="dl_c_li">'+
-							'<div class="date"><span class="stress">##DATE##</span></div>'+
+							'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
 							'<div class="cai_p"><a href="#"><img class="old_md" src="/prototype/##IMG##" /></a></div>'+
 							'<div class="cai_t">##MD_NAME##</div>'+
 							'<div class="cai_s">'+
@@ -170,7 +170,6 @@ $(document).ready(function($){
 								else {
 									if(sel_md) {
 										var divText = selDishTmplt;
-										in_total.html(parseInt(in_total.html())+price*sel_md.quantity);
 										divText = divText.replace(/##MD_ID##/g, md.id).replace(/##SEL_N##/g, sel_md.quantity).replace(/##SEL_PRICE##/g, price*sel_md.quantity);
 									}
 									else {
@@ -183,16 +182,21 @@ $(document).ready(function($){
 							else
 								var divText = nodishTmplt;
 							divText = divText.replace(/##MM##/g, mm).replace(/##DD##/g, dd).replace(/##WW##/g, ww).replace(/##YY##/g, yy);
-							if(date == currentD && currentM == new Date().getMonth())
+							if(date == currentD && currentM == new Date().getMonth()) {
 								divText = divText.replace('##TODAY##', '今天');
-							else
+								divText = divText.replace('##DATE_CSS##', 'stress');
+							}
+							else {
 								divText = divText.replace('##TODAY##', '');
+								divText = divText.replace('##DATE_CSS##', 'date');
+							}
 							listElem.append(divText);
 							date++;
 						}
 					}
 				}
 			}
+			in_total.html(cart.getTotalMoney());
 			//render logic end
 			
 			busy = false;
@@ -262,7 +266,7 @@ $(document).ready(function($){
 			$('#order_'+id).empty();
 			$('#order_'+id).append(disorderTmplt.replace(/##MD_ID##/g, id).replace(/##SEL_N##/g, quantity).replace(/##SEL_PRICE##/g, price*quantity).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
 					ilunch.doubleDigit(date.getMonth()+1)).replace(/##DD##/g, ilunch.doubleDigit(date.getDate())));
-			in_total.html(parseInt(in_total.html())+price*quantity);
+			in_total.html(cart.getTotalMoney());
 		}
 	};
 	
@@ -276,7 +280,7 @@ $(document).ready(function($){
 			$('#order_'+id).empty();
 			$('#order_'+id).append(orderTmplt.replace(/##MD_NAME##/g, md.name).replace(/##IMG##/g, md.imageURL).replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
 					ilunch.doubleDigit(date.getMonth()+1)).replace(/##DD##/g, ilunch.doubleDigit(date.getDate())));
-			in_total.html(parseInt(in_total.html())-price*quantity);
+			in_total.html(cart.getTotalMoney());
 			if(parseInt(in_total.html()) < 0)
 				in_total.html('0');
 		}

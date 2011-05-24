@@ -107,7 +107,7 @@ $(document).ready(function($){
 	
 	var orderTmplt = '<div class="xc_sl">'+
 						'<input onclick="dec_quantity(##SD_ID##);" class="jianyi" name="" type="button" value="" />'+
-						'<input id="quantity_##SD_ID##" type="text" class="shuliang" maxlength="3" />'+
+						'<input id="quantity_##SD_ID##" type="text" class="shuliang" maxlength="3" value="1"/>'+
 						'<input onclick="inc_quantity(##SD_ID##)" class="jiayi" name="" type="button" value="" />'+
 						'份  '+
 					 '</div>'+
