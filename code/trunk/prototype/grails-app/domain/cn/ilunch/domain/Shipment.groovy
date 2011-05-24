@@ -6,7 +6,7 @@ class Shipment {
     String status
     static belongsTo = [productOrder: ProductOrder]
     List orderItems
-    String serialNumber= "TEST123456"
+    String serialNumber
 
     static String CREATED = "CREATED"
     static String SHIPPED = "SHIPPED"
@@ -25,6 +25,7 @@ class Shipment {
     }
 
     def getDisplayStatus = {
+        System.out.println(status);
         switch(status){
             case CREATED:
                 "已生成订单"

@@ -44,11 +44,8 @@ fixture {
 
     "kitchen_zhangjiang"(Kitchen) {
         name = "张江厨房"
+        area = da_zhangjiang
     }
-
-
-
-
 
     'dp_lingyang'(DistributionPoint) {
         name = "凌阳大厦大堂"
@@ -56,10 +53,7 @@ fixture {
         longitude = '121.598160'
         area = da_zhangjiang
         kitchen = kitchen_zhangjiang
-
     }
-
-
 
     'building_lingyang'(Building) {
         name = '凌阳大厦'
@@ -100,6 +94,7 @@ fixture {
     "kitchen_peoplesquare"(Kitchen) {
         name = "人民广场厨房"
         manager = person_chenyu
+        area = da_peoplesquare
     }
 
      'dp_worldtradetower'(DistributionPoint) {
@@ -402,12 +397,11 @@ fixture {
 }
 
 post {
-
-
     def kitchen = Kitchen.findByName("张江厨房")
     if (!kitchen) {
         kitchen = new Kitchen(name: "张江厨房")
         kitchen.distributionPoints = [dp_lingyang]
+        kitchen.area = da_zhangjiang
     }
     def jleo = new Manager();
     jleo.name = "jleo"
