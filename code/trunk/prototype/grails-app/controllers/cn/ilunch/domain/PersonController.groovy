@@ -73,27 +73,32 @@ class PersonController {
 
 
     def register = {
+        def phoneNumber = params.cellNumber
 
-        if (params.cellNumber.length() != 11) {
+        if (!phoneNumber) {
             forward(controller: "exception", action: "cellphoneNumberInvalid", params: [number: params.cellNumber])
             return
         }
-        def allDigit = params.cellNumber.every {
+        if (phoneNumber.length() != 11) {
+            forward(controller: "exception", action: "cellphoneNumberInvalid", params: [number: params.cellNumber])
+            return
+        }
+        def allDigit = phoneNumber.every {
             Character.isDigit(it.charAt(0))
         }
-        if (params.cellNumber.length() != 11 || !allDigit) {
+        if (phoneNumber.length() != 11 || !allDigit) {
             forward(controller: "exception", action: "cellphoneNumberInvalid", params: [number: params.cellNumber])
             return
         }
-        if(Customer.findByCellNumber(params.cellNumber)){
+        if (Customer.findByCellNumber(phoneNumber)) {
             forward(controller: "exception", action: "cellphoneNumberRegistered", params: [number: params.cellNumber])
             return
         }
         def customer = new Customer();
-        customer.cellNumber = params.cellNumber
+        customer.cellNumber = phoneNumber
         customer.enabled = true
         customer.password = springSecurityService.encodePassword(params.password)
-        customer.save(flush:true,failOnError:true)
+        customer.save(flush: true, failOnError: true)
 
         def role = Role.findByAuthority('ROLE_USER')
         UserRole.create customer, role, true
