@@ -33,10 +33,11 @@
 <g:render template="/shared/header" model="[current:3]"/>
 
 <div class="content">
-    <g:if test="${flash.message}">
-        <div class="message">${flash.message}</div>
-    </g:if>
+
     <div class="c_c">
+        <g:if test="${flash.message}">
+            <div class="message">${flash.message}</div>
+        </g:if>
         <div class="my_list">
             <div class="ml_c">
                 <div class="mlc_l">
