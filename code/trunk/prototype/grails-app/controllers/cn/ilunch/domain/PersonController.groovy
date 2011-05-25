@@ -38,6 +38,7 @@ class PersonController {
             nickname = customer.name
             phoneNumber = customer.cellNumber
             points = customer.pointBalance
+            balance = customer.accountBalance
             if (customerArea) {
                 distributionArea = [
                         name: customerArea.name,

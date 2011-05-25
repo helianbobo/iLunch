@@ -72,7 +72,7 @@ class OrderService {
         productOrder.save()
     }
 
-    def cancelShipment(Shipment shipment){
+    def cancelShipment(Shipment shipment) {
         shipment.status = Shipment.CANCELLED
         def amount = shipment.getAmount()
         shipment.productOrder.customer.accountBalance += amount
@@ -85,7 +85,12 @@ class OrderService {
             case ProductOrder.SUBMITTED:
                 break;
             case ProductOrder.PAID:
-                productOrder.customer.accountBalance += productOrder.getRefundAmount()
+            productOrder.customer.accountBalance += productOrder.getRefundAmount()
+                productOrder.shipments.each {Shipment shipment->
+                    if (shipment.status == Shipment.CREATED) {
+                        shipment.status = Shipment.CANCELLED
+                    }
+                }
                 break;
 
             default: throw new OrderStatusException("current order status: ${productOrder.status}, only orders with status set to SUBMITTED or PAID can be cancelled")

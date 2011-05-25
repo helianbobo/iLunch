@@ -26,7 +26,8 @@ class OrderController {
         def shipmentList = shipmentCriteria.list {
             gt('shipmentDate', new Date() - 31)
             eq('status', Shipment.CREATED)
-            inList('productOrder', orderList)
+            if(orderList)
+                inList('productOrder', orderList)
             maxResults(params.max)
             order("shipmentDate", "desc")
         }
@@ -79,8 +80,17 @@ class OrderController {
     def cancel = {
         def orderId = params.id
         def productOrder = ProductOrder.get(orderId)
-        orderService.cancelOrder(productOrder)
 
+        try {
+            orderService.cancelOrder(productOrder)
+            flash.message = "已将付款返还到账户余额"
+            redirect(action: "listWithinMonth")
+            return
+        } catch (e) {
+            flash.message = "取消订单失败"
+            redirect(action: "listWithinMonth")
+            return
+        }
         redirect(action: "listWithinMonth")
     }
 
@@ -122,11 +132,21 @@ class OrderController {
             return
         }
         def shipment = Shipment.get(shipmentId)
-        orderService.cancelShipment(shipment)
-        if (shipmentId == null) {
-            flash.message = "已将付款返还到账户余额"
+        if (shipment.status != Shipment.CREATED) {
+            flash.message = "已经被取消"
             redirect(action: "listWithinMonth")
             return
         }
+        try {
+            orderService.cancelShipment(shipment)
+            flash.message = "已将付款返还到账户余额"
+            redirect(action: "listWithinMonth")
+            return
+        } catch (e) {
+            flash.message = "取消配送失败"
+            redirect(action: "listWithinMonth")
+            return
+        }
+
     }
 }
