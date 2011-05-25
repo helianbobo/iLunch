@@ -57,4 +57,19 @@ class ProductOrder {
         }
         return "未知"
     }
+
+    def getRefundAmount() {
+        if (status == SUBMITTED) {
+            return amount
+        }
+        final all = shipments.findAll {Shipment shipment ->
+            shipment.status == Shipment.CREATED
+        }
+        if(!all){
+            return 0;
+        }
+        return all.sum {
+            it.getAmount()
+        }
+    }
 }

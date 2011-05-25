@@ -33,7 +33,11 @@
 <g:render template="/shared/header" model="[current:3]"/>
 
 <div class="content">
+
     <div class="c_c">
+        <g:if test="${flash.message}">
+            <div class="message">${flash.message}</div>
+        </g:if>
         <div class="my_list">
             <div class="ml_c">
                 <div class="mlc_l">
@@ -90,6 +94,27 @@
                                 </tr>
 
                             </g:each>
+
+                        </table>
+
+                        <div class="notice"><input class="td" onmouseover="this.className = 'td_1'" onmouseout="this.className = 'td'" name="" type="button"/>注：退餐服务只针对状态在“订餐中”的订单。如果您要退订“配餐中”的订单，请<a href="#">点击这里</a>。</div>
+
+                        <div class="page"><input class="p_up" onmouseover="this.className = 'p_up_1'" onmouseout="this.className = 'p_up'" name="" type="button" value=""/> <input class="p_down" onmouseover="this.className = 'p_down_1'" onmouseout="this.className = 'p_down'" name="" type="button" value=""/> 当前1/3页</div>'
+                        <ul>
+                            <li><a href="#">当前配送</a></li>
+                            <li><a href="#">历史配送</a></li>
+                        </ul>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <th><input name="" type="checkbox" value=""/></th>
+                                <th>订餐时间</th>
+                                <th>套餐名</th>
+                                <th>金额</th>
+                                <th>地址</th>
+                                <th>识别码</th>
+                                <th>状态</th>
+                                <th>支付</th>
+                            </tr>
                             <g:each in="${shipments}" status="i" var="shipment">
 
                                 <tr>
@@ -99,24 +124,25 @@
                                     <td>${shipment.getAmount()}元</td>
                                     <td>${shipment.productOrder.distributionPoint.name}</td>
                                     <td>${shipment.serialNumber ?: "未生成"}
-                                        <div class="pa">[发至手机]</div></td>
+                                        <div class="pa"><g:link action="sendSN" params='[shipmentId:shipment.id]'>[发至手机]</g:link></div></td>
                                     <td>${shipment.getDisplayStatus()}</td>
-                                    <td><input class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" name="" type="button"/>
-                                        <input class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" name="" type="button"/>
-                                    </td>
+                                    <g:form action="cancelShipment">
+                                        <g:hiddenField name="shipmentId" value="${shipment.id}"/>
+                                        <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
+                                    </g:form>
                                 </tr>
 
                             </g:each>
                         </table>
-
-                        <div class="notice"><input class="td" onmouseover="this.className = 'td_1'" onmouseout="this.className = 'td'" name="" type="button"/>注：退餐服务只针对状态在“订餐中”的订单。如果您要退订“配餐中”的订单，请<a href="#">点击这里</a>。</div>
-
-                        <div class="page"><input class="p_up" onmouseover="this.className = 'p_up_1'" onmouseout="this.className = 'p_up'" name="" type="button" value=""/> <input class="p_down" onmouseover="this.className = 'p_down_1'" onmouseout="this.className = 'p_down'" name="" type="button" value=""/> 当前1/3页</div>
                     </div>
+
                 </div>
+
                 <div class="clear"></div>
+
             </div>
             <div class="clear"></div>
+
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@ dataSource {
     driverClassName = "org.hsqldb.jdbcDriver"
     username = "sa"
     password = ""
-
+    showSql= true
 }
 hibernate {
 
