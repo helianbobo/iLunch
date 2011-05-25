@@ -56,6 +56,9 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
+	
+	ilunch.lockScreen();
+	
 	ilunch.getCurrentUserInfo(function(data) {
 		user = data;
 	});
@@ -101,7 +104,7 @@ $(document).ready(function($){
 	
 	var busy1 = false;
 	renderUserInfo = function() {
-		if(!busy1 && user) {
+		if(!busy1 && user && cart && daList) {
 			busy1 = true;
 			
 			//render log start...
@@ -123,10 +126,11 @@ $(document).ready(function($){
 			}
 			//render logic end
 			
-			//TODO release screen lock here
 			
 			busy1 = false;
 			clearInterval(processor1);
+			
+			ilunch.unlockScreen();
 		}
 	};
 	
@@ -196,7 +200,6 @@ $(document).ready(function($){
 			
             busy2 = false;
 			clearInterval(processor2);
-			//TODO release screen lock here
 		}
 	};
 	
@@ -229,7 +232,6 @@ $(document).ready(function($){
 			$('#building_list').change();
 			//render logic end
 			
-			//TODO release screen lock here
 			
 			busy3 = false;
 			clearInterval(processor3);
@@ -248,13 +250,13 @@ $(document).ready(function($){
 	$('#last_week_btn').click(function() {
 		//change current date values to the first day of last week;
 		cart.getLastWeekOrder();
-		processor2 = setInterval(renderCart, 50);
+		renderCart();
 	});
 	
 	$('#next_week_btn').click(function() {
 		//change current date values to the first day of next week;
 		cart.getNextWeekOrder();
-		processor2 = setInterval(renderCart, 50);
+		renderCart();
 	});
 	
 	$('#btn_confirm_last').click(function() {
@@ -270,6 +272,11 @@ $(document).ready(function($){
 	$('#btn_confirm_next').click(function() {
 		if(!user.id) {
 			alert("请先登录!");
+			return;
+		}
+		
+		if(cart.isEmpty()) {
+			alert("请至少添加一道主菜/配菜！");
 			return;
 		}
 		
@@ -332,7 +339,8 @@ $(document).ready(function($){
 			return;
 		}
 		// call logon API
-		//TODO lock screen
+
+		ilunch.lockScreen();
 		var status = null;
 		ilunch.login(un, pwd, true, function(data) {
 			if(data.error)
@@ -349,7 +357,7 @@ $(document).ready(function($){
 			if(status != null) {
 				if(status == 'OK') {
 					// re-render userinfo
-					processor1 = setInterval(renderUserInfo, 50);
+					renderUserInfo();
 					$('#dialog_err').html('');
 					$('#logon_dialog').hide();
 				}
@@ -357,8 +365,8 @@ $(document).ready(function($){
 					// show error msg
 					$('#dialog_err').html(status);
 				}
-				//TODO unlock screen
 				clearInterval(p);
+				ilunch.unlockScreen();
 			}
 		}
 		var p = setInterval(wait, 50);
@@ -387,7 +395,7 @@ $(document).ready(function($){
 			return;
 		}
 		// call reg API
-		//TODO lock screen
+		ilunch.lockScreen();
 		var status = null;
 		ilunch.register(un, pwd, function(data) {
 			if(data.error)
@@ -410,7 +418,7 @@ $(document).ready(function($){
 			if(status != null) {
 				if(status == 'OK') {
 					// re-render userinfo
-					processor1 = setInterval(renderUserInfo, 50);
+					renderUserInfo();
 					$('#dialog_err_reg').html('');
 					$('#reg_dialog').hide();
 				}
@@ -418,7 +426,7 @@ $(document).ready(function($){
 					// show error msg
 					$('#dialog_err_reg').html(status);
 				}
-				//TODO unlock screen
+				ilunch.unlockScreen();
 				clearInterval(p2);
 			}
 		}
@@ -435,7 +443,7 @@ $(document).ready(function($){
 		//1.del from cart;
 		cart.deleteOrder(false, date, id);
 		//2.re-render cart;
-		processor2 = setInterval(renderCart, 50);
+		renderCart();
 		in_total.html(cart.getTotalMoney());
 		if(parseInt(in_total.html()) < 0)
 			in_total.html('0');

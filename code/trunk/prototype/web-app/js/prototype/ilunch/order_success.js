@@ -44,6 +44,9 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
+	
+	ilunch.lockScreen();
+	
 	ilunch.getCurrentUserInfo(function(data){
 		user = data;
 	});
@@ -113,10 +116,9 @@ $(document).ready(function($){
 					.replace(/##CONTACT##/g, contact?contact:"未提供联系人姓名").replace(/##AREA_NAME##/g, areaName).replace(/##BUILDING_NAME##/g, buildingName));
 			//render logic end
 			
-			//TODO release screen lock here
-			
 			busy1 = false;
 			clearInterval(processor1);
+			ilunch.unlockScreen();
 		}
 	};
 	

@@ -61,6 +61,8 @@ $(document).ready(function($){
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
 	
+	ilunch.lockScreen();
+	
 	ilunch.getSideDishListOnSelectionPage(
 			''+currentY+'-'+(1+currentM)+'-'+currentD,
 			areaId,
@@ -130,8 +132,6 @@ $(document).ready(function($){
 	///// wait until data's ready then render page ////////
 	///////////////////////////////////////////////////////
 	
-	//TODO lock the screen
-	
 	var busy1 = false;
 	renderSDList = function() {
 		if(cart && sideDishList && !busy1) {
@@ -180,7 +180,7 @@ $(document).ready(function($){
 			
 			busy1 = false;
 			clearInterval(processor1);
-			//TODO release screen lock here
+			ilunch.unlockScreen();
 		}
 	};
 
@@ -250,7 +250,6 @@ $(document).ready(function($){
 			
             busy2 = false;
 			clearInterval(processor2);
-			//TODO release screen lock here
 		}
 	};
 	
@@ -298,7 +297,7 @@ $(document).ready(function($){
 		if(_hasNextPage()) {
 			currentPage++;
 			$('#current_page').html(currentPage);
-			processor1 = setInterval(renderSDList, 50);
+			renderSDList();
 		}
 	});
 	
@@ -307,20 +306,20 @@ $(document).ready(function($){
 		if(_hasPrevPage()) {
 			currentPage--;
 			$('#current_page').html(currentPage);
-			processor1 = setInterval(renderSDList, 50);
+			renderSDList();
 		}
 	});
 	
 	$('#last_week_btn').click(function() {
 		//change current date values to the first day of last week;
 		cart.getLastWeekOrder();
-		processor2 = setInterval(renderCart, 50);
+		renderCart();
 	});
 	
 	$('#next_week_btn').click(function() {
 		//change current date values to the first day of next week;
 		cart.getNextWeekOrder();
-		processor2 = setInterval(renderCart, 50);
+		renderCart();
 	});
 	
 	$('#btn_confirm_last').click(function() {
@@ -375,8 +374,8 @@ $(document).ready(function($){
 			var price = ilunch.getPriceByDate(sd.prices, date);
 			cart.addOrder(false, date, id, name, imageURL, price, quantity);
 			//2.re-render cart;
-			processor2 = setInterval(renderCart, 50);
-			$('#quantity_'+id).val('');
+			renderCart();
+			$('#quantity_'+id).val('1');
 			$('#order_'+id).children("span").remove();
 			$('#order_'+id).append(disorderTmplt.replace(/##SEL_N##/g, cart.getOrderByIdAndDate(id, date, false).quantity));
 			datePicker.css({"display":"none"});
@@ -394,7 +393,7 @@ $(document).ready(function($){
 		//1.del from cart;
 		cart.deleteOrder(false, date, id);
 		//2.re-render cart;
-		processor2 = setInterval(renderCart, 50);
+		renderCart();
 		$('#order_'+id).children("span").remove();
 		in_total.html(cart.getTotalMoney());
 		if(parseInt(in_total.html()) < 0)
@@ -437,6 +436,6 @@ $(document).ready(function($){
 		//change page number to 1;
 		currentPage = 1;
 		//render list;
-		processor1 = setInterval(renderSDList, 50);
+		renderSDList();
 	};
 });

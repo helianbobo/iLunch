@@ -583,4 +583,28 @@
 		return ''+d.getFullYear()+'-'+ilunch.doubleDigit(d.getMonth()+1)+'-'+ilunch.doubleDigit(d.getDate());
 	};
 	
+	ilunch.lockScreen = function() {
+		//is exists?
+		var elem = $('#ilunch_screen_locker');
+		if(elem.length <= 0) {
+			$(document.body).append('<div id="ilunch_screen_locker" class="black_overlay"><div style="position:absolute;left:50%;top:50%;z-index:1002"><img src="/prototype/images/wait01.gif" /></div></div>');
+			elem = $('#ilunch_screen_locker');
+		}
+		//enable if off
+		if(elem.css("display") == "none") {
+			elem.css({"display":"block"});
+		}
+	};
+	
+	ilunch.unlockScreen = function() {
+		//is exists?
+		var elem = $('#ilunch_screen_locker');
+		if(elem.length <= 0) {
+			return;
+		}
+		if(elem.css("display") == "block") {
+			elem.css({"display":"none"});
+		}
+	};
+	
 })(jQuery);

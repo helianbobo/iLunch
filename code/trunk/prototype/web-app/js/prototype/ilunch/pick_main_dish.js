@@ -13,6 +13,7 @@ $(document).ready(function($){
 	if(!areaId || areaId == '')
 		ilunch.fatalError("area id not found!");
 	
+	var today = new Date();
 	var d = new Date();
 	var currentM = null;
 	var currentD = null;
@@ -22,6 +23,7 @@ $(document).ready(function($){
 	var skip = 0;
 	var lastDateOfMonth = null;
 	var headOffset = null;
+	var ORDER_INADVANCE_DAY = 2;
 
 	var listElem = $('#md_list');
 	if(listElem.length <= 0)
@@ -31,6 +33,7 @@ $(document).ready(function($){
 		ilunch.fatalError('current_date elem not found!');
 	var in_total = $('#in_total');
 	in_total.html('0');
+	$('#last_month_btn').css({"display":"none"});
 	
 	function initialize() {
 		currentM = d.getMonth();
@@ -57,20 +60,19 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
+
+	ilunch.lockScreen();
 	
-	function _getMainDishListOnSelectionPage() {
-		ilunch.getMainDishListOnSelectionPage(
-				''+currentY+'-'+(1+currentM)+'-'+'01', 
-				''+currentY+'-'+(1+currentM)+'-'+lastDateOfMonth.getDate(),
-				areaId,
-				function(data) {
-					//TODO convert to array
-					mainDishList = data;
-				}
-		);
-	}
-	
-	_getMainDishListOnSelectionPage();
+	ilunch.getMainDishListOnSelectionPage(
+			''+currentY+'-'+(1+currentM)+'-'+'01', 
+			''+currentY+'-'+(1+currentM)+'-'+lastDateOfMonth.getDate(),
+			areaId,
+			function(data) {
+				//TODO convert to array
+				mainDishList = data;
+			}
+	);
+
 	
 	ilunch.getCart(
 			function(data) {
@@ -82,49 +84,39 @@ $(document).ready(function($){
 	////////////////// define templates ///////////////////
 	///////////////////////////////////////////////////////
 	var dateDisplayer = '##MM##/##DD## 周##WW## ##TODAY##';
-	
-	var nodishTmplt = '<div class="dl_c_li"><div class="date"><span class="##DATE_CSS##">##DATE##</span></div></div>'.replace('##DATE##', dateDisplayer);
-	
-	var orderTmplt = '<div class="cai_sl">'+
-						'<input onclick="dec_quantity(##MD_ID##);" class="jianyi" name="" type="button" value="" />'+
-						'<input id="quantity_##MD_ID##" type="text" class="shuliang" maxlength="3" value="1"/>'+
-						'<input onclick="inc_quantity(##MD_ID##)" class="jiayi" name="" type="button" value="" />'+
-						'份  <span class="stress">##PRICE##元/份</span>'+
-					 '</div>'+
-					 '<input class="xuangou" onclick="md_order(##MD_ID##,\'##YY##-##MM##-##DD##\',\'##MD_NAME##\',\'##IMG##\');" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
-	
-	var disorderTmplt = '<div class="cai_sl">已选购##SEL_N##份共##SEL_PRICE##元</div>'+
-						'<input onclick="md_disorder(##MD_ID##,\'##YY##-##MM##-##DD##\');" class="fangqi" onmouseover="this.className=\'fangqi_1\'" onmouseout="this.className=\'fangqi\'" name="" type="button" value="" />';
 
-	
-	var dishTmplt = ('<div class="dl_c_li">'+
-						'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
-						'<div class="cai_p"><a href="#"><img src="/prototype/##IMG##" /></a></div>'+
-						'<div class="cai_t">##MD_NAME##</div>'+
-						'<div id="order_##MD_ID##" class="cai_s">'+
-							orderTmplt+
-						'</div>'+
-					'</div>').replace(/##DATE##/g, dateDisplayer);
-	
-	var selDishTmplt = ('<div class="dl_c_li">'+
+	var dishSubTmplt1 = '<div class="dl_c_li">'+
 							'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
 							'<div class="cai_p"><a href="#"><img src="/prototype/##IMG##" /></a></div>'+
 							'<div class="cai_t">##MD_NAME##</div>'+
-							'<div id="order_##MD_ID##" class="cai_s">'+
-								disorderTmplt+
-							'</div>'+
-						'</div>').replace(/##DATE##/g, dateDisplayer);
+							'<div name="order" class="cai_s">';
 	
-	var oldDishTmplt = ('<div class="dl_c_li">'+
-							'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
-							'<div class="cai_p"><a href="#"><img class="old_md" src="/prototype/##IMG##" /></a></div>'+
-							'<div class="cai_t">##MD_NAME##</div>'+
-							'<div class="cai_s">'+
-								'<div class="cai_sl">订餐时间已过</div>'+
-							'</div>'+
-						'</div>').replace('##DATE##', dateDisplayer);
+	var dishSubTmplt2 =   	'</div>'+
+					  	'</div>';
+
+	var orderTmplt = '<div class="cai_sl">'+
+						'<input onclick="dec_quantity(this);" class="jianyi" name="" type="button" value="" />'+
+						'<input name="quantity" type="text" class="shuliang" maxlength="3" value="1"/>'+
+						'<input onclick="inc_quantity(this)" class="jiayi" name="" type="button" value="" />'+
+						'份  <span class="stress">##PRICE##元/份</span>'+
+					 '</div>'+
+					 '<input class="xuangou" onclick="md_order(##MD_ID##,\'##YY##-##MM##-##DD##\',\'##MD_NAME##\',\'##IMG##\',this);" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
+	
+	var disorderTmplt = '<div class="cai_sl">已选购##SEL_N##份共##SEL_PRICE##元</div>'+
+						'<input onclick="md_disorder(##MD_ID##,\'##YY##-##MM##-##DD##\',this);" class="fangqi" onmouseover="this.className=\'fangqi_1\'" onmouseout="this.className=\'fangqi\'" name="" type="button" value="" />';
+
+	
+	var dishTmplt = (dishSubTmplt1+orderTmplt+dishSubTmplt2).replace('##DATE##', dateDisplayer);
+	
+	var selDishTmplt = (dishSubTmplt1+disorderTmplt+dishSubTmplt2).replace('##DATE##', dateDisplayer);
+	
+	var oldDishTmplt = (dishSubTmplt1+'<div class="cai_sl">订餐时间已过</div>'+dishSubTmplt2).replace('##DATE##', dateDisplayer);
 
 	var emptyTmplt = '<div class="dl_c_li"></div>';
+
+	var nodishTmplt = ('<div class="dl_c_li">'+
+						'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
+					  '</div>').replace('##DATE##', dateDisplayer);
 	
 	///////////////////////////////////////////////////////
 	///// wait until data's ready then render page ////////
@@ -164,7 +156,8 @@ $(document).ready(function($){
 								var price = ilunch.getPriceByDate(md.prices, thisDate);
 								var md_name = md.name;
 								var img = md.imageURL;
-								if(thisDate < d) {
+								
+								if(thisDate <= new Date(today.getFullYear(), today.getMonth(), today.getDate()+ORDER_INADVANCE_DAY)) {
 									var divText = oldDishTmplt;
 								}
 								else {
@@ -183,12 +176,12 @@ $(document).ready(function($){
 								var divText = nodishTmplt;
 							divText = divText.replace(/##MM##/g, mm).replace(/##DD##/g, dd).replace(/##WW##/g, ww).replace(/##YY##/g, yy);
 							if(date == currentD && currentM == new Date().getMonth()) {
-								divText = divText.replace('##TODAY##', '今天');
-								divText = divText.replace('##DATE_CSS##', 'stress');
+								divText = divText.replace(/##TODAY##/g, '今天');
+								divText = divText.replace(/##DATE_CSS##/g, 'stress');
 							}
 							else {
-								divText = divText.replace('##TODAY##', '');
-								divText = divText.replace('##DATE_CSS##', 'date');
+								divText = divText.replace(/##TODAY##/g, '');
+								divText = divText.replace(/##DATE_CSS##/g, 'date');
 							}
 							listElem.append(divText);
 							date++;
@@ -201,7 +194,7 @@ $(document).ready(function($){
 			
 			busy = false;
 			clearInterval(processor);
-			//TODO release screen lock here
+			ilunch.unlockScreen();
 		}
 	};
 
@@ -212,7 +205,7 @@ $(document).ready(function($){
 		for(var i in mainDishList) {
 			for(var j = 0; j < mainDishList[i].prices.length; j++) {
 				var d = ilunch.makeDate(mainDishList[i].prices[j].startDate);
-				if(d.getDate() == date && currentM == d.getMonth())
+				if(d.getDate() == date && currentM == d.getMonth() && currentY == d.getFullYear())
 					return mainDishList[i];
 			}
 		}
@@ -233,17 +226,21 @@ $(document).ready(function($){
 	$('#last_month_btn').click(function(){
 		d.setMonth(currentM-1);
 		initialize();
-		mainDishList = null;
-		_getMainDishListOnSelectionPage();
-		processor = setInterval(renderMDList, 50);
+		if(currentM == new Date().getMonth() && currentY == new Date().getFullYear())
+			$('#last_month_btn').css({"display":"none"});
+//		mainDishList = null;
+//		_getMainDishListOnSelectionPage();
+		renderMDList();
 	});
 	
 	$('#next_month_btn').click(function(){
 		d.setMonth(currentM+1);
 		initialize();
-		mainDishList = null;
-		_getMainDishListOnSelectionPage();
-		processor = setInterval(renderMDList, 50);
+		if(currentM > new Date().getMonth() && currentY >= new Date().getFullYear())
+			$('#last_month_btn').css({"display":"inline"});
+//		mainDishList = null;
+//		_getMainDishListOnSelectionPage();
+		renderMDList();
 	});
 	
 	$('#btn_confirm').click(function() {
@@ -256,29 +253,31 @@ $(document).ready(function($){
 		});
 	});
 	
-	md_order = function(id, date, name, imageURL) {
+	md_order = function(id, date, name, imageURL, elem) {
 		var md = getMDById(id);
-		var quantity = parseInt($('#quantity_'+id).val());
+		var quantity = parseInt($(elem).prev().find('input[name="quantity"]').val());
 		date = ilunch.makeDate(date);
 		if(md && quantity > 0) {
 			var price = ilunch.getPriceByDate(md.prices, date);
 			cart.addOrder(true, date, id, name, imageURL, price, quantity);
-			$('#order_'+id).empty();
-			$('#order_'+id).append(disorderTmplt.replace(/##MD_ID##/g, id).replace(/##SEL_N##/g, quantity).replace(/##SEL_PRICE##/g, price*quantity).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
+			var pElem = $(elem).parents('div[name="order"]');
+			pElem.empty();
+			pElem.append(disorderTmplt.replace(/##MD_ID##/g, id).replace(/##SEL_N##/g, quantity).replace(/##SEL_PRICE##/g, price*quantity).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
 					ilunch.doubleDigit(date.getMonth()+1)).replace(/##DD##/g, ilunch.doubleDigit(date.getDate())));
 			in_total.html(cart.getTotalMoney());
 		}
 	};
 	
-	md_disorder = function(id, date) {
+	md_disorder = function(id, date, elem) {
 		var md = getMDById(id);
 		date = ilunch.makeDate(date);
 		if(md) {
 			var quantity = cart.getOrderByIdAndDate(id, date, true).quantity;
 			cart.deleteOrder(true, date, id);
 			var price = ilunch.getPriceByDate(md.prices, date);
-			$('#order_'+id).empty();
-			$('#order_'+id).append(orderTmplt.replace(/##MD_NAME##/g, md.name).replace(/##IMG##/g, md.imageURL).replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
+			var pElem = $(elem).parents('div[name="order"]');
+			pElem.empty();
+			pElem.append(orderTmplt.replace(/##MD_NAME##/g, md.name).replace(/##IMG##/g, md.imageURL).replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
 					ilunch.doubleDigit(date.getMonth()+1)).replace(/##DD##/g, ilunch.doubleDigit(date.getDate())));
 			in_total.html(cart.getTotalMoney());
 			if(parseInt(in_total.html()) < 0)
@@ -286,17 +285,17 @@ $(document).ready(function($){
 		}
 	};
 	
-	dec_quantity = function(id) {
-		var quantity = parseInt($('#quantity_'+id).val());
+	dec_quantity = function(elem) {
+		var quantity = parseInt($(elem).siblings('input[name="quantity"]').val());
 		if(!quantity)
 			quantity = 0;
-		$('#quantity_'+id).val((quantity-1)<0?0:(quantity-1));
+		$(elem).siblings('input[name="quantity"]').val((quantity-1)<0?0:(quantity-1));
 	};
 	
-	inc_quantity = function(id) {
-		var quantity = parseInt($('#quantity_'+id).val());
+	inc_quantity = function(elem) {
+		var quantity = parseInt($(elem).siblings('input[name="quantity"]').val());
 		if(!quantity)
 			quantity = 0;
-		$('#quantity_'+id).val(quantity+1);
+		$(elem).siblings('input[name="quantity"]').val(quantity+1);
 	};
 });
