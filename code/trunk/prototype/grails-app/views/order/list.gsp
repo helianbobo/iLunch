@@ -22,11 +22,11 @@
         <br/>
         等级：食神
     </p>
-    <p>账户余额：0元
+    <p>账户余额：${'$'}{balance}元
         <br/>
         <a href="#">[充值]</a>
         <br/>
-        积分：${'$'}{pointBalance}</p>
+        积分：${'$'}{points}</p>
 
 </script>
 
@@ -35,9 +35,7 @@
 <div class="content">
 
     <div class="c_c">
-        <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-        </g:if>
+
         <div class="my_list">
             <div class="ml_c">
                 <div class="mlc_l">
@@ -45,7 +43,9 @@
                 </div>
 
 
-                <div class="mlc_r">
+                <div class="mlc_r"><g:if test="${flash.message}">
+                    <div class="message">${flash.message}</div>
+                </g:if>
                     <div class="title">订单记录</div>
                     <div class="title_menu">
                         <ul>
@@ -126,10 +126,12 @@
                                     <td>${shipment.serialNumber ?: "未生成"}
                                         <div class="pa"><g:link action="sendSN" params='[shipmentId:shipment.id]'>[发至手机]</g:link></div></td>
                                     <td>${shipment.getDisplayStatus()}</td>
-                                    <g:form action="cancelShipment">
-                                        <g:hiddenField name="shipmentId" value="${shipment.id}"/>
-                                        <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
-                                    </g:form>
+                                    <td>
+                                        <g:form action="cancelShipment">
+                                            <g:hiddenField name="shipmentId" value="${shipment.id}"/>
+                                            <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
+                                        </g:form>
+                                    </td>
                                 </tr>
 
                             </g:each>
