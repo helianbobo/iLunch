@@ -1,7 +1,6 @@
 package cn.ilunch.service
 
 import grails.test.*
-import cn.ilunch.domain.ProductOrder
 import cn.ilunch.domain.Customer
 import cn.ilunch.domain.Building
 import cn.ilunch.domain.DistributionPoint
@@ -13,6 +12,7 @@ import grails.web.JSONBuilder
 import cn.ilunch.domain.ProductAreaPriceSchedule
 import cn.ilunch.domain.SideDish
 import cn.ilunch.domain.MainDish
+import cn.ilunch.domain.ProductOrder
 
 class OrderServiceTests extends GrailsUnitTestCase {
     protected void setUp() {
@@ -24,6 +24,12 @@ class OrderServiceTests extends GrailsUnitTestCase {
     OrderService service
 
     void testAcknowledgePayment() {
+        def serialNumberService = mockFor(cn.ilunch.service.SerialNumberService)
+        serialNumberService.demand.getCode(2..2) {id, date ->
+            return "code12345"
+        }
+        service.serialNumberService = serialNumberService.createMock()
+
         Customer customer = new Customer()
         customer.cellNumber = "12345678901"
         customer.name = "liuchao"
@@ -125,20 +131,22 @@ class OrderServiceTests extends GrailsUnitTestCase {
         }
         assertEquals(today, shipment1.shipmentDate)
         assertEquals(Shipment.CREATED, shipment1.status)
-        assertEquals(order, shipment1.order)
+        assertEquals(order, shipment1.productOrder)
         assertTrue(shipment1.orderItems.contains(item1))
         assertTrue(shipment1.orderItems.contains(item3))
         assertTrue(shipment1.orderItems.contains(item4))
+        assertEquals("code12345", shipment1.serialNumber)
 
         Shipment shipment2 = order.shipments.find {shipment ->
             shipment.shipmentDate == today + 1
         }
         assertEquals(today + 1, shipment2.shipmentDate)
         assertEquals(Shipment.CREATED, shipment2.status)
-        assertEquals(order, shipment2.order)
+        assertEquals(order, shipment2.productOrder)
         assertTrue(shipment2.orderItems.contains(item2))
         assertTrue(shipment2.orderItems.contains(item5))
         assertTrue(shipment2.orderItems.contains(item6))
+        assertEquals("code12345", shipment2.serialNumber)
     }
 
     public void testUnacknowledgeability() {
@@ -222,15 +230,24 @@ class OrderServiceTests extends GrailsUnitTestCase {
         customer.accountBalance = 0.0
         mockDomain(Customer, [customer])
 
-        ProductOrder order = new ProductOrder()
-        order.amount = 10.0f
-        order.status = ProductOrder.PAID
-        order.customer = customer
+        ProductOrder productOrder = new ProductOrder()
+        productOrder.amount = 35.0f
+        productOrder.status = ProductOrder.PAID
+        productOrder.customer = customer
 
-        service.cancelOrder order
+        def orderItems = []
+        orderItems << new OrderItem(price: 15)
+        orderItems << new OrderItem(price: 8)
+        orderItems << new OrderItem(price: 12)
+        final shipment1 = new Shipment(productOrder: productOrder, orderItems: orderItems, status: Shipment.CREATED)
+        final shipment2 = new Shipment(productOrder: productOrder, orderItems: orderItems, status: Shipment.SHIPPED)
+        productOrder.addToShipments shipment1
+        productOrder.addToShipments shipment2
 
-        assertEquals(ProductOrder.CANCELLED, order.status)
-        assertEquals(10.0f, customer.accountBalance)
+        service.cancelOrder productOrder
+
+        assertEquals(ProductOrder.CANCELLED, productOrder.status)
+        assertEquals(35.0f, customer.accountBalance)
     }
 
     public void testCompleteCancelledOrder() {
@@ -316,7 +333,7 @@ class OrderServiceTests extends GrailsUnitTestCase {
             pointChange = 10
             orders = array {
                 order([
-                        date: new Date().format("yyyy-MM-dd"),
+                        date: (new Date() + 3).format("yyyy-MM-dd"),
                         mainDishes: array {
                             mainDish([id: 1, quantity: 5])
                             mainDish([id: 2, quantity: 4])
@@ -356,27 +373,27 @@ class OrderServiceTests extends GrailsUnitTestCase {
             it.product.equals(md2)
         }
         assertEquals(5, mdOrder2.quantity)
-        assertEquals(shipmentDate, mdOrder2.shippmentDate)
+        assertEquals(shipmentDate + 3, mdOrder2.shippmentDate)
 
         def mdOrder1 = orderCreated.orderItems.find {
             it.product.equals(md1)
         }
-        assertEquals(shipmentDate, mdOrder1.shippmentDate)
+        assertEquals(shipmentDate + 3, mdOrder1.shippmentDate)
 
         final sdOrder2 = orderCreated.orderItems.find {
             it.product.equals(sd2)
         }
         assertEquals(5, sdOrder2.quantity)
-        assertEquals(shipmentDate, sdOrder2.shippmentDate)
+        assertEquals(shipmentDate + 3, sdOrder2.shippmentDate)
 
         final sdOrder1 = orderCreated.orderItems.find {
             it.product.equals(sd1)
         }
         assertEquals(2, sdOrder1.quantity)
-        assertEquals(shipmentDate, sdOrder1.shippmentDate)
+        assertEquals(shipmentDate + 3, sdOrder1.shippmentDate)
     }
 
-    public void testShrinkOrder(){
+    public void testShrinkOrder() {
         Customer customer = new Customer()
         customer.cellNumber = "12345678901"
         customer.name = "liuchao"
@@ -419,17 +436,17 @@ class OrderServiceTests extends GrailsUnitTestCase {
 
         def today = new Date()
         priceService.demand.queryProductSchedule(2) {mainDish, area1, date ->
-            [new ProductAreaPriceSchedule(remain:5, quantity:10, price: 5, fromDate: today, toDate: today + 2)]
+            [new ProductAreaPriceSchedule(remain: 5, quantity: 10, price: 5, fromDate: today, toDate: today + 2)]
         }
         service.priceService = priceService.createMock()
 
-        ProductOrder oldOrder = new ProductOrder(distributionPoint:area,customer:customer, orderDate:today,pointChange:10, amount:150)
-        OrderItem item = new OrderItem(order:oldOrder,product:md1,quantity: 10, price:10, shippmentDate:today)
-        OrderItem item2 = new OrderItem(order:oldOrder,product:sd1,quantity: 3, price:4, shippmentDate:today)
-        OrderItem item3 = new OrderItem(order:oldOrder,product:sd2,quantity: 5, price:3, shippmentDate:today)
-        OrderItem item4 = new OrderItem(order:oldOrder,product:md1,quantity: 8, price:15, shippmentDate:today+2)
+        ProductOrder oldOrder = new ProductOrder(distributionPoint: area, customer: customer, orderDate: today, pointChange: 10, amount: 150)
+        OrderItem item = new OrderItem(order: oldOrder, product: md1, quantity: 10, price: 10, shippmentDate: today)
+        OrderItem item2 = new OrderItem(order: oldOrder, product: sd1, quantity: 3, price: 4, shippmentDate: today)
+        OrderItem item3 = new OrderItem(order: oldOrder, product: sd2, quantity: 5, price: 3, shippmentDate: today)
+        OrderItem item4 = new OrderItem(order: oldOrder, product: md1, quantity: 8, price: 15, shippmentDate: today + 2)
 
-        [item,item4,item2,item3].each{
+        [item, item4, item2, item3].each {
             oldOrder.addToOrderItems it
         }
 
@@ -439,19 +456,19 @@ class OrderServiceTests extends GrailsUnitTestCase {
         assertEquals(ProductOrder.CANCELLED, oldOrder.status)
         assertEquals(ProductOrder.SUBMITTED, newOrder.status)
 
-        assertEquals(oldOrder.orderItems[0].quantity-5, newOrder.orderItems[0].quantity)
+        assertEquals(oldOrder.orderItems[0].quantity - 5, newOrder.orderItems[0].quantity)
         assertEquals(oldOrder.orderItems[0].price, newOrder.orderItems[0].price)
         assertEquals(today, newOrder.orderItems[0].shippmentDate)
         assertEquals(newOrder, newOrder.orderItems[0].order)
 
-        assertEquals(newOrder.orderItems[0].price*newOrder.orderItems[0].quantity,oldOrder.orderItems[0].price*(oldOrder.orderItems[0].quantity-5))
+        assertEquals(newOrder.orderItems[0].price * newOrder.orderItems[0].quantity, oldOrder.orderItems[0].price * (oldOrder.orderItems[0].quantity - 5))
 
-        assertEquals(newOrder.orderItems[1].quantity,5)
+        assertEquals(newOrder.orderItems[1].quantity, 5)
         assertEquals(oldOrder.orderItems[1].price, newOrder.orderItems[1].price)
-        assertEquals(today+2, newOrder.orderItems[1].shippmentDate)
+        assertEquals(today + 2, newOrder.orderItems[1].shippmentDate)
         assertEquals(newOrder, newOrder.orderItems[1].order)
 
-        assertEquals(newOrder.orderItems[1].price*newOrder.orderItems[1].quantity,oldOrder.orderItems[1].price*5)
+        assertEquals(newOrder.orderItems[1].price * newOrder.orderItems[1].quantity, oldOrder.orderItems[1].price * 5)
 
         assertEquals(5, newOrder.orderItems[3].quantity)
         assertEquals(oldOrder.orderItems[3].price, newOrder.orderItems[3].price)
@@ -460,5 +477,21 @@ class OrderServiceTests extends GrailsUnitTestCase {
 
         assertEquals(152, newOrder.amount)
 
+    }
+
+    void testCancelShipment() {
+        final customer = new Customer(accountBalance: 0)
+        mockDomain(Customer, [customer])
+        final ProductOrder productOrder = new ProductOrder(customer: customer, status: ProductOrder.PAID)
+        def orderItems = []
+        orderItems << new OrderItem(price: 15)
+        orderItems << new OrderItem(price: 8)
+        orderItems << new OrderItem(price: 12)
+        final shipment = new Shipment(productOrder: productOrder, orderItems: orderItems)
+        mockDomain(Shipment, [shipment])
+
+        service.cancelShipment(shipment);
+        assertEquals(35, customer.accountBalance)
+        assertEquals("CANCELLED", shipment.status)
     }
 }

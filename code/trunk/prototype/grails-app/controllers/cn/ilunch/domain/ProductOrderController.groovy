@@ -1,4 +1,5 @@
 package cn.ilunch.domain
+
 import cn.ilunch.exception.EntityNotFoundException
 import cn.ilunch.service.DeprecatedOrderException
 
@@ -35,9 +36,15 @@ class ProductOrderController {
 
         try {
             def productOrder = orderService.createOrder(orderDetails, customer, building, dateFormatString)
-            render(contentType: "text/json") {
-                orderId = productOrder.id
-                result = "success"
+            if (!productOrder) {
+                render(contentType: "text/json") {
+                    result = "failure"
+                }
+            } else {
+                render(contentType: "text/json") {
+                    orderId = productOrder.id
+                    result = "success"
+                }
             }
         } catch (EntityNotFoundException e) {
             forward(controller: "exception", action: "entityNotFound", params: e.exceptionInfoMap)

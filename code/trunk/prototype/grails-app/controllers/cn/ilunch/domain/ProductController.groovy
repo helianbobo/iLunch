@@ -5,6 +5,7 @@ import cn.ilunch.security.ILunchUserDetails
 import grails.plugins.springsecurity.Secured
 import org.hibernate.criterion.CriteriaSpecification
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.hibernate.Hibernate
 
 class ProductController {
     def priceService
@@ -52,41 +53,56 @@ class ProductController {
     def listAllMainDishOnSelectionPage = {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date)
+        def toDate = null;
+        if(params.toDate)
+            toDate = Date.parse(dateFormatString, params.toDate)
         def max = params.max
+        if(!max)
+            max = 50
         def className = "cn.ilunch.domain.MainDish"
         def areaId = params.areaId as long
-        def result = queryProductOnSelectionPage(fromDate, areaId, className, max)
+        def result = queryProductOnSelectionPage(fromDate, toDate,areaId, className, max)
         renderJSONFromResult(result)
     }
 
     def listAllSideDishOnSelectionPage = {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date)
+        def toDate = null;
+        if(params.toDate)
+            toDate = Date.parse(dateFormatString, params.toDate)
         def max = params.max
+        if(!max)
+            max = 50
         def className = "cn.ilunch.domain.SideDish"
         def areaId = params.areaId as long
-        def result = queryProductOnSelectionPage(fromDate, areaId, className, max)
+        def result = queryProductOnSelectionPage(fromDate, toDate, areaId, className, max)
         renderJSONFromResult(result)
     }
 
-    private def queryProductOnSelectionPage(Date fromDate, long areaId, String className, max) {
+    private def queryProductOnSelectionPage(Date fromDate, Date toDate, long areaId, String className, max) {
         def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.original_image_url as original_image_url,p.id as id,p.class as class,t.value
                     from product_area_price_schedule S2
                     left join product p on p.id = S2.product_id
                     left join product_tags pt on p.id=pt.product_id
                     left join tag t on t.id = pt.tag_id
-                    right join (select t.product_id,from_date as fromDate
+                    right join (select t.product_id as product_id,from_date as fromDate
                         from product_area_price_schedule t
                         where t.area_id=:area
                         and t.status = 0
                         and (t.to_date>=:st or t.to_date is null )
+                        ${toDate?"and (t.from_date<=:ed)":""}
                         group by t.product_id,from_date) S1
                         on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                        where p.class = :className order by S2.from_date asc""")
+                        where p.class = :className order by S2.from_date asc""").addScalar('price',Hibernate.DOUBLE).addScalar('productId',Hibernate.LONG).addScalar('fromDate',Hibernate.DATE).addScalar('toDate',Hibernate.DATE).addScalar('productName',Hibernate.STRING).addScalar('story',Hibernate.STRING)
+        .addScalar('original_image_url',Hibernate.STRING).addScalar('id',Hibernate.LONG) .addScalar('class',Hibernate.STRING).addScalar('value',Hibernate.STRING)
 
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)
         sqlQuery.setString("className", className)
+
+        if(toDate)
+           sqlQuery.setTimestamp("ed", toDate)
 
         if (max)
             sqlQuery.setMaxResults(max)
@@ -98,6 +114,8 @@ class ProductController {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date) + 2  //后天开始
         def max = params.max
+        if(!max)
+            max = 50
         def areaId = params.areaId as long
         def className = "cn.ilunch.domain.MainDish"
 
@@ -109,6 +127,8 @@ class ProductController {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date) + 2  //后天开始
         def max = params.max
+        if(!max)
+            max = 50
         def areaId = params.areaId as long
         def className = "cn.ilunch.domain.SideDish"
 
@@ -122,14 +142,15 @@ class ProductController {
                     left join product p on p.id = S2.product_id
                     left join product_tags pt on p.id=pt.product_id
                     left join tag t on t.id = pt.tag_id
-                    right join (select t.product_id ,min(t.from_date) as fromDate
+                    right join (select t.product_id as product_id,min(t.from_date) as fromDate
                         from product_area_price_schedule t
                         where t.area_id=:area
                         and t.status = 0
                         and (t.to_date>=:st or t.to_date is null )
                         group by t.product_id) S1
                     on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                    where p.class=:className order by S2.from_date asc""")
+                    where p.class=:className order by S2.from_date asc""").addScalar('price',Hibernate.DOUBLE).addScalar('productId',Hibernate.LONG).addScalar('fromDate',Hibernate.DATE).addScalar('toDate',Hibernate.DATE).addScalar('productName',Hibernate.STRING).addScalar('story',Hibernate.STRING)
+        .addScalar('original_image_url',Hibernate.STRING).addScalar('id',Hibernate.LONG) .addScalar('class',Hibernate.STRING).addScalar('value',Hibernate.STRING)
 
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)

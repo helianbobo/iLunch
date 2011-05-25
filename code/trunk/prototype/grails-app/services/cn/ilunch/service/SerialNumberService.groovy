@@ -27,4 +27,8 @@ class SerialNumberService {
 
         key
     }
+
+    def send(sn){
+
+    }
 }

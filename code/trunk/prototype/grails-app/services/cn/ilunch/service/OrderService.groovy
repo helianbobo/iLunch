@@ -10,6 +10,7 @@ import cn.ilunch.domain.DistributionArea
 import cn.ilunch.exception.EntityNotFoundException
 import cn.ilunch.domain.ProductAreaPriceSchedule
 import cn.ilunch.domain.MainDish
+import cn.ilunch.domain.Customer
 
 class OrderService {
 
@@ -63,6 +64,7 @@ class OrderService {
         dateItemRegistry.each {date, items ->
             Shipment shipment = new Shipment(shipmentDate: date, status: Shipment.CREATED, order: productOrder, orderItems: items)
             shipment.serialNumber = serialNumberService.getCode(productOrder.distributionPoint.id, date)
+            shipment.productOrder = productOrder
             productOrder.addToShipments shipment
         }
 
@@ -70,12 +72,20 @@ class OrderService {
         productOrder.save()
     }
 
+    def cancelShipment(Shipment shipment){
+        shipment.status = Shipment.CANCELLED
+        def amount = shipment.getAmount()
+        shipment.productOrder.customer.accountBalance += amount
+        shipment.save()
+        shipment.productOrder.customer.save()
+    }
+
     def cancelOrder(ProductOrder productOrder) {
         switch (productOrder.status) {
             case ProductOrder.SUBMITTED:
                 break;
             case ProductOrder.PAID:
-                productOrder.customer.accountBalance += productOrder.amount
+                productOrder.customer.accountBalance += productOrder.getRefundAmount()
                 break;
 
             default: throw new OrderStatusException("current order status: ${productOrder.status}, only orders with status set to SUBMITTED or PAID can be cancelled")
@@ -121,7 +131,8 @@ class OrderService {
         orderDetails.orders.each {order ->
             def shippmentDate = Date.parse(dateFormatString, order.date)
             if (shippmentDate < today + 2) {
-                throw new DeprecatedOrderException([shippmentDate: shippmentDate])
+                if (order.mainDishes.size() > 0 || order.sideDishes.size() > 0)
+                    throw new DeprecatedOrderException([shippmentDate: shippmentDate])
             }
             order.mainDishes.each {mainDish ->
                 OrderItem orderItem = createOrderItem(mainDish, shippmentDate, productOrder, area)
@@ -134,9 +145,11 @@ class OrderService {
                 productOrder.addToOrderItems orderItem
             }
         }
+        if (productOrder.orderItems.size() == 0)
+            return null;
         productOrder.amount = amount//we need to take pointChangePoint into account afterwards
         productOrder.customer = customer
-        productOrder.save()
+        return productOrder.save()
     }
 
     private def createOrderItem(def productInfo, Date shippmentDate, ProductOrder productOrder, DistributionArea area) {

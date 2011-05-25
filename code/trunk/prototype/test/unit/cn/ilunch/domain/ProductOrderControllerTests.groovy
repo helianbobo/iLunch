@@ -33,7 +33,7 @@ class ProductOrderControllerTests extends JSONRenderControllerUnitTestCase {
             }
         }
          controller.request.metaClass.getJSON = {
-            json.toString()
+            json.properties.target
         }
     }
 

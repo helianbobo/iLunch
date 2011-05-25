@@ -97,7 +97,7 @@ fixture {
         area = da_peoplesquare
     }
 
-     'dp_worldtradetower'(DistributionPoint) {
+    'dp_worldtradetower'(DistributionPoint) {
         name = "世贸大厦楼下"
         latitude = '31.205093'
         longitude = '121.598160'
@@ -350,7 +350,15 @@ fixture {
         toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-05-26')
     }
 
-
+    (Date.parse("yyyyMMdd", "20110527")..Date.parse("yyyyMMdd", "20111231")).each {date ->
+        "schedule_md_curryfish_peoplesquare_${date.format('yyyy-MM-dd')}"(ProductAreaPriceSchedule) {
+            product = md_curryfish
+            area = da_peoplesquare
+            price = 35.0
+            fromDate = date
+            toDate = date
+        }
+    }
 
 
 
