@@ -297,17 +297,26 @@ $(document).ready(function($){
 		}
 	});
 	
-	$('#last_week_btn').click(function() {
+	
+	lastWeek = function(elem) {
 		//change current date values to the first day of last week;
 		cart.getLastWeekOrder();
 		renderCart();
-	});
+		if(elem) {
+			var sd_id = $('#date_picker').find("input[type=hidden]").val();
+			$('#order_'+sd_id).find("input.xuangou").click();
+		}
+	};
 	
-	$('#next_week_btn').click(function() {
+	nextWeek = function(elem) {
 		//change current date values to the first day of next week;
 		cart.getNextWeekOrder();
 		renderCart();
-	});
+		if(elem) {
+			var sd_id = $('#date_picker').find("input[type=hidden]").val();
+			$('#order_'+sd_id).find("input.xuangou").click();
+		}
+	};
 	
 	$('#btn_confirm_last').click(function() {
 		ilunch.saveCart(cart.toString(), function(data){
@@ -338,16 +347,19 @@ $(document).ready(function($){
 		var quantity = parseInt($('#quantity_'+id).val());
 		if(!quantity || quantity <= 0)
 			return;
+		
+		datePicker.find("input[type=hidden]").val(id);
 		var ul = datePicker.children("ul");
 		ul.empty();
 		var sd = cart.getCurrentWeekOrder().startDate;
 		for(var i = 0, di = sd; i < 5; i++, di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
+			var dateTitle = '周'+ilunch.digitToCNSS(i+1)+' '+(di.getMonth()+1)+'/'+di.getDate();
 			if(di < d) {
-				ul.append('<li><div>周'+ilunch.digitToCNSS(i+1)+'<br /></div></li>');
+				ul.append('<li><div>'+dateTitle+'<br /></div></li>');
 			}
 			else {
 				var price = ilunch.getPriceByDate(ilunch.getOrderById(sideDishList, id).prices, ilunch.makeDate(di));
-				ul.append('<li><a onclick="md_order_from_date_picker('+id+',\''+ilunch.dateToString(di)+'\','+quantity+',\''+name+'\',\''+imageURL+'\')" onmouseover="this.className=\'pc_on\'" onmouseout="this.className=\'pc_off\'"><div>周'+ilunch.digitToCNSS(i+1)+'<br />'+price+'￥</div></a></li>');
+				ul.append('<li><a onclick="md_order_from_date_picker('+id+',\''+ilunch.dateToString(di)+'\','+quantity+',\''+name+'\',\''+imageURL+'\')" onmouseover="this.className=\'pc_on\'" onmouseout="this.className=\'pc_off\'"><div>'+dateTitle+'<br />'+price+'￥</div></a></li>');
 			}
 		}
 		datePicker.css({"left":elem.offsetLeft+"px", "top":elem.offsetTop+"px", "display":"block"});
