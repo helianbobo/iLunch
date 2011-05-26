@@ -275,12 +275,18 @@ $(document).ready(function($){
 	});
 	
 	$('#logon_lnk').click(function(e) {
-		$('#logon_dialog').css({"left":e.clientX+"px","top":e.clientY+"px"});
+		ilunch.lockScreen();
+		var sh = $(window)[0].outerHeight;
+		var sw = $(window)[0].outerWidth;
+		var w = $('#logon_dialog').outerWidth();
+		var h = $('#logon_dialog').outerHeight();
+		$('#logon_dialog').css({"left":((sw-w)/2)+"px","top":((sh-h)/2)+"px"});
 		$('#logon_dialog').show();
 	});
 	
 	$('#logon_dialog_cancel').click(function() {
 		$('#logon_dialog').hide();
+		ilunch.unlockScreen();
 	}); 
 	
 	$('#logon_dialog_reg_btn').click(function() {
@@ -301,6 +307,7 @@ $(document).ready(function($){
 	
 	$('#reg_dialog_cancel').click(function() {
 		$('#reg_dialog').hide();
+		ilunch.unlockScreen();
 	}); 
 	
 	$('#logon_dialog_confirm').click(function() {
@@ -337,13 +344,13 @@ $(document).ready(function($){
 					renderUserInfo();
 					$('#dialog_err').html('');
 					$('#logon_dialog').hide();
+					ilunch.unlockScreen();
 				}
 				else {
 					// show error msg
 					$('#dialog_err').html(status);
 				}
 				clearInterval(p);
-				ilunch.unlockScreen();
 			}
 		}
 		var p = setInterval(wait, 50);
@@ -398,12 +405,12 @@ $(document).ready(function($){
 					renderUserInfo();
 					$('#dialog_err_reg').html('');
 					$('#reg_dialog').hide();
+					ilunch.unlockScreen();
 				}
 				else {
 					// show error msg
 					$('#dialog_err_reg').html(status);
 				}
-				ilunch.unlockScreen();
 				clearInterval(p2);
 			}
 		}

@@ -15,7 +15,7 @@
 
       <div class="content">
       
-      	<div id="logon_dialog" class="alert_div_3" style="position:absolute;display:none;z-index:1000">
+      	<div id="logon_dialog" class="alert_div_3" style="position:absolute;display:none;z-index:2000">
 		    <div class="login_l">
 		      <ul>
 		        <li class="log_on"><a href="#">登 录</a></li>
@@ -42,7 +42,7 @@
 		    </div>
 		  </div>
 		  
-		  <div id="reg_dialog" class="alert_div_4" style="position:absolute;display:none;z-index:1000">
+		  <div id="reg_dialog" class="alert_div_4" style="position:absolute;display:none;z-index:2000">
 		    <div class="login_l">
 		      <ul>
 		        <li class="log_off"><a id="reg_dialog_logon_btn" href="#">登 录</a></li>
