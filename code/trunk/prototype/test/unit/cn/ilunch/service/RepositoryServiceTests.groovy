@@ -12,7 +12,7 @@ import cn.ilunch.domain.DistributionArea
  * Time: 3:40 PM
  * To change this template use File | Settings | File Templates.
  */
-class RepositoryServiceTests extends GrailsUnitTestCase  {
+class RepositoryServiceTests extends GrailsUnitTestCase {
     RepositoryService repositoryService
     PriceService priceService
 
@@ -21,9 +21,9 @@ class RepositoryServiceTests extends GrailsUnitTestCase  {
         repositoryService = new RepositoryService()
     }
 
-    void testReduce(){
-        mockDomain(ProductAreaPriceSchedule,[])
-        ProductAreaPriceSchedule schedule = new ProductAreaPriceSchedule(remain:50)
+    void testReduce() {
+        mockDomain(ProductAreaPriceSchedule, [])
+        ProductAreaPriceSchedule schedule = new ProductAreaPriceSchedule(remain: 50)
 
         def priceService = mockFor(cn.ilunch.service.PriceService)
         Product product = new Product()
@@ -35,13 +35,13 @@ class RepositoryServiceTests extends GrailsUnitTestCase  {
         }
         repositoryService.priceService = priceService.createMock()
 
-        repositoryService.reduce(product,area, new Date(), 10)
+        repositoryService.reduce(product, area, new Date(), 10)
         assertEquals(40, schedule.remain)
     }
 
-    void testInvalidReduce(){
-        mockDomain(ProductAreaPriceSchedule,[])
-        ProductAreaPriceSchedule schedule = new ProductAreaPriceSchedule(remain:8)
+    void testInvalidReduce() {
+        mockDomain(ProductAreaPriceSchedule, [])
+        ProductAreaPriceSchedule schedule = new ProductAreaPriceSchedule(remain: 8)
 
         def priceService = mockFor(cn.ilunch.service.PriceService)
         Product product = new Product()
@@ -52,12 +52,8 @@ class RepositoryServiceTests extends GrailsUnitTestCase  {
             return [schedule]
         }
         repositoryService.priceService = priceService.createMock()
-        try{
-        repositoryService.reduce(product,area, new Date(), 10)
-        }catch(e){
-            return
-        }
-        fail("should fail")
+        repositoryService.reduce(product, area, new Date(), 10)
+        assertEquals(0, schedule.remain)
     }
 
 

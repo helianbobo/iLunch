@@ -8,4 +8,9 @@ package cn.ilunch.service
  * To change this template use File | Settings | File Templates.
  */
 class NotEnoughProductException extends RuntimeException{
+    def map
+
+    NotEnoughProductException(Map map){
+        this.map = map
+    }
 }

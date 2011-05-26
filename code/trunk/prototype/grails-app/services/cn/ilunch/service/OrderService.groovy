@@ -18,6 +18,7 @@ class OrderService {
     def grailsApplication
     def priceService
     def serialNumberService
+    def repositoryService
 
     def shrinkOrder(ProductOrder oldOrder) {
         oldOrder.status = ProductOrder.CANCELLED
@@ -68,6 +69,10 @@ class OrderService {
             productOrder.addToShipments shipment
         }
 
+        productOrder.orderItems.each {OrderItem item ->
+            repositoryService.reduce(item.product, productOrder.distributionPoint.area, item.shippmentDate, item.quantity)
+        }
+
         productOrder.status = ProductOrder.PAID
         productOrder.save()
     }
@@ -85,8 +90,8 @@ class OrderService {
             case ProductOrder.SUBMITTED:
                 break;
             case ProductOrder.PAID:
-            productOrder.customer.accountBalance += productOrder.getRefundAmount()
-                productOrder.shipments.each {Shipment shipment->
+                productOrder.customer.accountBalance += productOrder.getRefundAmount()
+                productOrder.shipments.each {Shipment shipment ->
                     if (shipment.status == Shipment.CREATED) {
                         shipment.status = Shipment.CANCELLED
                     }
@@ -118,7 +123,6 @@ class OrderService {
         def pointChangePoint = orderDetails.pointChange
         def distributionPoint = building.distributionPoint
         def area = distributionPoint.area
-
 
         def amount = 0.0f
 
@@ -170,6 +174,10 @@ class OrderService {
         if (!schedule) {
             throw new EntityNotFoundException([entity: ProductAreaPriceSchedule, product: product, area: area, date: shippmentDate])
         }
+
+        if (schedule.remain < quantity)
+            throw new NotEnoughProductException([product: product.name, remain: schedule.remain, quantity: quantity])
+
         return new OrderItem(order: productOrder, product: product, price: schedule.price, quantity: quantity, shippmentDate: shippmentDate)
 
     }

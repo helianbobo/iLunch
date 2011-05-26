@@ -63,6 +63,11 @@ class PersonController {
         render "{'status':'OK'}"
     }
 
+    def clearCart = {
+        session.removeValue("cartInfo")
+        render "{'status':'OK'}"
+    }
+
     def cart = {
         if (!session.getValue("cartInfo")) {
             forward(controller: "exception", action: "cartNotFound")

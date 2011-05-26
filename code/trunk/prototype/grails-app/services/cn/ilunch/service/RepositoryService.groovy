@@ -14,9 +14,9 @@ class RepositoryService {
             throw new EntityNotFoundException([entity: ProductAreaPriceSchedule, product: product, area: area, date: date])
 
         if(schedule.remain - quantity < 0)
-            throw new NotEnoughProductException()
-
-        schedule.remain -= quantity
+            schedule.remain = 0;
+        else
+            schedule.remain -= quantity
 
         schedule.save()
     }

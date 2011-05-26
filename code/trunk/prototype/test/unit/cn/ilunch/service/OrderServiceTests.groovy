@@ -29,6 +29,10 @@ class OrderServiceTests extends GrailsUnitTestCase {
             return "code12345"
         }
         service.serialNumberService = serialNumberService.createMock()
+        def repositoryService = mockFor(cn.ilunch.service.RepositoryService)
+        repositoryService.demand.reduce(6..6) {product, area, date, quantity ->
+        }
+        service.repositoryService = repositoryService.createMock()
 
         Customer customer = new Customer()
         customer.cellNumber = "12345678901"
@@ -323,7 +327,7 @@ class OrderServiceTests extends GrailsUnitTestCase {
         priceService.demand.queryProductSchedule(4) {mainDish, area1, date ->
             today = Date.parse('yyyy-MM-dd', '2011-04-14')
             today.clearTime()
-            [new ProductAreaPriceSchedule(price: 5, fromDate: today, toDate: today + 2)]
+            [new ProductAreaPriceSchedule(price: 5, fromDate: today, toDate: today + 2, remain: 100)]
         }
         service.priceService = priceService.createMock()
         JSONBuilder builder = new JSONBuilder()
@@ -391,6 +395,84 @@ class OrderServiceTests extends GrailsUnitTestCase {
         }
         assertEquals(2, sdOrder1.quantity)
         assertEquals(shipmentDate + 3, sdOrder1.shippmentDate)
+    }
+
+    public void testCreateOrderNotEnough() {
+        Customer customer = new Customer()
+        customer.cellNumber = "12345678901"
+        customer.name = "liuchao"
+        customer.pointBalance = 123
+        mockDomain(Customer, [customer])
+
+        Building building = new Building()
+        building.name = "qq"
+        building.latitude = 123.31
+        building.longitude = 12.31
+
+        customer.primaryBuilding = building
+
+        DistributionPoint dp = new DistributionPoint()
+        dp.name = "dp1"
+
+        building.distributionPoint = dp
+
+        DistributionArea area = new DistributionArea()
+        area.name = "zhangjiang"
+        area.longitude = 23.12
+        area.latitude = 123.23
+        dp.area = area
+
+        mockDomain(Building, [building])
+        mockDomain(DistributionPoint, [dp])
+        mockDomain(DistributionArea, [area])
+        mockDomain(ProductOrder, [])
+        mockDomain(OrderItem, [])
+
+        def dishName = "chicken"
+        def story = "chicken story"
+        final detailImageUrl = "http://www.google.com"
+
+        final sd1 = new Product(id: 4, name: "dishName3", story: "story3", detailImageUrl: "detailImageUrl3")
+        final sd2 = new Product(id: 3, name: "dishName2", story: "story2", detailImageUrl: "detailImageUrl2")
+        final md1 = new Product(id: 2, name: "dishName4", story: "story4", detailImageUrl: "detailImageUrl4")
+        final md2 = new Product(id: 1, name: dishName, story: story, detailImageUrl: detailImageUrl)
+        mockDomain(Product, [sd1, sd2, md1, md2])
+        def priceService = mockFor(cn.ilunch.service.PriceService)
+
+        def today
+        priceService.demand.queryProductSchedule(4) {mainDish, area1, date ->
+            today = Date.parse('yyyy-MM-dd', '2011-04-14')
+            today.clearTime()
+            [new ProductAreaPriceSchedule(price: 5, fromDate: today, toDate: today + 2, remain: 1)]
+        }
+        service.priceService = priceService.createMock()
+        JSONBuilder builder = new JSONBuilder()
+        def json = builder.build {
+            id = 1
+            buildingId = 1
+            pointChange = 10
+            orders = array {
+                order([
+                        date: (new Date() + 3).format("yyyy-MM-dd"),
+                        mainDishes: array {
+                            mainDish([id: 1, quantity: 5])
+                            mainDish([id: 2, quantity: 4])
+                        },
+                        sideDishes: array {
+                            sideDish([id: 3, quantity: 5])
+                            sideDish([id: 4, quantity: 2])
+                        }
+                ])
+            }
+        }
+        def orderDetails = grails.converters.JSON.parse(json.toString())
+        try {
+            service.createOrder(orderDetails, customer, building, 'yyyy-MM-dd')
+        } catch (NotEnoughProductException e) {
+            return
+        }
+        fail("should fail, not enought product")
+
     }
 
     public void testShrinkOrder() {

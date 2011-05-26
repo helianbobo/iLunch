@@ -99,6 +99,7 @@ cn.ilunch.exception.code.NotEnoughPointChange = "04"
 cn.ilunch.exception.code.DeprecatedOrder = "05"
 cn.ilunch.exception.code.CellphoneNumberInvalid = "06"
 cn.ilunch.exception.code.CellphoneNumberRegistered = "07"
+cn.ilunch.exception.code.NotEnoughProduct = "08"
 
 cn.ilunch.date.format = 'yyyy-MM-dd'
 cn.ilunch.product.image.location = "${userHome}/ilunch/images/products"

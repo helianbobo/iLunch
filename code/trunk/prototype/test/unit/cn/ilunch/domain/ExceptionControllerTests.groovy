@@ -11,6 +11,7 @@ class ExceptionControllerTests extends JSONRenderControllerUnitTestCase {
         configObject.cn.ilunch.exception.code.EntityNotFound = "3"
         configObject.cn.ilunch.exception.code.ScheduleNotFound = "4"
         configObject.cn.ilunch.exception.code.CartNotFound = "5"
+        configObject.cn.ilunch.exception.code.NotEnoughProduct = "6"
 
         exceptionController.metaClass.grailsApplication = [config: configObject]
         fixJsonRender exceptionController
@@ -33,9 +34,13 @@ class ExceptionControllerTests extends JSONRenderControllerUnitTestCase {
     }
 
     void testCartNotFound() {
-
         exceptionController.cartNotFound()
         assertEquals '{"error":{"message":"cart not found","errorCode":"5"}}', exceptionController.response.contentAsString
+    }
+
+    void testNotEnoughProduct() {
+        exceptionController.cartNotFound()
+        assertEquals '{"error":{"message":"not enough product","errorCode":"6"}}', exceptionController.response.contentAsString
     }
 
 

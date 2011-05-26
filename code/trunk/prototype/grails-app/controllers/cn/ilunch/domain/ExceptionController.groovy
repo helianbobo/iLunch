@@ -43,4 +43,10 @@ class ExceptionController {
             error(message: "cellphone number has been used", errorCode: grailsApplication.config.cn.ilunch.exception.code.CellphoneNumberRegistered.toString())
         }
     }
+
+    def notEnoughProduct = {
+        render(contentType: "text/json") {
+            error(message: "not enough product", errorCode: grailsApplication.config.cn.ilunch.exception.code.NotEnoughProduct.toString())
+        }
+    }
 }
