@@ -206,13 +206,14 @@ $(document).ready(function($){
         });
         
         $('#building_list').empty();
+        var dpId = cart.getCart().buildingId;
         for (var i = 0; i < daList.length; i++) {
             if (daList[i].id == areaId) {
-                if (daList[i].buildings[0]) 
-                    $('#building_list').append('<option value="' + daList[i].buildings[0].id + '" selected="selected">' + daList[i].buildings[0].name + '</option>');
-                for (var j = 1; j < daList[i].buildings.length; j++) {
-                    $('#building_list').append('<option value="' + daList[i].buildings[j].id + '">' + daList[i].buildings[j].name + '</option>');
+            	for (var j = 0; j < daList[i].buildings.length; j++) {
+                	var selected = (dpId == daList[i].buildings[j].id ? ' selected="selected"' : ''); 
+                    $('#building_list').append('<option value="' + daList[i].buildings[j].id + '"'+selected+'>' + daList[i].buildings[j].name + '</option>');
                 }
+            	break;
             }
         }
         $('#building_list').change();
