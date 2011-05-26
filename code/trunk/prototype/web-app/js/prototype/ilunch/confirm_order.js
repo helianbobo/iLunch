@@ -62,20 +62,24 @@ $(document).ready(function($){
 	
 	ilunch.lockScreen();
 	
-	ilunch.getCurrentUserInfo(function(data){
-		user = data;
+	$.when(
+			ilunch.getCurrentUserInfo(function(data){
+				user = data;
+			}),
+			ilunch.getCart(
+					function(data) {
+						cart = new ilunch.Cart(data);
+						in_total.html(cart.getTotalMoney());
+//						//delete
+//						cart.addOrder(true, new Date(2011,4,12), 1, "逼鱼", "images/pic_17.jpg", 2);
+//						cart.addOrder(true, new Date(2011,4,9), 2, "盖浇饭", "images/pic_17.jpg", 2);
+					}
+			)
+	).done(function() {
+		renderOrderInfo();
+		renderCart();
+		ilunch.unlockScreen();
 	});
-
-	ilunch.getCart(
-			function(data) {
-				cart = new ilunch.Cart(data);
-                in_total.html(cart.getTotalMoney());
-//				//delete
-//				cart.addOrder(true, new Date(2011,4,12), 1, "逼鱼", "images/pic_17.jpg", 2);
-//				cart.addOrder(true, new Date(2011,4,9), 2, "盖浇饭", "images/pic_17.jpg", 2);
-			}
-	);
-	
 	///////////////////////////////////////////////////////
 	////////////////// define templates ///////////////////
 	///////////////////////////////////////////////////////
@@ -91,132 +95,107 @@ $(document).ready(function($){
 	///// wait until data's ready then render page ////////
 	///////////////////////////////////////////////////////
 	
-	//TODO lock the screen
-
-	var busy1 = false;
 	renderOrderInfo = function() {
-		if(!busy1 && user.id && cart) {
-			busy1 = true;
-			
-			//render log start...
-			orderInfoElem.empty();
-			
-			var products = cart.getCart().products ? cart.getCart().products : [];
-			for(var i = 0; i < products.length; i++) {
-				if(products[i].mainDishes.length == 0 && products[i].sideDishes.length == 0)
-					continue;
-				var deliverDate = products[i].date;
-				var deliverW = ilunch.digitToCNSS(ilunch.makeDate(products[i].date).getDay());
-				var itemPrice = 0;
-				var itemNames = '';
-				var md = products[i].mainDishes[0];
-				if(md) {
-					itemPrice += (md.price*md.quantity);
-					itemNames += (md.name+'(x'+md.quantity+') +');
-				}
-				for(var j = 0; j < products[i].sideDishes.length; j++) {
-					var sd = products[i].sideDishes[j];
-					itemPrice += (sd.price*sd.quantity);
-					itemNames += (sd.name+'(x'+sd.quantity+') +');
-				}
-				if(itemNames[itemNames.length-1] == '+')
-					itemNames = itemNames.substring(0, itemNames.length-1);
-				
-				orderInfoElem.append(orderItemTmplt.replace(/##ITEM_PRICE##/g, itemPrice).
-						replace(/##ITEM_NAMES##/g, itemNames).
-						replace(/##DELIVER_WW##/g, deliverW).
-						replace(/##DELiVER_DATE##/g, deliverDate));
+		//render log start...
+		orderInfoElem.empty();
+
+		var products = cart.getCart().products ? cart.getCart().products : [];
+		for(var i = 0; i < products.length; i++) {
+			if(products[i].mainDishes.length == 0 && products[i].sideDishes.length == 0)
+				continue;
+			var deliverDate = products[i].date;
+			var deliverW = ilunch.digitToCNSS(ilunch.makeDate(products[i].date).getDay());
+			var itemPrice = 0;
+			var itemNames = '';
+			var md = products[i].mainDishes[0];
+			if(md) {
+				itemPrice += (md.price*md.quantity);
+				itemNames += (md.name+'(x'+md.quantity+') +');
 			}
-			
-			var areaName = cart.getCart().area;
-			var buildingName = cart.getCart().distributionPoint;
-			var phone = user.phoneNumber;
-			var contact = user.nickname;
-			var points = user.points;
-			orderInfoElem.append(userInfoTmplt.replace(/##PHONE_NO##/g, phone)
-					.replace(/##CONTACT##/g, contact?contact:"未提供联系人姓名").replace(/##AREA_NAME##/g, areaName).replace(/##BUILDING_NAME##/g, buildingName));
-			//render logic end
-			
-			
-			busy1 = false;
-			clearInterval(processor1);
-			ilunch.unlockScreen();
+			for(var j = 0; j < products[i].sideDishes.length; j++) {
+				var sd = products[i].sideDishes[j];
+				itemPrice += (sd.price*sd.quantity);
+				itemNames += (sd.name+'(x'+sd.quantity+') +');
+			}
+			if(itemNames[itemNames.length-1] == '+')
+				itemNames = itemNames.substring(0, itemNames.length-1);
+
+			orderInfoElem.append(orderItemTmplt.replace(/##ITEM_PRICE##/g, itemPrice).
+					replace(/##ITEM_NAMES##/g, itemNames).
+					replace(/##DELIVER_WW##/g, deliverW).
+					replace(/##DELiVER_DATE##/g, deliverDate));
 		}
+
+		var areaName = cart.getCart().area;
+		var buildingName = cart.getCart().distributionPoint;
+		var phone = user.phoneNumber;
+		var contact = user.nickname;
+		var points = user.points;
+		orderInfoElem.append(userInfoTmplt.replace(/##PHONE_NO##/g, phone)
+				.replace(/##CONTACT##/g, contact?contact:"未提供联系人姓名").replace(/##AREA_NAME##/g, areaName).replace(/##BUILDING_NAME##/g, buildingName));
+		//render logic end
 	};
 	
-	var busy2 = false;
 	renderCart = function() {
-		if(cart && !busy2) {
-			busy2 = true;
-			
-			//render logic start
-			
-			//2. render md and sd for each of the week days
-			var retval = cart.getCurrentWeekOrder();
-			var wStartDate = retval.startDate;
-			var wEndDate = retval.endDate;
-			var products = retval.products;
+		//render logic start
 
-			//2.1 render calendar title;
-			$('#cart_date').empty();
-			for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
-				$('#cart_date').append('<li>'+ilunch.doubleDigit(di.getMonth()+1)+'/'+ilunch.doubleDigit(di.getDate())+'</li>');
-			}
+		//2. render md and sd for each of the week days
+		var retval = cart.getCurrentWeekOrder();
+		var wStartDate = retval.startDate;
+		var wEndDate = retval.endDate;
+		var products = retval.products;
 
-			//2.2 render MD row;
-			$('#cart_dashboard').empty();
-			for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
-				var md = cart.getOrdersByDate(di, true);
-				if(md && md.length > 0) {
-					md = md[0];
-					$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+md.imageURL+'" /></li>');
-				}
-				else {
-					$('#cart_dashboard').append('<li><img src="/prototype/images/zc_y.png" /></li>');
-				}
-			}
-			
-			//get the number of SD row;
-			var NsdRow = 0;
-			for(var i = 0; i < products.length; i++) {
-				if(products[i].sideDishes.length > NsdRow)
-					NsdRow = products[i].sideDishes.length;
-			}
-			if(NsdRow < 1)
-				NsdRow = 1;
-			//2.4 render each SD row
-            for (var ri = 0; ri < NsdRow; ri++) {
-                for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
-					var isRendered = false;
-                    for (var i = 0; i < products.length; i++) {
-						var od = ilunch.makeDate(products[i].date);
-                        if (od >= di && od <= di) {
-							if (products[i].sideDishes.length > ri) {
-								//render this SD here
-								var sd = products[i].sideDishes[ri];
-								$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+sd.imageURL+'" /><div class="n">x'+sd.quantity+'</div></li>');
-								isRendered = true;
-								break;
-							}
-						}
-                    }
-					if(!isRendered) {
-						//render a empty SD here
-						$('#cart_dashboard').append('<li><img src="/prototype/images/pc_y.png" /></li>');
-					}
-                }
-            }
-			//render logic end
-			
-            busy2 = false;
-			clearInterval(processor2);
-			//TODO release screen lock here
+		//2.1 render calendar title;
+		$('#cart_date').empty();
+		for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
+			$('#cart_date').append('<li>'+ilunch.doubleDigit(di.getMonth()+1)+'/'+ilunch.doubleDigit(di.getDate())+'</li>');
 		}
+
+		//2.2 render MD row;
+		$('#cart_dashboard').empty();
+		for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
+			var md = cart.getOrdersByDate(di, true);
+			if(md && md.length > 0) {
+				md = md[0];
+				$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+md.imageURL+'" /></li>');
+			}
+			else {
+				$('#cart_dashboard').append('<li><img src="/prototype/images/zc_y.png" /></li>');
+			}
+		}
+
+		//get the number of SD row;
+		var NsdRow = 0;
+		for(var i = 0; i < products.length; i++) {
+			if(products[i].sideDishes.length > NsdRow)
+				NsdRow = products[i].sideDishes.length;
+		}
+		if(NsdRow < 1)
+			NsdRow = 1;
+		//2.4 render each SD row
+		for (var ri = 0; ri < NsdRow; ri++) {
+			for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
+				var isRendered = false;
+				for (var i = 0; i < products.length; i++) {
+					var od = ilunch.makeDate(products[i].date);
+					if (od >= di && od <= di) {
+						if (products[i].sideDishes.length > ri) {
+							//render this SD here
+							var sd = products[i].sideDishes[ri];
+							$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+sd.imageURL+'" /><div class="n">x'+sd.quantity+'</div></li>');
+							isRendered = true;
+							break;
+						}
+					}
+				}
+				if(!isRendered) {
+					//render a empty SD here
+					$('#cart_dashboard').append('<li><img src="/prototype/images/pc_y.png" /></li>');
+				}
+			}
+		}
+		//render logic end
 	};
-	
-	//wait for data to be ready
-	var processor1 = setInterval(renderOrderInfo, 50);
-	var processor2 = setInterval(renderCart, 50);
 	
 	///////////////////////////////////////////////////////
 	///////////////   bind event handlers   ///////////////
@@ -250,39 +229,37 @@ $(document).ready(function($){
 			return;
 		}
 		
-		ilunch.saveCart(cart.toString(), function(data){
-			
-		});
-		//TODO lock screen
+		ilunch.saveCart(cart.toString(), function(data){});
 		var success = null;
-		ilunch.confirmOrder(cart.toOrderString(user.id), function(result) {
-			if(result == 0) {
-				success = true;
-			}
-			else if(result == "04"){
-				success = false;
-				ilunch.fatalError("使用的积分超过余额！");
-			}
-			else if(result == "05") {
-				success = false;
-				ilunch.fatalError("只能订购两天之后的餐品！");
-			}
-		});
-		function wait() {
-			if(success != null) {
+		ilunch.lockScreen();
+		$.when(
+				ilunch.confirmOrder(cart.toOrderString(user.id), function(result) {
+					if(result == 0) {
+						success = true;
+					}
+					else if(result == "04"){
+						success = false;
+						ilunch.fatalError("使用的积分超过余额！");
+					}
+					else if(result == "05") {
+						success = false;
+						ilunch.fatalError("只能订购两天之后的餐品！");
+					}
+				})
+		).done(
+				function() {
+					if(success != null) {
 
-				if(success) {
-					$('#confirm_form').attr({"action":"/prototype/dataAPI/orderSuccess"});
-					$('#confirm_form').submit();
+						if(success) {
+							$('#confirm_form').attr({"action":"/prototype/dataAPI/orderSuccess"});
+							$('#confirm_form').submit();
+						}
+						
+						ilunch.unlockScreen();
+					}
 				}
-
-				clearInterval(p);
-				//TODO unlock screen
-
-			}
-
-		}
-		var p = setInterval(wait, 50);
+		);
 		return true;
 	});
+	
 });

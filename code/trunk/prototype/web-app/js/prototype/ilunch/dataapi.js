@@ -217,27 +217,28 @@
 			toDate: toDate,
 			areaId: areaId
 		};
-		$.getJSON(ROOT+'/product/listAllMainDishOnSelectionPage', params, function(data) {
-			if(data.error) {
-				
-			}
-			else {
-				data = data.products;
-				if(!data || data.length <= 0) {
-					ilunch.fatalError("mainDishes list is empty");
-					return;
-				}
-				for(var i = 0; i < data.length; i++) {
-					if(!ilunch.validateData(data[i], ['id', 'name', 'prices', 'imageURL'], 'MainDishList['+i+']'))
+		return $.getJSON(ROOT+'/product/listAllMainDishOnSelectionPage', params, function(data) {
+					if(data.error) {
+						ilunch.fatalError("[DataAPI::listAllMainDishOnSelectionPage]Server responded data with error:"+data.error.message);
 						return;
-                    for(var j = 0; j < data[i].prices.length; j++) {
-						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'MainDishList['+i+'].prices['+j+']'))
-							return;
 					}
-				}
-			}
-			handler(data);
-		});
+					else {
+						data = data.products;
+						if(!data || data.length <= 0) {
+							ilunch.fatalError("mainDishes list is empty");
+							return;
+						}
+						for(var i = 0; i < data.length; i++) {
+							if(!ilunch.validateData(data[i], ['id', 'name', 'prices', 'imageURL'], 'MainDishList['+i+']'))
+								return;
+		                    for(var j = 0; j < data[i].prices.length; j++) {
+								if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'MainDishList['+i+'].prices['+j+']'))
+									return;
+							}
+						}
+					}
+					handler(data);
+				});
 	};
 	
 	ilunch.getSideDishListOnIndexPage = function(date, areaId, handler, max) {
@@ -283,9 +284,10 @@
 			date:date,
 			areaId:areaId
 		};
-		$.getJSON(ROOT+'/product/listAllSideDishOnSelectionPage', params, function(data) {
+		return	$.getJSON(ROOT+'/product/listAllSideDishOnSelectionPage', params, function(data) {
 			if(data.error) {
-				
+				ilunch.fatalError("[DataAPI::listAllSideDishOnSelectionPage]Server responded data with error:"+data.error.message);
+				return;
 			}
 			else {
 				data = data.products;
@@ -310,7 +312,7 @@
 
 		params = {
 		};
-		$.getJSON(ROOT+'/person/loggedInUserPreference', params, function(data) {
+		return	$.getJSON(ROOT+'/person/loggedInUserPreference', params, function(data) {
 			if(data.error) {
 
 			}
@@ -334,7 +336,7 @@
 		params = {
 			id:id	
 		};
-		$.getJSON(ROOT+'/person/preference', params, function(data) {
+		return	$.getJSON(ROOT+'/person/preference', params, function(data) {
 			if(data.error) {
 				
 			}
@@ -351,7 +353,7 @@
 	};
 	
 	ilunch.getDistributionAreaList = function(handler) {
-		$.getJSON(ROOT+'/distributionArea/list', function(data) {
+		return	$.getJSON(ROOT+'/distributionArea/list', function(data) {
 			if(data.error) {
 				
 			}
@@ -373,16 +375,16 @@
 	};
 	
 	ilunch.getCart = function(handler) {
-		$.getJSON(ROOT+'/person/cart', function(data) {
-			if(data.error) {
-				data = null;
-			}
-			else {
-				if(!_validateCart(data))
-					return;
-			}
-			handler(data);
-		});
+		return	$.getJSON(ROOT+'/person/cart', function(data) {
+					if(data.error) {
+						data = null;
+					}
+					else {
+						if(!_validateCart(data))
+							return;
+					}
+					handler(data);
+				});
 	};
 	
 	ilunch.saveCart = function(data, handler) {
@@ -390,7 +392,7 @@
 			return;
 		if(!_validateCart($.parseJSON(data)))
 			return;
-		$.ajax(ROOT+'/person/saveCart', {
+		return	$.ajax(ROOT+'/person/saveCart', {
 //			processData:false,
 			data:{cartInfo:data},
 			success:function(data) {
@@ -419,7 +421,7 @@
 	ilunch.confirmOrder = function(data, handler) {
 		if(!data)
 			return;
-		$.ajax(ROOT+'/productOrder/confirm', {
+		return	$.ajax(ROOT+'/productOrder/confirm', {
 			processData:false,
 			data:data,
 			success:function(data) {
@@ -449,8 +451,8 @@
 		};
 		if(rememberMe)
 			params._spring_security_remember_me = 'on';
-		
-		$.ajax(ROOT+'/j_spring_security_check', 
+			
+		return	$.ajax(ROOT+'/j_spring_security_check', 
 			{
 				data : params, 
 				type : 'POST',
@@ -485,7 +487,7 @@
 			'password' : password,
 		};
 		
-		$.ajax(ROOT+'/person/register', 
+		return	$.ajax(ROOT+'/person/register', 
 			{
 				data : params, 
 				type : 'POST',

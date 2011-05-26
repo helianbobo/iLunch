@@ -59,26 +59,29 @@ $(document).ready(function($){
 	
 	ilunch.lockScreen();
 	
-	ilunch.getCurrentUserInfo(function(data) {
-		user = data;
-	});
-	
-	ilunch.getCart(
+	$.when(
+		ilunch.getCurrentUserInfo(function(data) {
+			user = data;
+		}),
+		ilunch.getCart(
 			function(data) {
 				cart = new ilunch.Cart(data);
-                in_total.html(cart.getTotalMoney());
-//				//delete
-//				cart.addOrder(true, new Date(2011,4,12), 1, "逼鱼", "images/pic_17.jpg", 2);
-//				cart.addOrder(true, new Date(2011,4,9), 2, "盖浇饭", "images/pic_17.jpg", 2);
+	            in_total.html(cart.getTotalMoney());
+	//				//delete
+	//				cart.addOrder(true, new Date(2011,4,12), 1, "逼鱼", "images/pic_17.jpg", 2);
+	//				cart.addOrder(true, new Date(2011,4,9), 2, "盖浇饭", "images/pic_17.jpg", 2);
 			}
-	);
-	
-	ilunch.getDistributionAreaList(
-			function(data) {
-				daList = data.areas;
-			}
-	);
-	
+		),
+        ilunch.getDistributionAreaList(function(data){
+            daList = data.areas;
+        })
+	).done(function() {
+		renderUserInfo();
+		renderCart();
+		renderBuildingSelector();
+		ilunch.unlockScreen();
+	});
+
 	///////////////////////////////////////////////////////
 	////////////////// define templates ///////////////////
 	///////////////////////////////////////////////////////
@@ -99,149 +102,122 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	///// wait until data's ready then render page ////////
 	///////////////////////////////////////////////////////
-	
-	//TODO lock the screen
-	
-	var busy1 = false;
+
 	renderUserInfo = function() {
-		if(!busy1 && user && cart && daList) {
-			busy1 = true;
-			
-			//render log start...
-			userInfoElem.empty();
-			if(user.id) {
-				var phone = user.phoneNumber;
-				var contact = user.nickname;
-				var points = user.points;
-				userInfoElem.append(loggedOnTmplt.replace(/##PHONE_NO##/g, phone).replace(/##CONTACT##/g, contact?contact:"未提供联系人姓名"));
-				//TODO validate pointChange balance
-				$('#change_point').html(points?points:0);
-				$('#point_control').css({"display":"block"});
-				$('#logon_tip').css({"display":"none"});
-			}
-			else {
-				userInfoElem.append(notLoggedTmplt);
-				$('#point_control').css({"display":"none"});
-				$('#logon_tip').css({"display":"block"});
-			}
-			//render logic end
-			
-			
-			busy1 = false;
-			clearInterval(processor1);
-			
-			ilunch.unlockScreen();
-		}
+        //render log start...
+        userInfoElem.empty();
+        if (user.id) {
+            var phone = user.phoneNumber;
+            var contact = user.nickname;
+            var points = user.points;
+            userInfoElem.append(loggedOnTmplt.replace(/##PHONE_NO##/g, phone).replace(/##CONTACT##/g, contact ? contact : "未提供联系人姓名"));
+            //TODO validate pointChange balance
+            $('#change_point').html(points ? points : 0);
+            $('#point_control').css({
+                "display": "block"
+            });
+            $('#logon_tip').css({
+                "display": "none"
+            });
+        }
+        else {
+            userInfoElem.append(notLoggedTmplt);
+            $('#point_control').css({
+                "display": "none"
+            });
+            $('#logon_tip').css({
+                "display": "block"
+            });
+        }
+        //render logic end
 	};
 	
-	var busy2 = false;
 	renderCart = function() {
-		if(cart && !busy2) {
-			busy2 = true;
-			
-			//render logic start
-			
-			//2. render md and sd for each of the week days
-			var retval = cart.getCurrentWeekOrder();
-			var wStartDate = retval.startDate;
-			var wEndDate = retval.endDate;
-			var products = retval.products;
-
-			//2.1 render calendar title;
-			$('#cart_date').empty();
-			for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
-				$('#cart_date').append('<li>'+ilunch.doubleDigit(di.getMonth()+1)+'/'+ilunch.doubleDigit(di.getDate())+'</li>');
-			}
-
-			//2.2 render MD row;
-			$('#cart_dashboard').empty();
-			for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
-				var md = cart.getOrdersByDate(di, true);
-				if(md && md.length > 0) {
-					md = md[0];
-					$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+md.imageURL+'" /></li>');
-				}
-				else {
-					$('#cart_dashboard').append('<li><img src="/prototype/images/zc_y.png" /></li>');
-				}
-			}
-			
-			//get the number of SD row;
-			var NsdRow = 0;
-			for(var i = 0; i < products.length; i++) {
-				if(products[i].sideDishes.length > NsdRow)
-					NsdRow = products[i].sideDishes.length;
-			}
-			if(NsdRow < 1)
-				NsdRow = 1;
-			//2.4 render each SD row
-            for (var ri = 0; ri < NsdRow; ri++) {
-                for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
-					var isRendered = false;
-                    for (var i = 0; i < products.length; i++) {
-						var od = ilunch.makeDate(products[i].date);
-                        if (od >= di && od <= di) {
-							if (products[i].sideDishes.length > ri) {
-								//render this SD here
-								var sd = products[i].sideDishes[ri];
-								$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+sd.imageURL+'" /><div class="n">x'+sd.quantity+'</div><div class="no"><a onclick="md_disorder('+sd.id+',\''+ilunch.dateToString(di)+'\')"><img src="/prototype/images/no.png" /></a></div></li>');
-								isRendered = true;
-								break;
-							}
-						}
+        //render logic start
+        
+        //2. render md and sd for each of the week days
+        var retval = cart.getCurrentWeekOrder();
+        var wStartDate = retval.startDate;
+        var wEndDate = retval.endDate;
+        var products = retval.products;
+        
+        //2.1 render calendar title;
+        $('#cart_date').empty();
+        for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
+            $('#cart_date').append('<li>' + ilunch.doubleDigit(di.getMonth() + 1) + '/' + ilunch.doubleDigit(di.getDate()) + '</li>');
+        }
+        
+        //2.2 render MD row;
+        $('#cart_dashboard').empty();
+        for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
+            var md = cart.getOrdersByDate(di, true);
+            if (md && md.length > 0) {
+                md = md[0];
+                $('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/' + md.imageURL + '" /></li>');
+            }
+            else {
+                $('#cart_dashboard').append('<li><img src="/prototype/images/zc_y.png" /></li>');
+            }
+        }
+        
+        //get the number of SD row;
+        var NsdRow = 0;
+        for (var i = 0; i < products.length; i++) {
+            if (products[i].sideDishes.length > NsdRow) 
+                NsdRow = products[i].sideDishes.length;
+        }
+        if (NsdRow < 1) 
+            NsdRow = 1;
+        //2.4 render each SD row
+        for (var ri = 0; ri < NsdRow; ri++) {
+            for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
+                var isRendered = false;
+                for (var i = 0; i < products.length; i++) {
+                    var od = ilunch.makeDate(products[i].date);
+                    if (od >= di && od <= di) {
+                        if (products[i].sideDishes.length > ri) {
+                            //render this SD here
+                            var sd = products[i].sideDishes[ri];
+                            $('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/' + sd.imageURL + '" /><div class="n">x' + sd.quantity + '</div><div class="no"><a onclick="md_disorder(' + sd.id + ',\'' + ilunch.dateToString(di) + '\')"><img src="/prototype/images/no.png" /></a></div></li>');
+                            isRendered = true;
+                            break;
+                        }
                     }
-					if(!isRendered) {
-						//render a empty SD here
-						$('#cart_dashboard').append('<li><img src="/prototype/images/pc_y.png" /></li>');
-					}
+                }
+                if (!isRendered) {
+                    //render a empty SD here
+                    $('#cart_dashboard').append('<li><img src="/prototype/images/pc_y.png" /></li>');
                 }
             }
-			//render logic end
-			
-            busy2 = false;
-			clearInterval(processor2);
-		}
+        }
+        //render logic end
 	};
 	
-	var busy3 = false;
 	renderBuildingSelector = function() {
-		if(!busy3 && cart && daList) {
-			busy3 = true;
-			
-			//render log start...
-
-			$('#building_list').change(function(e) {
-				//TODO change sel_building value
-				selBuilding = $("#building_list").find("option:selected").text();
-				$('#sel_building').html(selBuilding);
-				cart.getCart().distributionPoint = selBuilding;
-				cart.getCart().area = $('#area_name').html();
-				cart.getCart().buildingId = parseInt($("#building_list").find("option:selected").val());
-			});
-			
-			$('#building_list').empty();
-			for(var i = 0; i < daList.length; i++) {
-				if(daList[i].id == areaId) {
-					if(daList[i].buildings[0])
-						$('#building_list').append('<option value="'+daList[i].buildings[0].id+'" selected="selected">'+daList[i].buildings[0].name+'</option>');
-					for(var j = 1; j < daList[i].buildings.length; j++) {
-						$('#building_list').append('<option value="'+daList[i].buildings[j].id+'">'+daList[i].buildings[j].name+'</option>');
-					}
-				}
-			}
-			$('#building_list').change();
-			//render logic end
-			
-			
-			busy3 = false;
-			clearInterval(processor3);
-		}
+        //render log start...
+        
+        $('#building_list').change(function(e){
+            //TODO change sel_building value
+            selBuilding = $("#building_list").find("option:selected").text();
+            $('#sel_building').html(selBuilding);
+            cart.getCart().distributionPoint = selBuilding;
+            cart.getCart().area = $('#area_name').html();
+            cart.getCart().buildingId = parseInt($("#building_list").find("option:selected").val());
+        });
+        
+        $('#building_list').empty();
+        for (var i = 0; i < daList.length; i++) {
+            if (daList[i].id == areaId) {
+                if (daList[i].buildings[0]) 
+                    $('#building_list').append('<option value="' + daList[i].buildings[0].id + '" selected="selected">' + daList[i].buildings[0].name + '</option>');
+                for (var j = 1; j < daList[i].buildings.length; j++) {
+                    $('#building_list').append('<option value="' + daList[i].buildings[j].id + '">' + daList[i].buildings[j].name + '</option>');
+                }
+            }
+        }
+        $('#building_list').change();
+        //render logic end
 	};
-	
-	//wait for data to be ready
-	var processor1 = setInterval(renderUserInfo, 50);
-	var processor2 = setInterval(renderCart, 50);
-	var processor3 = setInterval(renderBuildingSelector, 50);
 	
 	///////////////////////////////////////////////////////
 	///////////////   bind event handlers   ///////////////
