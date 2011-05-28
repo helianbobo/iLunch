@@ -110,6 +110,7 @@
             </div>
 
             <div class="clear"></div>
+            <br/>
             <div class="page">
               <input id="last_page_btn" class="p_up" onmouseover="this.className = 'p_up_1'" onmouseout="this.className = 'p_up'" name="" type="button" value=""/>
               <input id="next_page_btn" class="p_down" onmouseover="this.className = 'p_down_1'" onmouseout="this.className = 'p_down'" name="" type="button" value=""/>

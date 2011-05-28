@@ -77,7 +77,7 @@ $(document).ready(function($){
 			)
 	).done(function() {
 		renderOrderInfo();
-		renderCart();
+		cart.render(true);
 		ilunch.unlockScreen();
 	});
 	///////////////////////////////////////////////////////
@@ -136,67 +136,6 @@ $(document).ready(function($){
 		//render logic end
 	};
 	
-	renderCart = function() {
-		//render logic start
-
-		//2. render md and sd for each of the week days
-		var retval = cart.getCurrentWeekOrder();
-		var wStartDate = retval.startDate;
-		var wEndDate = retval.endDate;
-		var products = retval.products;
-
-		//2.1 render calendar title;
-		$('#cart_date').empty();
-		for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
-			$('#cart_date').append('<li>'+ilunch.doubleDigit(di.getMonth()+1)+'/'+ilunch.doubleDigit(di.getDate())+'</li>');
-		}
-
-		//2.2 render MD row;
-		$('#cart_dashboard').empty();
-		for(var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
-			var md = cart.getOrdersByDate(di, true);
-			if(md && md.length > 0) {
-				md = md[0];
-				$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+md.imageURL+'" /></li>');
-			}
-			else {
-				$('#cart_dashboard').append('<li><img src="/prototype/images/zc_y.png" /></li>');
-			}
-		}
-
-		//get the number of SD row;
-		var NsdRow = 0;
-		for(var i = 0; i < products.length; i++) {
-			if(products[i].sideDishes.length > NsdRow)
-				NsdRow = products[i].sideDishes.length;
-		}
-		if(NsdRow < 1)
-			NsdRow = 1;
-		//2.4 render each SD row
-		for (var ri = 0; ri < NsdRow; ri++) {
-			for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
-				var isRendered = false;
-				for (var i = 0; i < products.length; i++) {
-					var od = ilunch.makeDate(products[i].date);
-					if (od >= di && od <= di) {
-						if (products[i].sideDishes.length > ri) {
-							//render this SD here
-							var sd = products[i].sideDishes[ri];
-							$('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/'+sd.imageURL+'" /><div class="n">x'+sd.quantity+'</div></li>');
-							isRendered = true;
-							break;
-						}
-					}
-				}
-				if(!isRendered) {
-					//render a empty SD here
-					$('#cart_dashboard').append('<li><img src="/prototype/images/pc_y.png" /></li>');
-				}
-			}
-		}
-		//render logic end
-	};
-	
 	///////////////////////////////////////////////////////
 	///////////////   bind event handlers   ///////////////
 	///////////////////////////////////////////////////////
@@ -204,13 +143,13 @@ $(document).ready(function($){
 	$('#last_week_btn').click(function() {
 		//change current date values to the first day of last week;
 		cart.getLastWeekOrder();
-		renderCart();
+		cart.render(true);
 	});
 	
 	$('#next_week_btn').click(function() {
 		//change current date values to the first day of next week;
 		cart.getNextWeekOrder();
-		renderCart();
+		cart.render(true);
 	});
 	
 	$('#btn_confirm_last').click(function() {

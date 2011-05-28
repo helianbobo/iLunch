@@ -101,7 +101,7 @@ $(document).ready(function($){
 	var dishSubTmplt2 =   	'</div>'+
 					  	'</div>';
 
-	var orderTmplt = '<div class="cai_sl">'+
+	var orderTmplt = '<div class="xc_sl">'+
 						'<input onclick="dec_quantity(this);" class="jianyi" name="" type="button" value="" />'+
 						'<input name="quantity" type="text" class="shuliang" maxlength="3" value="1"/>'+
 						'<input onclick="inc_quantity(this)" class="jiayi" name="" type="button" value="" />'+
