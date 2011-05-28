@@ -337,7 +337,7 @@
 		return isEmpty;
 	};
 	
-	ilunch.Cart.prototype.render = function(isEditable) {
+	ilunch.Cart.prototype.render = function(notEditable) {
 		//render logic start
         
 		//see if html elems are ready
@@ -389,7 +389,7 @@
                         if (products[i].sideDishes.length > ri) {
                             //render this SD here
                             var sd = products[i].sideDishes[ri];
-							var noElem = isEditable?'<div class="no"><a onclick="md_disorder(' + sd.id + ',\'' + ilunch.dateToString(di) + '\')"><img src="/prototype/images/no.png" /></a></div>':'';
+							var noElem = !notEditable?'<div class="no"><a onclick="md_disorder(' + sd.id + ',\'' + ilunch.dateToString(di) + '\')"><img src="/prototype/images/no.png" /></a></div>':'';
                             $('#cart_dashboard').append('<li><img class="sdpic" src="/prototype/' + sd.imageURL + '" /><div class="n">x' + sd.quantity + '</div>'+noElem+'</li>');
                             isRendered = true;
                             break;

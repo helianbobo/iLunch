@@ -134,28 +134,71 @@ $(document).ready(function($){
 	
 	renderBuildingSelector = function() {
         //render log start...
-        
+
+        var map = new google.maps.Map(document.getElementById("map_canvas"), {
+        	zoom: 15,
+        	mapTypeId: google.maps.MapTypeId.ROADMAP
+	    });
+
         $('#building_list').change(function(e){
             //TODO change sel_building value
             selBuilding = $("#building_list").find("option:selected").text();
             $('#sel_building').html(selBuilding);
             cart.getCart().distributionPoint = selBuilding;
             cart.getCart().area = $('#area_name').html();
-            cart.getCart().buildingId = parseInt($("#building_list").find("option:selected").val());
+            var buildingId = parseInt($(this).val());
+            cart.getCart().buildingId = buildingId;
+            changeMapCenter(buildingId);
         });
         
         $('#building_list').empty();
         var dpId = cart.getCart().buildingId;
-        for (var i = 0; i < daList.length; i++) {
+        var i = 0;
+        var buildingPositions = {};
+        for (i = 0; i < daList.length; i++) {
             if (daList[i].id == areaId) {
             	for (var j = 0; j < daList[i].buildings.length; j++) {
                 	var selected = (dpId == daList[i].buildings[j].id ? ' selected="selected"' : ''); 
                     $('#building_list').append('<option value="' + daList[i].buildings[j].id + '"'+selected+'>' + daList[i].buildings[j].name + '</option>');
+                    var pos = new google.maps.LatLng(daList[i].buildings[j].latitude, daList[i].buildings[j].longitude);
+                    buildingPositions[''+daList[i].buildings[j].id] = pos;
+                    var marker = new google.maps.Marker({
+                    	position: pos, 
+                    	map: map, 
+                    	title:daList[i].buildings[j].name
+                    });
+//                    google.maps.event.addListener(marker, 'click', function(e) {
+//                    	var latLng = e;
+//                    	for(var k in buildingPositions) {
+//                    		if(buildingPositions[k].equals(latLng)) {
+//                    			$('#building_list').val(k);
+//                    			$('#building_list').change();
+//                    			break;
+//                    		}
+//                    	}
+//                    });
                 }
             	break;
             }
         }
         $('#building_list').change();
+        
+        //render map
+        function changeMapCenter(bId) {
+        	map.setCenter(buildingPositions[''+bId]);
+        }
+
+//        google.maps.event.addListener(map, 'zoom_changed', function() {
+//        	setTimeout(moveToDarwin, 1500);
+//        });
+//
+        
+//
+//        function moveToDarwin() {
+//          var darwin = new google.maps.LatLng(-12.461334, 130.841904);
+//          map.setCenter(darwin);
+//        }
+        
         //render logic end
 	};
 	

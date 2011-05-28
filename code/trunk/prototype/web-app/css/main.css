@@ -334,6 +334,7 @@ p { margin:0; padding:0; }
 .qc_map .title .c_place { float:right; margin:0 40px 0 0;_margin:0 20px 0 0; }
 .qc_map .title .c_place .stress { color:#ff0000; }
 .qc_map img { border:3px #9bc2d4 solid; }
+.qc_map .map_canvas {border:3px #9bc2d4 solid;width:594px;height:283px;}
 
 .zj { float:left; width:649px; height:33px; line-height:33px; font-size:14px; color:#000; text-indent:30px;}
 .zj_input { background:url(../images/shuliang_1.png) left top no-repeat; width:46px; height:23px; border:none; }

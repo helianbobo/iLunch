@@ -8,6 +8,7 @@
 
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'cart.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'confirm_info.js')}"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
   </head>
   <body>
 
@@ -115,7 +116,7 @@
               </div>
               <div class="qc_map">
                 <div class="title"><div class="c_place">你已选择: <span id="sel_building" class="stress"></span></div>你可以在地图上点击选择你的取餐地点：</div>
-                <div><img src="/prototype/images/qc_map.jpg"/></div>
+                <div id="map_canvas" class="map_canvas"></div>
               </div>
             </div>
             <div class="pc_2">

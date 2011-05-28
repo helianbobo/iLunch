@@ -65,15 +65,15 @@ fixture {
 
     'building_lingyang'(Building) {
         name = '凌阳大厦'
-        latitude = '31.205093'
-        longitude = '121.598160'
+        latitude = '31.2066'
+        longitude = '121.5904'
         distributionPoint = dp_lingyang
     }
 
     'building_qq'(Building) {
         name = 'QQ大厦'
-        latitude = '31.205093'
-        longitude = '121.598160'
+        latitude = '31.2099'
+        longitude = '121.5975'
         distributionPoint = dp_lingyang
     }
 
