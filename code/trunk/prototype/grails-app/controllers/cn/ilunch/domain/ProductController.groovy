@@ -56,7 +56,7 @@ class ProductController {
         def toDate = null;
         if(params.toDate)
             toDate = Date.parse(dateFormatString, params.toDate)
-        def max = params.max
+        def max = params.max as Integer
         if(!max)
             max = 50
         def className = "cn.ilunch.domain.MainDish"
