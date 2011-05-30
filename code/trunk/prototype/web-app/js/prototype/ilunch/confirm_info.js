@@ -76,61 +76,15 @@ $(document).ready(function($){
             daList = data.areas;
         })
 	).done(function() {
-		renderUserInfo();
+//		renderUserInfo();
 		cart.render();
 		renderBuildingSelector();
 		ilunch.unlockScreen();
 	});
 
-	///////////////////////////////////////////////////////
-	////////////////// define templates ///////////////////
-	///////////////////////////////////////////////////////
-	
-	var notLoggedTmplt = '';
-	
-	var loggedOnTmplt = '<div class="al_reg">'+
-							'<div class="lxfs">'+
-						    '<div>您的手机号码：##PHONE_NO##</div>'+
-						    '<p>联系人：##CONTACT##</p>'+
-						    '</div>'+
-						    '<div class="qc_dd">'+
-//						    '<div>您使用过的取餐位置：</div>'+
-//						    '<p><input name="" type="radio" value="" />##AREA_NAME####BUILLDING_NAME##</p>'+
-						    '</div>'+
-						 '</div>';
-	
-	///////////////////////////////////////////////////////
-	///// wait until data's ready then render page ////////
-	///////////////////////////////////////////////////////
 
-	renderUserInfo = function() {
-        //render log start...
-        userInfoElem.empty();
-        if (user.id) {
-            var phone = user.phoneNumber;
-            var contact = user.nickname;
-            var points = user.points;
-            userInfoElem.append(loggedOnTmplt.replace(/##PHONE_NO##/g, phone).replace(/##CONTACT##/g, contact ? contact : "未提供联系人姓名"));
-            //TODO validate pointChange balance
-            $('#change_point').html(points ? points : 0);
-            $('#point_control').css({
-                "display": "block"
-            });
-            $('#logon_tip').css({
-                "display": "none"
-            });
-        }
-        else {
-            userInfoElem.append(notLoggedTmplt);
-            $('#point_control').css({
-                "display": "none"
-            });
-            $('#logon_tip').css({
-                "display": "block"
-            });
-        }
-        //render logic end
-	};
+
+
 	
 	renderBuildingSelector = function() {
         //render log start...
@@ -229,8 +183,11 @@ $(document).ready(function($){
 	});
 	
 	$('#btn_confirm_next').click(function() {
-		if(!user.id) {
+        var userId = $('#userId').val();
+
+		if(!userId) {
 			alert("请先登录!");
+            $('#logon_lnk').trigger('click');
 			return;
 		}
 		
@@ -255,149 +212,7 @@ $(document).ready(function($){
 			}
 		});
 	});
-	
-	$('#logon_lnk').click(function(e) {
-		ilunch.lockScreen();
-		var sh = $(window)[0].outerHeight;
-		var sw = $(window)[0].outerWidth;
-		var w = $('#logon_dialog').outerWidth();
-		var h = $('#logon_dialog').outerHeight();
-		$('#logon_dialog').css({"left":((sw-w)/2)+"px","top":((sh-h)/2)+"px"});
-		$('#logon_dialog').show();
-	});
-	
-	$('#logon_dialog_cancel').click(function() {
-		$('#logon_dialog').hide();
-		ilunch.unlockScreen();
-	}); 
-	
-	$('#logon_dialog_reg_btn').click(function() {
-		var x = $('#logon_dialog').css("left");
-		var y = $('#logon_dialog').css("top");
-		$('#logon_dialog').hide();
-		$('#reg_dialog').css({"left":x,"top":y});
-		$('#reg_dialog').show();
-	});
-	
-	$('#reg_dialog_logon_btn').click(function() {
-		var x = $('#reg_dialog').css("left");
-		var y = $('#reg_dialog').css("top");
-		$('#reg_dialog').hide();
-		$('#logon_dialog').css({"left":x,"top":y});
-		$('#logon_dialog').show();
-	});
-	
-	$('#reg_dialog_cancel').click(function() {
-		$('#reg_dialog').hide();
-		ilunch.unlockScreen();
-	}); 
-	
-	$('#logon_dialog_confirm').click(function() {
-		var un = $('#logon_dialog_un').val();
-		if(!un || un == '') {
-			$('#dialog_err').html('请填写手机号码');
-			return;
-		}
-		// get pwd
-		var pwd = $('#logon_dialog_pwd').val();
-		if(!pwd || pwd == '') {
-			$('#dialog_err').html('请填写密码');
-			return;
-		}
-		// call logon API
 
-		ilunch.lockScreen();
-		var status = null;
-		ilunch.login(un, pwd, true, function(data) {
-			if(data.error)
-				status = data.error;
-			else if(data.success) {
-				//assign userId and user
-				ilunch.getCurrentUserInfo(function(data) {
-					user = data;
-					status = 'OK';
-				});
-			}
-		});
-		function wait() {
-			if(status != null) {
-				if(status == 'OK') {
-					// re-render userinfo
-					renderUserInfo();
-					$('#dialog_err').html('');
-					$('#logon_dialog').hide();
-					ilunch.unlockScreen();
-				}
-				else {
-					// show error msg
-					$('#dialog_err').html(status);
-				}
-				clearInterval(p);
-			}
-		}
-		var p = setInterval(wait, 50);
-	}); 
-	
-	$('#reg_dialog_confirm').click(function() {
-		// get un
-		var un = $('#reg_dialog_phone').val();
-		if(!un || un == '') {
-			$('#dialog_err_reg').html('请填写手机号码！');
-			return;
-		}
-		// get pwd
-		var pwd = $('#reg_dialog_pwd').val();
-		if(!pwd || pwd == '') {
-			$('#dialog_err_reg').html('请填写密码！');
-			return;
-		}
-		var pwd2 = $('#reg_dialog_pwd2').val();
-		if(!pwd || pwd == '') {
-			$('#dialog_err_reg').html('请确认密码！');
-			return;
-		}
-		if(pwd != pwd2) {
-			$('#dialog_err_reg').html('两次输入的密码不一致！');
-			return;
-		}
-		// call reg API
-		ilunch.lockScreen();
-		var status = null;
-		ilunch.register(un, pwd, function(data) {
-			if(data.error)
-				status = data.error.message;
-			else {
-				ilunch.login(un, pwd, true, function(data) {
-					if(data.error)
-						ilunch.fatalError("logon failed!");
-					else if(data.success) {
-						//assign userId and user
-						ilunch.getCurrentUserInfo(function(data) {
-							user = data;
-							status = 'OK';
-						});
-					}
-				});
-			}
-		});
-		function wait2() {
-			if(status != null) {
-				if(status == 'OK') {
-					// re-render userinfo
-					renderUserInfo();
-					$('#dialog_err_reg').html('');
-					$('#reg_dialog').hide();
-					ilunch.unlockScreen();
-				}
-				else {
-					// show error msg
-					$('#dialog_err_reg').html(status);
-				}
-				clearInterval(p2);
-			}
-		}
-		var p2 = setInterval(wait2, 50);
-	}); 
 
 	md_disorder = function(id, date) {
 		date = ilunch.makeDate(date);

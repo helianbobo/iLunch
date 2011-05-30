@@ -16,95 +16,13 @@
 
       <div class="content">
       
-      	<div id="logon_dialog" class="alert_div_3" style="position:absolute;display:none;z-index:2000">
-		    <div class="login_l">
-		      <ul>
-		        <li class="log_on"><a href="#">登 录</a></li>
-		        <li class="reg_off"><a href="#" id="logon_dialog_reg_btn">注 册</a></li>
-		      </ul>
-		    </div>
-		    <div class="login_2">
-		      <div class="title"><a href="#"><img src="images/close.png" /></a></div>
-		      <ul>
-		        <li><strong>用户登录</strong></li>
-		        <li id="dialog_err"></li>
-		        <li>手机号码：
-		          <input id="logon_dialog_un" class="log_srk" name="" type="text" />
-		        </li>
-		        <li>用户密码：
-		          <input id="logon_dialog_pwd" class="log_srk" name="" type="password" />
-		          <div><a href="#">忘记密码了怎么办？</a></div>
-		        </li>
-		        <li>
-		          <input id="logon_dialog_confirm" class="button_11" onmouseover="this.className='button_11_1'" onmouseout="this.className='button_11'"  name="" type="button" />
-		          <input id="logon_dialog_cancel" class="button_12" onmouseover="this.className='button_12_1'" onmouseout="this.className='button_12'"  name="" type="button" />
-		        </li>
-		      </ul>
-		    </div>
-		  </div>
-		  
-		  <div id="reg_dialog" class="alert_div_4" style="position:absolute;display:none;z-index:2000">
-		    <div class="login_l">
-		      <ul>
-		        <li class="log_off"><a id="reg_dialog_logon_btn" href="#">登 录</a></li>
-		        <li class="reg_on"><a href="#">注 册</a></li>
-		      </ul>
-		    </div>
-		    <div class="login_3">
-		      <div class="title"><a href="#"><img src="images/close.png" /></a></div>
-		      <ul>
-		        <li><strong>用户注册</strong></li>
-		        <li id="dialog_err_reg"></li>
-		        <li>手机号码：
-		          <input id="reg_dialog_phone" class="reg_srk" name="" type="text" />
-		          <div>手机号码是您登录网站和接受取餐识别码的唯一凭证</div>
-		        </li>
-		        <li>用户密码：
-		          <input id="reg_dialog_pwd" class="reg_srk" name="" type="password" />
-		          <div>密码少于12个字符，由英文和数字组成，区分大小写</div>
-		        </li>
-		        <li>确认密码：
-		          <input id="reg_dialog_pwd2" class="reg_srk" name="" type="password" />
-		        </li>
-		        <li>绑定帐号：
-		          <input name="" type="checkbox" value="" />
-		          <span>直接使用<strong>新浪微博</strong>账号</span></li>
-		        <li>
-		          <div>
-		            <input id="reg_dialog_agree" name="" type="checkbox" value="" />
-		            <span>我同意接受网站协议 <a href="#">查看网站协议</a></span></div>
-		        </li>
-		        <li>
-		          <input id="reg_dialog_confirm" class="button_13" onmouseover="this.className='button_13_1'" onmouseout="this.className='button_13'"  name="" type="button" />
-		          <input id="reg_dialog_cancel" class="button_12" onmouseover="this.className='button_12_1'" onmouseout="this.className='button_12'"  name="" type="button" />
-		        </li>
-		      </ul>
-		    </div>
-		  </div>
-		  
         <div class="c_c">
           <div class="dd_3"></div>
           <div class="pcbg">
             <div class="pc_l">
-              <div class="title"><p><span id="logon_tip">请点击<a href="#" id="logon_lnk">这里</a>登录/注册。</span></p></div>
+
               <div id="user_info">
-                <div class="no_reg">
-                  <table width="610" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="100">您的手机号码：</td>
-                      <td width="285"><input name="" type="text" class="srk" maxlength="36"/><div class="tishi">请输入您的手机号码，方便您接收取餐短信通知</div></td>
-                      <td><div class="done"></div></td>
-                    </tr>
-                    <tr>
-                      <td>您的密码：</td>
-                      <td><input name="" type="text" class="srk" maxlength="36"/><div class="tishi">设置密码，方便您保留订餐信息</div></td>
-                      <td><div class="wrong">密码包括数字、字母，区分大小写</div></td>
-                    </tr>
-                    <tr>
-                      <td colspan="3"><input class="reg_button" onmouseover="this.className = 'reg_button_1'" onmouseout="this.className = 'reg_button'" name="" type="button"/></td>
-                    </tr>
-                  </table>
-                </div>
+
               </div>
               <div id="area_selector" class="qc_place">
                 <div class="title">取餐的位置：##AREA_NAME##
