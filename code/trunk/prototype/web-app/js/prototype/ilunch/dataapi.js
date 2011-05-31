@@ -207,16 +207,19 @@
 		});
 	};
 
-	ilunch.getMainDishListOnSelectionPage = function(fromDate, toDate, areaId, handler) {
-		if(!fromDate || !toDate || !areaId) {
+	ilunch.getMainDishListOnSelectionPage = function(fromDate, toDate, max, areaId, handler) {
+		if(!fromDate || !areaId) {
 			ilunch.fatalError('invalide fromDate or toDate or areaId!');
 			return;
 		}
 		params = {
 			date: fromDate,
-			toDate: toDate,
 			areaId: areaId
 		};
+		if(toDate)
+			params.toDate = toDate;
+		if(max)
+			params.max = max;
 		return $.getJSON(ROOT+'/product/listAllMainDishOnSelectionPage', params, function(data) {
 					if(data.error) {
 						ilunch.fatalError("[DataAPI::listAllMainDishOnSelectionPage]Server responded data with error:"+data.error.message);
