@@ -141,6 +141,7 @@
 
         function closeLogonDialog() {
             $('#logon_dialog').hide();
+            $('#reg_dialog').hide();
             ilunch.unlockScreen();
         }
 
@@ -254,6 +255,7 @@
                             ilunch.getCurrentUserInfo(function(data) {
 //                                user = data;
                                 $('#authLink').trigger('onLoggedIn', [data]);
+                                alert('注册成功，已登录！');
                                 status = 'OK';
                             });
                         }
