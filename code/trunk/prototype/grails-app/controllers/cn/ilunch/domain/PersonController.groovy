@@ -58,6 +58,20 @@ class PersonController {
         }
     }
 
+    def changeName = {
+        def nickName = params.nickName
+        def id = springSecurityService.currentUser.id as long
+        try {
+            def customer = Customer.get(id)
+            customer.name = nickName
+            customer.save()
+        } catch (e) {
+            render "{'result':'fail'}"
+            return
+        }
+        render "{'result':'success'}"
+    }
+
     def saveCart = {
         session.putValue("cartInfo", params.cartInfo)
         render "{'status':'OK'}"
@@ -74,7 +88,6 @@ class PersonController {
             return
         }
         render([text: session.getValue("cartInfo"), contentType: 'text/plain'])
-
     }
 
 

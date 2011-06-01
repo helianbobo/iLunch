@@ -49,6 +49,12 @@ class OrderService {
         return newOrder
     }
 
+    def tryReduce(ProductOrder productOrder) {
+        productOrder.orderItems.each {OrderItem item ->
+            repositoryService.tryReduce(item.product, productOrder.distributionPoint.area, item.shippmentDate, item.quantity)
+        }
+    }
+
     def acknowledgePayment(ProductOrder productOrder) {
         if (!productOrder.orderItems)
             throw new OrderStatusException("empty order cannot be acknowledged")

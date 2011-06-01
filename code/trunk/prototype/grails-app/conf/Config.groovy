@@ -102,6 +102,7 @@ cn.ilunch.exception.code.CellphoneNumberRegistered = "07"
 cn.ilunch.exception.code.NotEnoughProduct = "08"
 
 cn.ilunch.date.format = 'yyyy-MM-dd'
+cn.ilunch.repository.remainDisplayRatio = '0.8'
 cn.ilunch.product.image.location = "${userHome}/ilunch/images/products"
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'cn.ilunch.domain.Person'

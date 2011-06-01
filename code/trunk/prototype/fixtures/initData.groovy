@@ -203,6 +203,8 @@ fixture {
         product = sd_doujiao
         area = da_zhangjiang
         price = 18.0
+        remain = 100
+        quantity = 150
         fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-06')
     }
 
@@ -235,12 +237,6 @@ fixture {
         price = 45.0
         fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-17')
         toDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-26')
-    }
-    'schedule_md_psourcefish_2011-04-27'(ProductAreaPriceSchedule) {
-        product = md_psourcefish
-        area = da_zhangjiang
-        price = 40.0
-        fromDate = new SimpleDateFormat('yyyy-MM-dd').parse('2011-04-27')
     }
 
     'schedule_md_psourcefish_peoplesquare_2011-05-01'(ProductAreaPriceSchedule) {
@@ -372,6 +368,8 @@ fixture {
             price = 35.0
             fromDate = date
             toDate = date
+            remain = 100
+            quantity = 150
         }
         "schedule_md_psourcefish_zhangjiang_${date.format('yyyy-MM-dd')}"(ProductAreaPriceSchedule) {
             product = md_psourcefish
@@ -379,6 +377,8 @@ fixture {
             price = 12.0
             fromDate = date
             toDate = date
+            remain = 100
+            quantity = 150
         }
     }
 

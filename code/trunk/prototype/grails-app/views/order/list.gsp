@@ -78,7 +78,7 @@
                                     <td>${order.displayStatus}</td>
                                     <td>
                                         <g:if test="${order.status=='SUBMITTED'}">
-                                            <g:form action="acknowledge" style="display:inline;">
+                                            <g:form action="tryAcknowledge" style="display:inline;">
                                                 <g:hiddenField name="id" value="${order.id}"/>
                                                 <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
                                             </g:form>

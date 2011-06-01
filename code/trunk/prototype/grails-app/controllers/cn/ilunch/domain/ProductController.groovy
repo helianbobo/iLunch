@@ -54,14 +54,14 @@ class ProductController {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date)
         def toDate = null;
-        if(params.toDate)
+        if (params.toDate)
             toDate = Date.parse(dateFormatString, params.toDate)
         def max = params.max as Integer
-        if(!max)
+        if (!max)
             max = 50
         def className = "cn.ilunch.domain.MainDish"
         def areaId = params.areaId as long
-        def result = queryProductOnSelectionPage(fromDate, toDate,areaId, className, max)
+        def result = queryProductOnSelectionPage(fromDate, toDate, areaId, className, max)
         renderJSONFromResult(result)
     }
 
@@ -69,10 +69,10 @@ class ProductController {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date)
         def toDate = null;
-        if(params.toDate)
+        if (params.toDate)
             toDate = Date.parse(dateFormatString, params.toDate)
         def max = params.max
-        if(!max)
+        if (!max)
             max = 50
         def className = "cn.ilunch.domain.SideDish"
         def areaId = params.areaId as long
@@ -81,7 +81,7 @@ class ProductController {
     }
 
     private def queryProductOnSelectionPage(Date fromDate, Date toDate, long areaId, String className, max) {
-        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.original_image_url as original_image_url,p.id as id,p.class as class,t.value
+        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.original_image_url as original_image_url,p.id as id,p.class as class,t.value,S2.remain as remain, S2.quantity as quantity
                     from product_area_price_schedule S2
                     left join product p on p.id = S2.product_id
                     left join product_tags pt on p.id=pt.product_id
@@ -91,18 +91,17 @@ class ProductController {
                         where t.area_id=:area
                         and t.status = 0
                         and (t.to_date>=:st or t.to_date is null )
-                        ${toDate?"and (t.from_date<=:ed)":""}
+                        ${toDate ? "and (t.from_date<=:ed)" : ""}
                         group by t.product_id,from_date) S1
                         on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                        where p.class = :className order by S2.from_date asc""").addScalar('price',Hibernate.DOUBLE).addScalar('productId',Hibernate.LONG).addScalar('fromDate',Hibernate.DATE).addScalar('toDate',Hibernate.DATE).addScalar('productName',Hibernate.STRING).addScalar('story',Hibernate.STRING)
-        .addScalar('original_image_url',Hibernate.STRING).addScalar('id',Hibernate.LONG) .addScalar('class',Hibernate.STRING).addScalar('value',Hibernate.STRING)
+                        where p.class = :className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING)
 
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)
         sqlQuery.setString("className", className)
 
-        if(toDate)
-           sqlQuery.setTimestamp("ed", toDate)
+        if (toDate)
+            sqlQuery.setTimestamp("ed", toDate)
 
         if (max)
             sqlQuery.setMaxResults(max)
@@ -114,7 +113,7 @@ class ProductController {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date) + 2  //后天开始
         def max = params.max
-        if(!max)
+        if (!max)
             max = 50
         def areaId = params.areaId as long
         def className = "cn.ilunch.domain.MainDish"
@@ -127,7 +126,7 @@ class ProductController {
         def dateFormatString = grailsApplication.config.cn.ilunch.date.format
         def fromDate = Date.parse(dateFormatString, params.date) + 2  //后天开始
         def max = params.max
-        if(!max)
+        if (!max)
             max = 50
         def areaId = params.areaId as long
         def className = "cn.ilunch.domain.SideDish"
@@ -137,7 +136,7 @@ class ProductController {
     }
 
     private List queryProductOnIndexPage(Date fromDate, long areaId, String className, max) {
-        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as id,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.original_image_url as original_image_url, p.id as id,p.class,t.value
+        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as id,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.original_image_url as original_image_url, p.id as id,p.class,t.value,S2.remain as remain, S2.quantity as quantity
                     from product_area_price_schedule S2
                     left join product p on p.id = S2.product_id
                     left join product_tags pt on p.id=pt.product_id
@@ -149,9 +148,7 @@ class ProductController {
                         and (t.to_date>=:st or t.to_date is null )
                         group by t.product_id) S1
                     on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                    where p.class=:className order by S2.from_date asc""").addScalar('price',Hibernate.DOUBLE).addScalar('productId',Hibernate.LONG).addScalar('fromDate',Hibernate.DATE).addScalar('toDate',Hibernate.DATE).addScalar('productName',Hibernate.STRING).addScalar('story',Hibernate.STRING)
-        .addScalar('original_image_url',Hibernate.STRING).addScalar('id',Hibernate.LONG) .addScalar('class',Hibernate.STRING).addScalar('value',Hibernate.STRING)
-
+                    where p.class=:className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING)
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)
         sqlQuery.setString("className", className)
@@ -201,15 +198,14 @@ class ProductController {
                         dish([
                                 id: schedule[7],
                                 name: schedule[4],
-//                            price: schedule[0],
-//                            fromDate: schedule[2].format(dateFormatString),
-//                            toDate: schedule[3]?.format(dateFormatString),
                                 prices: array {
                                     for (pc in priceMap["id" + schedule[7]])
                                         price(
                                                 [price: pc.price, startDate: pc.fromDate, endDate: pc.toDate]
                                         )
                                 },
+                                remain: (schedule[10] * (grailsApplication.config.cn.ilunch.repository.remainDisplayRatio as double)) as int,
+                                quantity: schedule[11],
                                 imageURL: schedule[6],
                                 flavors: array {
                                     for (t in tagMap["id" + schedule[7]])
@@ -229,121 +225,6 @@ class ProductController {
 
     def index = {
         redirect(action: "list")
-    }
-
-    def addProduct = {
-//        promptProductName {
-//            on("submit").to "checkProductName"
-//            on("back").to "returnToIndex"
-//        }
-//
-//        checkProductName {
-//            action {
-//                if (!params.productName || Product.findByName(params.productName)) {
-//                    flow.message = "product already exist"
-//
-//                    flow.backUrl = "promptProductName"
-//                    throw new ProductAlreadyExistException("");
-//                }
-//                flow.productName = params.productName
-//                flow.productStory = params.productStory
-//            }
-//            on("success").to "uploadImage"
-//            on(ProductAlreadyExistException).to "showErrorMessage"
-//        }
-//        showErrorMessage {
-//            action {
-//                return [errorMsg: flow.message]
-//            }
-//            on("success").to "handleError"
-//            on("back").to "$flow.backUrl"
-//        }
-//
-//        handleError {
-//
-//        }
-//        uploadImage {
-//            on("uploadImage").to "saveImage"
-//            on("back").to "promptProductName"
-//        }
-//
-//        saveImage {
-//            action {
-//                def f = request.getFile('image')
-//                if (!f.empty) {
-//                    String location = grailsApplication.config.cn.ilunch.product.image.location
-//                    def newFile = new File(location + "/${flow.productName}" + ".jpg")
-//                    f.transferTo(newFile)
-//                }
-//                else {
-//                    flash.message = 'file cannot be empty'
-//                }
-//            }
-//            on("success").to "promptProductPrice"
-//            on(Exception).to "showErrorMessage"
-//        }
-//
-//        promptProductPrice {
-//            on("submit").to "checkProductPrice"
-//            on("back").to "uploadImage"
-//        }
-//
-//        checkProductPrice {
-//            action {
-//                if (!params.productPrice || (params.productPrice as float) <= 0.0f) {
-//                    flow.message = "产品价格不能小于0"
-//
-//                    flow.backUrl = "promptProductPrice"
-//                    throw new IllegalProductPriceException();
-//                }
-//                flow.productPrice = params.productPrice
-//            }
-//            on("success").to "promptDateRange"
-//            on(IllegalProductPriceException).to "showErrorMessage"
-//        }
-//
-//        promptDateRange {
-//            on("submit").to "checkProductDate"
-//            on("back").to "promptProductPrice"
-//        }
-//
-//        checkProductDate {
-//            action {
-//                def fromDate = Date.parse(grailsApplication.config.cn.ilunch.date.format, params.fromDate)
-//                def toDate = Date.parse(grailsApplication.config.cn.ilunch.date.format, params.toDate)
-//                if (fromDate > toDate) {
-//                    flow.message = "起始日期不能大于结束日期"
-//                    throw new IllegalDateRangeException()
-//                }
-//                flow.fromDate = fromDate
-//                flow.toDate = toDate
-//            }
-//            on("success").to "printNewProductInfo"
-//            on("IllegalDateRangeException").to "showErrorMessage"
-//        }
-//
-//        confirm {
-//            on("confirm").to "saveAll"
-//            on("back").to "promptDateRange"
-//        }
-//
-//        printNewProductInfo{
-//            action {
-//                return [name: flow.productName,story: flow.productStory, price: flow.productPrice, from: flow.fromDate, to: flow.toDate]
-//            }
-//            on("success").to "confirm"
-//            on(Exception).to "showErrorMessage"
-//        }
-//
-//        saveAll{
-//            action{
-//                new Product(name:flow.productName, story:flow.productStory).save()
-//            }
-//        }
-//        finish {
-//
-//        }
-
     }
 
     @Secured(['ROLE_MANAGER'])

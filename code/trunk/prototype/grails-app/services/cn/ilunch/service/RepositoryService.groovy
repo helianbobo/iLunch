@@ -14,10 +14,19 @@ class RepositoryService {
             throw new EntityNotFoundException([entity: ProductAreaPriceSchedule, product: product, area: area, date: date])
 
         if(schedule.remain - quantity < 0)
-            schedule.remain = 0;
+            throw new NotEnoughProductException()
         else
             schedule.remain -= quantity
 
         schedule.save()
+    }
+
+    def tryReduce(product, area, date, quantity) {
+        def schedule = priceService.queryProductSchedule(product, area, date)[0]
+        if (!schedule)
+            throw new EntityNotFoundException([entity: ProductAreaPriceSchedule, product: product, area: area, date: date])
+
+        if(schedule.remain - quantity < 0)
+            throw new NotEnoughProductException()
     }
 }

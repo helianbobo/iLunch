@@ -2,6 +2,7 @@ package cn.ilunch.domain
 
 import cn.ilunch.security.ILunchUserDetails
 import org.springframework.web.servlet.ModelAndView
+import cn.ilunch.service.NotEnoughProductException
 
 class OrderController {
     def springSecurityService
@@ -26,7 +27,7 @@ class OrderController {
         def shipmentList = shipmentCriteria.list {
             gt('shipmentDate', new Date() - 31)
             eq('status', Shipment.CREATED)
-            if(orderList)
+            if (orderList)
                 inList('productOrder', orderList)
             maxResults(params.max)
             order("shipmentDate", "desc")
@@ -94,10 +95,37 @@ class OrderController {
         redirect(action: "listWithinMonth")
     }
 
+    def tryAcknowledge = {
+        def orderId = params.id
+        def productOrder = ProductOrder.get(orderId)
+        try {
+            orderService.tryReduce(productOrder)
+        } catch (NotEnoughProductException e) {
+            flash.message = "没货了，系统自动为您修改数量并新生成订单，请确认"
+            try {
+                orderService.shrinkOrder(productOrder)
+                redirect(action: "listWithinMonth")
+                return
+            } catch (e1) {
+                flash.message = "付款失败"
+                redirect(action: "listWithinMonth")
+                return
+            }
+        }
+        flash.message = "请在支付宝付款，付款完成后请返回这里确认配送生成"
+        redirect(action: "listWithinMonth")
+    }
+
     def acknowledge = {
         def orderId = params.id
         def productOrder = ProductOrder.get(orderId)
-        orderService.acknowledgePayment(productOrder)
+        try {
+            orderService.acknowledgePayment(productOrder)
+        } catch (NotEnoughProductException e) {
+            flash.message = "付款失败，请联系客服"
+            redirect(action: "listWithinMonth")
+        }
+        flash.message = "配送生成成功"
         redirect(action: "listWithinMonth")
     }
 

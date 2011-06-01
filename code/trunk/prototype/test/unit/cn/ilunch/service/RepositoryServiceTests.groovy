@@ -52,9 +52,52 @@ class RepositoryServiceTests extends GrailsUnitTestCase {
             return [schedule]
         }
         repositoryService.priceService = priceService.createMock()
-        repositoryService.reduce(product, area, new Date(), 10)
-        assertEquals(0, schedule.remain)
+        try {
+            repositoryService.reduce(product, area, new Date(), 10)
+        } catch (NotEnoughProductException e) {
+            assertEquals(8, schedule.remain)
+            return
+        }
+        fail()
     }
 
+    void testTryReduce() {
+        mockDomain(ProductAreaPriceSchedule, [])
+        ProductAreaPriceSchedule schedule = new ProductAreaPriceSchedule(remain: 50)
 
+        def priceService = mockFor(cn.ilunch.service.PriceService)
+        Product product = new Product()
+        DistributionArea area = new DistributionArea()
+        priceService.demand.queryProductSchedule(1) {mainDish, area1, date ->
+            assertEquals(product, mainDish)
+            assertEquals(area, area1)
+            return [schedule]
+        }
+        repositoryService.priceService = priceService.createMock()
+
+        repositoryService.tryReduce(product, area, new Date(), 10)
+        assertEquals(50, schedule.remain)
+    }
+
+    void testInvalidTryReduce() {
+        mockDomain(ProductAreaPriceSchedule, [])
+        ProductAreaPriceSchedule schedule = new ProductAreaPriceSchedule(remain: 8)
+
+        def priceService = mockFor(cn.ilunch.service.PriceService)
+        Product product = new Product()
+        DistributionArea area = new DistributionArea()
+        priceService.demand.queryProductSchedule(1) {mainDish, area1, date ->
+            assertEquals(product, mainDish)
+            assertEquals(area, area1)
+            return [schedule]
+        }
+        repositoryService.priceService = priceService.createMock()
+        try {
+            repositoryService.tryReduce(product, area, new Date(), 10)
+        } catch (NotEnoughProductException e) {
+            assertEquals(8, schedule.remain)
+            return
+        }
+        fail()
+    }
 }
