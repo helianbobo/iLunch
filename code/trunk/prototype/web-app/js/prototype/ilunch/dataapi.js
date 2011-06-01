@@ -581,7 +581,7 @@
 			return dStr;
 		var p = /(\d+)-(\d+)-(\d+)/;
 		var r = p.exec(dStr);
-		return new Date(parseInt(r[1]), parseInt(r[2])-1, parseInt(r[3]));
+		return new Date(parseInt(r[1], 10), parseInt(r[2], 10)-1, parseInt(r[3], 10));
 	};
 	
 	ilunch.dateToString = function(d) {

@@ -106,23 +106,17 @@
                 var contact = user.nickname;
                 var points = user.points;
                 $('#authLink').append(loggedOnTmplt.replace(/##PHONE_NO##/g, phone).replace(/##CONTACT##/g, contact ? contact : "未提供联系人姓名"));
+        		$('#authLink').append('<input type="hidden" value="'+phone+'" name="phone" />');
+        		$('#authLink').append('<input type="hidden" value="'+contact+'" name="contact" />');
+        		$('#authLink').append('<input type="hidden" value="'+points+'" name="points" />');
                 //TODO validate pointChange balance
                 $('#change_point').html(points ? points : 0);
                 $('#point_control').css({
                             "display": "block"
                         });
-                $('#logon_tip').css({
-                            "display": "none"
-                        });
-            }
+           	}
             else {
                 $('#authLink').append(notLoggedTmplt);
-                $('#point_control').css({
-                            "display": "none"
-                        });
-                $('#logon_tip').css({
-                            "display": "block"
-                        });
             }
             //render logic end
         }

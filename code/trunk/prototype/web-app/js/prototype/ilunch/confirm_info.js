@@ -59,10 +59,25 @@ $(document).ready(function($){
 	
 	ilunch.lockScreen();
 	
+	function getUser() {
+		var phone = $('#authLink').find("input[name=phone]").val();
+		if(phone) {
+			var contact = $('#authLink').find("input[name=contact]").val();
+			var points = $('#authLink').find("input[name=points]").val();
+			user = {id:uid, phoneNumber:phone, nickname:contact, points:points};
+			var dfd = jQuery.Deferred();
+			dfd.resolve();
+			return dfd.promise();
+		}
+		else {
+			return ilunch.getCurrentUserInfo(function(data) {
+						user = data;
+					});
+		}
+	}
+	
 	$.when(
-		ilunch.getCurrentUserInfo(function(data) {
-			user = data;
-		}),
+		getUser(),
 		ilunch.getCart(
 			function(data) {
 				cart = new ilunch.Cart(data);
@@ -76,7 +91,7 @@ $(document).ready(function($){
             daList = data.areas;
         })
 	).done(function() {
-//		renderUserInfo();
+		renderPointChange();
 		cart.render();
 		renderBuildingSelector();
 		ilunch.unlockScreen();
@@ -84,7 +99,26 @@ $(document).ready(function($){
 
 
 
+	renderPointChange = function() {
 
+        //render log start...
+        if (user.id) {
+            var phone = user.phoneNumber;
+            var contact = user.nickname;
+            var points = user.points;
+            //TODO validate pointChange balance
+            $('#change_point').html(points ? points : 0);
+            $('#point_control').css({
+                        "display": "block"
+                    });
+        }
+        else {
+            $('#point_control').css({
+                        "display": "none"
+                    });
+        }
+        //render logic end
+    };
 	
 	renderBuildingSelector = function() {
         //render log start...
@@ -198,7 +232,11 @@ $(document).ready(function($){
 		
 		var usedPoints = parseInt($('#change_point_input').val());
 		usedPoints = usedPoints ? usedPoints : 0; 
-		if(usedPoints > user.points) {
+		if(user.id)
+			var totalPoints = user.points;
+		else
+			var totalPoints = parseInt($('#authLink').find("input[name=points]").val());
+		if(usedPoints > totalPoints) {
 			ilunch.fatalError("使用的积分不得超过您所有拥有的积分！");
 			return;
 		}

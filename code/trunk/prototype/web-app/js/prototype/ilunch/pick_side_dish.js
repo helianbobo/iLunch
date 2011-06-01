@@ -293,7 +293,7 @@ $(document).ready(function($){
 		var sd = cart.getCurrentWeekOrder().startDate;
 		for(var i = 0, di = sd; i < 5; i++, di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
 			var dateTitle = '周'+ilunch.digitToCNSS(i+1)+' '+(di.getMonth()+1)+'/'+di.getDate();
-			if(di < d) {
+			if(di <= new Date(d.getFullYear(), d.getMonth(), d.getDate()+cart.getCart().ORDER_INADVANCE_DAY-1)) {
 				ul.append('<li><div>'+dateTitle+'<br /></div></li>');
 			}
 			else {

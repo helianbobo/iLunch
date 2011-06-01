@@ -176,14 +176,14 @@ $(document).ready(function($){
 					if(result == 0) {
 						success = true;
 					}
-					else if(result == "04"){
-						success = false;
-						ilunch.fatalError("使用的积分超过余额！");
-					}
-					else if(result == "05") {
-						success = false;
-						ilunch.fatalError("只能订购两天之后的餐品！");
-					}
+//					else if(result == "04"){
+//						success = false;
+//						ilunch.fatalError("使用的积分超过余额！");
+//					}
+//					else if(result == "05") {
+//						success = false;
+//						ilunch.fatalError("只能订购两天之后的餐品！");
+//					}
 				})
 		).done(
 				function() {
@@ -194,8 +194,8 @@ $(document).ready(function($){
 							$('#confirm_form').submit();
 						}
 						
-						ilunch.unlockScreen();
 					}
+					ilunch.unlockScreen();
 				}
 		);
 		return true;

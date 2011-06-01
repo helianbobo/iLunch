@@ -54,7 +54,7 @@ $(document).ready(function($){
 			ilunch.getCart(
 					function(data) {
 						cart = new ilunch.Cart(data);
-						in_total.html(cart.getTotalMoney());
+//						("#in_total").html(cart.getTotalMoney());
 //						//delete
 //						cart.addOrder(true, new Date(2011,4,12), 1, "逼鱼", "images/pic_17.jpg", 2);
 //						cart.addOrder(true, new Date(2011,4,9), 2, "盖浇饭", "images/pic_17.jpg", 2);
