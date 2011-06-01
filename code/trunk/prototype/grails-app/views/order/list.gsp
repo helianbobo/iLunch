@@ -86,7 +86,7 @@
                                         <g:if test="${order.status!='CANCELLED'}">
                                             <g:form action="cancel">
                                                 <g:hiddenField name="id" value="${order.id}"/>
-                                                <g:submitButton name="submit" class="zhifu" onmouseover="this.className = 'zhifu_1'" onmouseout="this.className = 'zhifu'" value=""/>
+                                                <g:submitButton name="submit" class="td" onmouseover="this.className = 'td_1'" onmouseout="this.className = 'td'" value=""/>
                                             </g:form>
                                         </g:if>
                                     </td>
