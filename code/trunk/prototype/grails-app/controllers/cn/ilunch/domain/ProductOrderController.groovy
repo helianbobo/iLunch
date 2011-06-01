@@ -42,6 +42,7 @@ class ProductOrderController {
                     result = "failure"
                 }
             } else {
+                session.removeValue("cartInfo")
                 render(contentType: "text/json") {
                     orderId = productOrder.id
                     result = "success"
