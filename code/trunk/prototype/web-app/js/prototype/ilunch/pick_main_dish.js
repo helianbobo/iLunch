@@ -1,50 +1,50 @@
-$(document).ready(function($){
+$(document).ready(function($) {
 
-	var undefined;
+    var undefined;
 
-	var ilunch = $.ilunch_namespace("cn.ilunch");
+    var ilunch = $.ilunch_namespace("cn.ilunch");
 
-	///////////////////////////////////////////////////////
-	////////////////// initialization /////////////////////
-	///////////////////////////////////////////////////////
-	var mainDishList = null;
-	var cart = null;
-	var areaId = $('#area_id').val();
-	if(!areaId || areaId == '')
-		ilunch.fatalError("area id not found!");
-	
-	var today = new Date();
-	var d = new Date();
-	var currentM = null;
-	var currentD = null;
-	var currentY = null;
-	var currentDay = null;
-	var firstDateOfMonth = null;
-	var skip = 0;
-	var lastDateOfMonth = null;
-	var headOffset = null;
-	var ORDER_INADVANCE_DAY = 2;
-	var MD_SHOW_NUM = 5;
-	var currentPage = 1;
-	var mdCache = [];
-	var mdList = [];
-	var CACHE_CAPACITY = 30;
+    ///////////////////////////////////////////////////////
+    ////////////////// initialization /////////////////////
+    ///////////////////////////////////////////////////////
+    var mainDishList = null;
+    var cart = null;
+    var areaId = $('#area_id').val();
+    if (!areaId || areaId == '')
+        ilunch.fatalError("area id not found!");
 
-	var listElem = $('#md_list');
-	if(listElem.length <= 0)
-		ilunch.fatalError('md_list elem not found!');
-	var currentDateElem = $('#current_date');
-	if(currentDateElem.length <= 0)
-		ilunch.fatalError('current_date elem not found!');
-	var in_total = $('#in_total');
-	in_total.html('0');
-	$('#last_month_btn').css({"display":"none"});
-	
-	function initialize() {
-		currentM = d.getMonth();
-		currentD = d.getDate();
-		currentY = d.getFullYear();
-		currentDay = d.getDay();
+    var today = new Date();
+    var d = new Date();
+    var currentM = null;
+    var currentD = null;
+    var currentY = null;
+    var currentDay = null;
+    var firstDateOfMonth = null;
+    var skip = 0;
+    var lastDateOfMonth = null;
+    var headOffset = null;
+    var ORDER_INADVANCE_DAY = 2;
+    var MD_SHOW_NUM = 5;
+    var currentPage = 1;
+    var mdCache = [];
+    var mdList = [];
+    var CACHE_CAPACITY = 30;
+
+    var listElem = $('#md_list');
+    if (listElem.length <= 0)
+        ilunch.fatalError('md_list elem not found!');
+    var currentDateElem = $('#current_date');
+    if (currentDateElem.length <= 0)
+        ilunch.fatalError('current_date elem not found!');
+    var in_total = $('#in_total');
+    in_total.html('0');
+    $('#last_month_btn').css({"display":"none"});
+
+    function initialize() {
+        currentM = d.getMonth();
+        currentD = d.getDate();
+        currentY = d.getFullYear();
+        currentDay = d.getDay();
 //		firstDateOfMonth = new Date(currentY, currentM, 1);
 //		skip = 0;
 //		if(firstDateOfMonth.getDay() == 0)
@@ -136,42 +136,51 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 
     renderMDList = function(){
+    	
         //render logic start
-    	listElem.empty();
-    	var renderList = getRenderList();
-    	for(var i = 0; i < renderList.length; i++) {
-    		var md = renderList[i].md;
-    		var thisDate = renderList[i].date;
-    		var yy = thisDate.getFullYear();
-    		var mm = ilunch.doubleDigit(thisDate.getMonth()+1);
-    		var dd = ilunch.doubleDigit(thisDate.getDate());
-    		var ww = ilunch.digitToCNSS(thisDate.getDay());
-    		var sel_md = cart.getOrderByIdAndDate(md.id, thisDate, true);
-    		var price = renderList[i].price;
-    		var md_name = md.name;
-    		var img = md.imageURL;
-    		if (sel_md) {
-    			var divText = selDishTmplt;
-    			divText = divText.replace(/##MD_ID##/g, md.id).replace(/##SEL_N##/g, sel_md.quantity).replace(/##SEL_PRICE##/g, price * sel_md.quantity);
-    		}
-    		else {
-    			var divText = dishTmplt;
-    			divText = divText.replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price);
-    		}
-    		divText = divText.replace(/##MD_NAME##/g, md_name).replace(/##IMG##/g, img);
-    		divText = divText.replace(/##MM##/g, mm).replace(/##DD##/g, dd).replace(/##WW##/g, ww).replace(/##YY##/g, yy);
-    		if (thisDate <= today && thisDate >= today) {
-    			divText = divText.replace(/##TODAY##/g, '今天');
-    			divText = divText.replace(/##DATE_CSS##/g, 'stress');
-    		}
-    		else {
-    			divText = divText.replace(/##TODAY##/g, '');
-    			divText = divText.replace(/##DATE_CSS##/g, 'date');
-    		}
-    		listElem.append(divText);
-    	}
-    	in_total.html(cart.getTotalMoney());
-    	//DEPRECATED
+        listElem.fadeOut('slow', function() {
+
+            listElem.empty();
+
+
+            var renderList = getRenderList();
+            for (var i = 0; i < renderList.length; i++) {
+                var md = renderList[i].md;
+                var thisDate = renderList[i].date;
+                var yy = thisDate.getFullYear();
+                var mm = ilunch.doubleDigit(thisDate.getMonth() + 1);
+                var dd = ilunch.doubleDigit(thisDate.getDate());
+                var ww = ilunch.digitToCNSS(thisDate.getDay());
+                var sel_md = cart.getOrderByIdAndDate(md.id, thisDate, true);
+                var price = renderList[i].price;
+                var md_name = md.name;
+                var img = md.imageURL;
+                if (sel_md) {
+                    var divText = selDishTmplt;
+                    divText = divText.replace(/##MD_ID##/g, md.id).replace(/##SEL_N##/g, sel_md.quantity).replace(/##SEL_PRICE##/g, price * sel_md.quantity);
+                }
+                else {
+                    var divText = dishTmplt;
+                    divText = divText.replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price);
+                }
+                divText = divText.replace(/##MD_NAME##/g, md_name).replace(/##IMG##/g, img);
+                divText = divText.replace(/##MM##/g, mm).replace(/##DD##/g, dd).replace(/##WW##/g, ww).replace(/##YY##/g, yy);
+                if (thisDate <= today && thisDate >= today) {
+                    divText = divText.replace(/##TODAY##/g, '今天');
+                    divText = divText.replace(/##DATE_CSS##/g, 'stress');
+                }
+                else {
+                    divText = divText.replace(/##TODAY##/g, '');
+                    divText = divText.replace(/##DATE_CSS##/g, 'date');
+                }
+                listElem.append(divText);
+
+                listElem.fadeIn('slow', function(){listElem.show();});
+            }
+            in_total.html(cart.getTotalMoney());
+        });
+
+        //DEPRECATED
         //size of a typical calendar month excludes weekends is 5*6
 //        for (var i = 0, date = 1 + skip; i < 6; i++, date += 2) {
 //            for (var j = 0; j < 5; j++) {
@@ -231,65 +240,65 @@ $(document).ready(function($){
 //                }
 //            }
 //            in_total.html(cart.getTotalMoney());
-    		//DEPRECATED END
+        //DEPRECATED END
 //            //render logic end
 //        }
     };
 
-	function getMainDishByDate(date) {
-		for(var i in mainDishList) {
-			for(var j = 0; j < mainDishList[i].prices.length; j++) {
-				var sd = ilunch.makeDate(mainDishList[i].prices[j].startDate);
-				var ed = (mainDishList[i].prices[j].endDate==null?null:ilunch.makeDate(mainDishList[i].prices[j].endDate));
-				if(sd <= date && (!ed || date <= ed))
-					return [mainDishList[i], mainDishList[i].prices[j].price];
-			}
-		}
-		return null;
-	}
-	
-	function fillMDCache() {
-		var sd = null;
-		if(mdCache.length > 0)
-			sd = mdCache[mdCache.length-1].date;
-		var d = (sd==null?
-				new Date(today.getFullYear(), today.getMonth(), today.getDate()+ORDER_INADVANCE_DAY):
-					new Date(sd.getFullYear(), sd.getMonth(), sd.getDate()+1));
-		for(var i = 0; i < CACHE_CAPACITY; i++, d = new Date(d.getFullYear(), d.getMonth(), d.getDate()+1)) {
-			if(d.getDay() == 6 || d.getDay() == 0)
-				continue;
-			var md = getMainDishByDate(d);
-			if(md)
-				mdCache.push({md:md[0], date:d, price:md[1]});
-		}
-		mdList = $.merge(mdList, mainDishList);
-	}
+    function getMainDishByDate(date) {
+        for (var i in mainDishList) {
+            for (var j = 0; j < mainDishList[i].prices.length; j++) {
+                var sd = ilunch.makeDate(mainDishList[i].prices[j].startDate);
+                var ed = (mainDishList[i].prices[j].endDate == null ? null : ilunch.makeDate(mainDishList[i].prices[j].endDate));
+                if (sd <= date && (!ed || date <= ed))
+                    return [mainDishList[i], mainDishList[i].prices[j].price];
+            }
+        }
+        return null;
+    }
 
-	///////////////////////////////////////////////////////
-	///////////////   bind event handlers   ///////////////
-	///////////////////////////////////////////////////////
-	$('#last_month_btn').click(function(){	
-		ilunch.lockScreen();
+    function fillMDCache() {
+        var sd = null;
+        if (mdCache.length > 0)
+            sd = mdCache[mdCache.length - 1].date;
+        var d = (sd == null ?
+                new Date(today.getFullYear(), today.getMonth(), today.getDate() + ORDER_INADVANCE_DAY) :
+                new Date(sd.getFullYear(), sd.getMonth(), sd.getDate() + 1));
+        for (var i = 0; i < CACHE_CAPACITY; i++,d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) {
+            if (d.getDay() == 6 || d.getDay() == 0)
+                continue;
+            var md = getMainDishByDate(d);
+            if (md)
+                mdCache.push({md:md[0], date:d, price:md[1]});
+        }
+        mdList = $.merge(mdList, mainDishList);
+    }
+
+    ///////////////////////////////////////////////////////
+    ///////////////   bind event handlers   ///////////////
+    ///////////////////////////////////////////////////////
+    $('#last_month_btn').click(function() {
+        ilunch.lockScreen();
 //		d.setMonth(currentM-1);
 //		initialize();
 //		if(currentM == new Date().getMonth() && currentY == new Date().getFullYear())
 //			$(this).css({"display":"none"});
-		if(hasLastPage()) {
-			currentPage--;
-			if(!hasLastPage())
-				$(this).css({"display":"none"});
-			if(hasNextPage())
-				$('#next_month_btn').css({"display":"inline"});
-			renderMDList();
-		}
-		else {
-			ilunch.fatalError("[pick_main_dish::last_month_btn::click]shouldn't be here!!");
-		}
-		ilunch.unlockScreen();
-	});
-	
-	$('#next_month_btn').click(function(){	
-		ilunch.lockScreen();
+        if (hasLastPage()) {
+            currentPage--;
+            if (!hasLastPage())
+                $(this).css({"display":"none"});
+            if (hasNextPage())
+                $('#next_month_btn').css({"display":"inline"});
+            renderMDList();
+        }
+        else {
+            ilunch.fatalError("[pick_main_dish::last_month_btn::click]shouldn't be here!!");
+        }
+        ilunch.unlockScreen();
+    });
+
+    $('#next_month_btn').click(function() {
+        ilunch.lockScreen();
 //		d.setMonth(currentM+1);
 //		initialize();
 //		if(currentM > new Date().getMonth() && currentY >= new Date().getFullYear())
@@ -414,4 +423,5 @@ $(document).ready(function($){
 			arr.push(mdCache[i]);
 		return arr;
 	};
+
 });

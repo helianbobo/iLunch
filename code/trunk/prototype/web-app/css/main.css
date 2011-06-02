@@ -232,6 +232,17 @@ p { margin:0; padding:0; }
 .rili .month_1_1 { background:url(../images/month_1.png) left -22px no-repeat; cursor:pointer; margin:0 40px 0 0; }
 .rili .month_2 { background:url(../images/month_2.png) left top no-repeat; cursor:pointer; margin:0 0 0 40px;}
 .rili .month_2_1 { background:url(../images/month_2.png) left -22px no-repeat; cursor:pointer; margin:0 0 0 40px;}
+
+.rili .week_1 { background:url(../images/week_1.png) left top no-repeat; cursor:pointer; margin:0 40px 0 0; }
+.rili .week_1_1 { background:url(../images/week_1.png) left -22px no-repeat; cursor:pointer; margin:0 40px 0 0; }
+.rili .week_2 { background:url(../images/week_2.png) left top no-repeat; cursor:pointer; margin:0 0 0 40px;}
+.rili .week_2_1 { background:url(../images/week_2.png) left -22px no-repeat; cursor:pointer; margin:0 0 0 40px;}
+
+.pc_2 .title .week_1 { background:url(../images/week_1.png) left top no-repeat; cursor:pointer; margin:0 5px 0 0; }
+.pc_2 .title .week_2 { background:url(../images/week_2.png) left top no-repeat; cursor:pointer; margin:0 0 0 5px;}
+.pc_2 .title .week_1_1 { background:url(../images/week_1.png) left -22px no-repeat; cursor:pointer; margin:0 5px 0 0; }
+.pc_2 .title .week_2_1 { background:url(../images/week_2.png) left -22px no-repeat; cursor:pointer; margin:0 0 0 5px;}
+
 .dd_list { background:url(../images/dingdan_list_1.png) left top repeat-y; float:left; width:1000px; }
 .dl_c_li { width:170px; margin:0 0 0 26px;_margin:0 12px 0 14px; float:left; height:311px;}
 .xc_li { width:130px; margin:0 0 0 20px;_margin:0 12px 0 10px; float:left; height:200px;}

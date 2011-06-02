@@ -78,6 +78,9 @@
 </div>
 
 <script type="text/javascript">
+    function showLoginDialog() {
+        $('#logon_dialog').fadeIn('slow', function(){});
+    }
     $(document).ready(function() {
 
         ///////////////////////////////////////////////////////
@@ -130,12 +133,12 @@
             var w = $('#logon_dialog').outerWidth();
             var h = $('#logon_dialog').outerHeight();
             $('#logon_dialog').css({"left":((sw - w) / 2) + "px","top":((sh - h) / 2) + "px"});
-            $('#logon_dialog').show();
+            showLoginDialog();
         });
 
         function closeLogonDialog() {
-            $('#logon_dialog').hide();
-            $('#reg_dialog').hide();
+            $('#logon_dialog').fadeOut('slow', function(){$('#logon_dialog').hide();});
+            $('#reg_dialog').fadeOut('slow', function(){$('#reg_dialog').hide();});
             ilunch.unlockScreen();
         }
 
@@ -146,21 +149,21 @@
         $('#logon_dialog_reg_btn').click(function() {
             var x = $('#logon_dialog').css("left");
             var y = $('#logon_dialog').css("top");
-            $('#logon_dialog').hide();
+            $('#logon_dialog').fadeOut('slow', function(){$('#logon_dialog').hide();});
             $('#reg_dialog').css({"left":x,"top":y});
-            $('#reg_dialog').show();
+            $('#reg_dialog').fadeIn('slow', function(){});
         });
 
         $('#reg_dialog_logon_btn').click(function() {
             var x = $('#reg_dialog').css("left");
             var y = $('#reg_dialog').css("top");
-            $('#reg_dialog').hide();
+            $('#reg_dialog').fadeOut('slow', function(){$('#reg_dialog').hide();});
             $('#logon_dialog').css({"left":x,"top":y});
-            $('#logon_dialog').show();
+            showLoginDialog();
         });
 
         $('#reg_dialog_cancel').click(function() {
-            $('#reg_dialog').hide();
+            $('#reg_dialog').fadeOut('slow', function(){$('#reg_dialog').hide();});
             ilunch.unlockScreen();
         });
 
@@ -198,7 +201,7 @@
                         // re-render userinfo
 //                        renderUserInfo();
                         $('#dialog_err').html('');
-                        $('#logon_dialog').hide();
+                        $('#logon_dialog').fadeOut('slow', function(){$('#logon_dialog').hide();});
                         ilunch.unlockScreen();
                     }
                     else {
@@ -263,7 +266,7 @@
 //                        renderUserInfo();
 
                         $('#dialog_err_reg').html('');
-                        $('#reg_dialog').hide();
+                        $('#reg_dialog').fadeOut('slow', function(){$('#reg_dialog').hide();});
                         ilunch.unlockScreen();
                     }
                     else {
