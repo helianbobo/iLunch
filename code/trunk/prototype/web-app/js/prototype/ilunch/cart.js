@@ -1,16 +1,16 @@
 (function($){
-	
+
 	var undefined;
-	
+
 	var ilunch = $.ilunch_namespace("cn.ilunch");
-	
+
 	/**
 	 * Constructor
 	 * @param cart - cart json object or json text
 	 */
 	ilunch.Cart = function(cart){
 		this.__classname__ = "ilunch.Cart";
-		
+
 		//TODO remove unnecesary field in cart
 		if(typeof(cart)==='string')
 			cart = $.parseJSON(cart);
@@ -24,14 +24,14 @@
 		}
 		this.cart = {};
 		$.extend(true, this.cart, cart);
-		
+
 		this._currentWeekCursor = 0;
 	};
-	
+
 	/////////////////////////////////
 	//////// Private Methods  ///////
 	/////////////////////////////////
-	
+
 	ilunch.Cart.prototype._getWeekOrder = function(startDate) {
 		var endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()+4);
 		retval = [];
@@ -42,50 +42,50 @@
 		}
 		return {startDate:startDate, endDate:endDate, products:retval};
 	};
-	
+
 	ilunch.Cart.prototype._getWeekOrderByCurrentCursor = function() {
 		var d = new Date();
 		return this._getWeekOrder(new Date(d.getFullYear(), d.getMonth(), d.getDate()-((d.getDay()+6)%7)+this._currentWeekCursor*7));
 	};
-	
+
 	/////////////////////////////////
 	//////// Public Methods   ///////
 	/////////////////////////////////
 	/**
-	 * Get products within the week indicated by current week cursor. 
+	 * Get products within the week indicated by current week cursor.
 	 * current week cursor is initialized to 0 representing current week.
-	 * 
+	 *
 	 * @return {startDate, endDate, products:[{date:xxx,mainDishes:[...],sideDishes:[...]},{...},...]}
 	 */
 	ilunch.Cart.prototype.getCurrentWeekOrder = function() {
 		return this._getWeekOrderByCurrentCursor();
 	};
-	
+
 	/**
 	 * Get products within last week indicated by current week cursor.
 	 * Current week cursor will be deducted by 1
-	 * 
+	 *
 	 * @return refer to getCurrentWeekOrder()
 	 */
 	ilunch.Cart.prototype.getLastWeekOrder = function() {
 		this._currentWeekCursor--;
 		return this._getWeekOrderByCurrentCursor();
 	};
-	
+
 	/**
 	 * Get products within next week indicated by current week cursor.
 	 * Current week cursor will be incremented by 1
-	 * 
+	 *
 	 * @return refer to getCurrentWeekOrder()
 	 */
 	ilunch.Cart.prototype.getNextWeekOrder = function() {
 		this._currentWeekCursor++;
 		return this._getWeekOrderByCurrentCursor();
 	};
-	
+
 	/**
 	 * Get products within the week that contains aDate.
-	 * 
+	 *
 	 * @param aDate - a Date object or 'yyyy-mm-dd' string
 	 * @return refer to getCurrentWeekOrder()
 	 */
@@ -93,10 +93,10 @@
 		var d = ilunch.makeDate(aDate);
 		return this._getWeekOrder(new Date(d.getFullYear(), d.getMonth(), d.getDate()-((d.getDay()+6)%7)));
 	};
-	
+
 	/**
 	 * Add a new product to cart.
-	 * 
+	 *
 	 * @param isMainDish - true for maindish and false for sidedish
 	 */
 	ilunch.Cart.prototype.addOrder = function(isMainDish, date, id, name, imageURL, price, quantity) {
@@ -133,7 +133,7 @@
 			products.push(data);
 		}
 	};
-	
+
 	/**
 	 * delete a product in cart.
 	 */
@@ -155,16 +155,16 @@
 			}
 		}
 	};
-	
+
 	/**
-	 * get cart. 
-	 * 
+	 * get cart.
+	 *
 	 * DO NOT USE...
 	 */
 	ilunch.Cart.prototype.getCart = function() {
 		return this.cart;
 	};
-	
+
 	ilunch.Cart.prototype.getOrderByIdAndDate = function(id, date, isMainDish) {
 		var products = this.cart.products;
 		for(var i = 0; i < products.length; i++) {
@@ -180,7 +180,7 @@
 			}
 		}
 	};
-	
+
 	ilunch.Cart.prototype.getOrderById = function(id, isMainDish) {
 		var products = this.cart.products;
 		for(var i = 0; i < products.length; i++) {
@@ -192,7 +192,7 @@
 			}
 		}
 	};
-	
+
 	ilunch.Cart.prototype.getOrdersByDate = function(date, isMainDish) {
 		var products = this.cart.products;
 		for(var i = 0; i < products.length; i++) {
@@ -205,7 +205,7 @@
 		}
 		return [];
 	};
-	
+
 	ilunch.Cart.prototype.getTotalMoney = function() {
 		var ct = 0;
 		var products = this.cart.products;
@@ -217,10 +217,10 @@
 		}
 		return ct;
 	};
-	
+
 	/**
 	 * Serialize cart to JSON string
-	 * 
+	 *
 	 * @return json string
 	 */
 	ilunch.Cart.prototype.toString = function() {
@@ -256,7 +256,7 @@
 					strarr.push(',');
 			}
 			strarr.push('],');
-			
+
 			strarr.push('"sideDishes":[');
 			for(var j = 0; j < this.cart.products[i].sideDishes.length; j++) {
 				strarr.push('{');
@@ -270,7 +270,7 @@
 					strarr.push(',');
 			}
 			strarr.push(']');
-			
+
 			strarr.push('}');
 			if(i != this.cart.products.length-1)
 				strarr.push(',');
@@ -280,7 +280,7 @@
 		strarr.push('}');
 		return strarr.join('');
 	};
-	
+
 	ilunch.Cart.prototype.toOrderString = function(userId) {
 		var strarr = [];
 		strarr.push('{');
@@ -307,7 +307,7 @@
 					strarr.push(',');
 			}
 			strarr.push('],');
-			
+
 			strarr.push('"sideDishes":[');
 			for(var j = 0; j < this.cart.products[i].sideDishes.length; j++) {
 				strarr.push('{');
@@ -318,7 +318,7 @@
 					strarr.push(',');
 			}
 			strarr.push(']');
-			
+
 			strarr.push('}');
 			if(i != this.cart.products.length-1)
 				strarr.push(',');
@@ -328,7 +328,7 @@
 		strarr.push('}');
 		return strarr.join('');
 	};
-	
+
 	ilunch.Cart.prototype.isEmpty = function() {
 		var isEmpty = true;
 		var products = this.cart.products;
@@ -338,16 +338,16 @@
 		}
 		return isEmpty;
 	};
-	
+
 	ilunch.Cart.prototype.render = function(notEditable) {
 		//render logic start
-        
+
 		//see if html elems are ready
 		if($('#cart_dashboard').length <= 0) {
 			ilunch.fatalError("[Cart] cart dashboard element not found on page when render cart!");
 			return;
 		}
-		
+
 		if(!this.init) {
 			if(this.cart.ORDER_INADVANCE_DAY) {
 				var d = null;
@@ -355,7 +355,7 @@
 				if(!this.cart.products || this.cart.products.length <= 0) {
 					d = new Date();
 					while(true) {
-						if(d >= new Date(today.getFullYear(), today.getMonth(), today.getDate()+this.cart.ORDER_INADVANCE_DAY) && 
+						if(d >= new Date(today.getFullYear(), today.getMonth(), today.getDate()+this.cart.ORDER_INADVANCE_DAY) &&
 								d.getDay() != 6 && d.getDay() != 0)
 							break;
 						d = new Date(d.getFullYear(), d.getMonth(), d.getDate()+1);
@@ -370,7 +370,7 @@
 					});
 					d = ilunch.makeDate(this.cart.products[0].date);
 				}
-				var wOffset = Math.floor((new Date(d.getFullYear(), d.getMonth(), d.getDate()-d.getDay()) - 
+				var wOffset = Math.floor((new Date(d.getFullYear(), d.getMonth(), d.getDate()-d.getDay()) -
 						new Date(today.getFullYear(), today.getMonth(), today.getDate()-today.getDay()))/(24*3600*1000*7));
 				this._currentWeekCursor += wOffset;
 				this.init = true;
@@ -381,14 +381,19 @@
         var wStartDate = retval.startDate;
         var wEndDate = retval.endDate;
         var products = retval.products;
-        
+
         //2.1 render calendar title;
+        $('#cart_date').hide();
         $('#cart_date').empty();
+
         for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
             $('#cart_date').append('<li>' + ilunch.doubleDigit(di.getMonth() + 1) + '/' + ilunch.doubleDigit(di.getDate()) + '</li>');
         }
-        
+
+        $('#cart_date').fadeIn('slow', function(){$('#cart_date').show()});
+
         //2.2 render MD row;
+        $('#cart_dashboard').hide();
         $('#cart_dashboard').empty();
         for (var di = wStartDate; di <= wEndDate; di = new Date(di.getFullYear(), di.getMonth(), di.getDate() + 1)) {
             var md = this.getOrdersByDate(di, true);
@@ -400,14 +405,14 @@
                 $('#cart_dashboard').append('<li><img src="/prototype/images/zc_y.png" /></li>');
             }
         }
-        
+
         //get the number of SD row;
         var NsdRow = 0;
         for (var i = 0; i < products.length; i++) {
-            if (products[i].sideDishes.length > NsdRow) 
+            if (products[i].sideDishes.length > NsdRow)
                 NsdRow = products[i].sideDishes.length;
         }
-        if (NsdRow < 1) 
+        if (NsdRow < 1)
             NsdRow = 1;
         //2.4 render each SD row
         for (var ri = 0; ri < NsdRow; ri++) {
@@ -432,7 +437,9 @@
                 }
             }
         }
+
+        $('#cart_dashboard').fadeIn('slow', function(){$('#cart_dashboard').show()});
         //render logic end
 	};
-	
+
 })(jQuery);
