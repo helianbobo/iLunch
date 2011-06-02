@@ -121,6 +121,6 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 
 	$('#btn_confirm_next').click(function() {
-		
+		window.location.href=ilunch.ROOT+"order/listWithinMonth";
 	});
 });

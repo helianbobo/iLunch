@@ -25,7 +25,7 @@
                 <ul id="order_info">
                 </ul>
                 <div class="pay_online">
-                  <p><span class="stress">一共需支付：<span id="in_total"></span>元<a href="@"><img src="/prototype/images/pay_online.png"/></a></span></p>
+                  <p><span class="stress">一共需支付：<span id="in_total"></span>元<a href="@"><img src="${resource(dir:'images', file:'pay_online.png')}"/></a></span></p>
                 </div>
               </div>
             </div>
@@ -40,20 +40,6 @@
                 </ul>
                 <div class="clear"></div>
                 <ul id="cart_dashboard" class="pc_p">
-                  <li>
-                    <img src="/prototype/images/pic_17.jpg"/>
-                    <div class="n">x10</div>
-                    <div class="no"><a href="#"><img src="/prototype/images/no.png"/></a></div>
-                  </li>
-                  <li><img src="/prototype/images/pic_17.jpg"/></li>
-                  <li><img src="/prototype/images/pic_17.jpg"/></li>
-                  <li><img src="/prototype/images/zc_w.png"/></li>
-                  <li><img src="/prototype/images/zc_y.png"/></li>
-                  <li><img src="/prototype/images/pic_17.jpg"/></li>
-                  <li><img src="/prototype/images/pic_17.jpg"/></li>
-                  <li><img src="/prototype/images/pic_17.jpg"/></li>
-                  <li><img src="/prototype/images/pc_w.png"/></li>
-                  <li><img src="/prototype/images/pc_y.png"/></li>
                 </ul>
               </div>
               <div class="clear"></div>
@@ -81,10 +67,8 @@
             <div class="clear"></div>
           </div>
           <div class="dd_next_1">
-            <form id="confirm_form" method="post">
               <input id="btn_confirm_last" class="next_2" onmouseover="this.className = 'next_2_1'" onmouseout="this.className = 'next_2'" name="" type="button" value=""/>
               <input id="btn_confirm_next" class="next_1" onmouseover="this.className = 'next_1_1'" onmouseout="this.className = 'next_1'" name="" type="button" value=""/>
-            </form>
           </div>
         </div>
       </div>

@@ -26,9 +26,6 @@
   <tr>
     <td width="80">尝鲜套餐：</td>
     <td id="order_info">
-    <p><span>2011-03-11 周二 取餐</span>地中海之珠 + 酸酸豆角 + 蔬菜沙拉 + 苹果汁</p>
-    <p><span>2011-03-11 周二 取餐</span>地中海之珠 + 酸酸豆角 + 蔬菜沙拉 + 苹果汁</p>
-    <p><span>2011-03-11 周二 取餐</span>地中海之珠 + 酸酸豆角 + 蔬菜沙拉 + 苹果汁</p>
     </td>
   </tr>
   <tr>
@@ -46,11 +43,11 @@
 </table>
 </div>
 		<div class="zy">
-        <p>如果您想退订，请在2011-03-10 16:00 前退订。登录网站，在查看订单页面中操作。如过期，我们会有原材料损耗，所以不能申请退订，望见谅。</p>
+        <p>如果您想退订，请在##TODO## 前退订。登录网站，在查看订单页面中操作。如过期，我们会有原材料损耗，所以不能申请退订，望见谅。</p>
         <p>建议您可以通过转让的形式让他人享受套餐。您只需要把识别码通过短信转发给他人，以便他人顺利取餐。</p>
         </div>
       </div>
-      <div class="dd_next_1"><input class="next_3" onmouseover="this.className='next_3_1'" onmouseout="this.className='next_3'" name="" type="button" value="" /></div>
+      <div class="dd_next_1"><input id="btn_confirm_next" class="next_3" onmouseover="this.className='next_3_1'" onmouseout="this.className='next_3'" name="" type="button" value="" /></div>
     </div>
   </div>
 

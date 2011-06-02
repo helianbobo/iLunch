@@ -127,7 +127,7 @@ $(document).ready(function($){
 
 	
 	var dishTmplt = ('<div class="xc_li">'+
-						'<div class="xc_p"><a href="#"><img src="/prototype/##IMG##" /></a></div>'+
+						'<div class="xc_p"><a href="#"><img src="'+ilunch.ROOT+'##IMG##" /></a></div>'+
 						'<div class="xc_t">##SD_NAME##</div>'+
 						'<div id="order_##SD_ID##" class="cai_s">'+
 							orderTmplt+
@@ -260,8 +260,7 @@ $(document).ready(function($){
 	$('#btn_confirm_last').click(function() {
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
-				$('#confirm_form').attr({"action":"/prototype/dataAPI/pickMainDish"});
-				$('#confirm_form').submit();
+				window.location.href = ilunch.ROOT+"dataAPI/pickMainDish";
 				return true;
 			}
 		});
@@ -274,8 +273,7 @@ $(document).ready(function($){
 		}
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
-				$('#confirm_form').attr({"action":"/prototype/dataAPI/confirmInfo"});
-				$('#confirm_form').submit();
+				window.location.href = ilunch.ROOT+"dataAPI/confirmInfo";
 				return true;
 			}
 		});

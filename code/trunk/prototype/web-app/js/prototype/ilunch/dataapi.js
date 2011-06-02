@@ -93,7 +93,8 @@
 	/**
 	 * Change this when needed
 	 */
-	var ROOT = '/prototype';
+	var root = window.location.pathname;
+	ilunch.ROOT = '/prototype/';
 	
 	/**
 	 * Ajax global setting goes here
@@ -136,7 +137,7 @@
 			productId: productId,
             areaId:areaId
 		};
-		$.getJSON(ROOT+'/product/showDetail', params, function(data) {
+		$.getJSON(ilunch.ROOT+'product/showDetail', params, function(data) {
 			if(data.error) {
 				
 			}
@@ -161,7 +162,7 @@
 			productId: productId,
             areaId:areaId
 		};
-		$.getJSON(ROOT+'/product/showDetail', params, function(data) {
+		$.getJSON(ilunch.ROOT+'product/showDetail', params, function(data) {
 			if(data.error) {
 				
 			}
@@ -184,7 +185,7 @@
 		};
 		if(max)
 			params.max = max;
-		$.getJSON(ROOT+'/product/listAllMainDishOnIndexPage', params, function(data) {
+		$.getJSON(ilunch.ROOT+'product/listAllMainDishOnIndexPage', params, function(data) {
 			if(data.error) {
 				
 			}
@@ -220,7 +221,7 @@
 			params.toDate = toDate;
 		if(max)
 			params.max = max;
-		return $.getJSON(ROOT+'/product/listAllMainDishOnSelectionPage', params, function(data) {
+		return $.getJSON(ilunch.ROOT+'product/listAllMainDishOnSelectionPage', params, function(data) {
 					if(data.error) {
 						ilunch.fatalError("[DataAPI::listAllMainDishOnSelectionPage]Server responded data with error:"+data.error.message);
 						return;
@@ -255,7 +256,7 @@
 		};
 		if(max)
 			params.max = max;
-		$.getJSON(ROOT+'/product/listAllSideDishOnIndexPage', params, function(data) {
+		$.getJSON(ilunch.ROOT+'product/listAllSideDishOnIndexPage', params, function(data) {
 			if(data.error) {
 				
 			}
@@ -287,7 +288,7 @@
 			date:date,
 			areaId:areaId
 		};
-		return	$.getJSON(ROOT+'/product/listAllSideDishOnSelectionPage', params, function(data) {
+		return	$.getJSON(ilunch.ROOT+'product/listAllSideDishOnSelectionPage', params, function(data) {
 			if(data.error) {
 				ilunch.fatalError("[DataAPI::listAllSideDishOnSelectionPage]Server responded data with error:"+data.error.message);
 				return;
@@ -315,7 +316,7 @@
 
 		params = {
 		};
-		return	$.getJSON(ROOT+'/person/loggedInUserPreference', params, function(data) {
+		return	$.getJSON(ilunch.ROOT+'person/loggedInUserPreference', params, function(data) {
 			if(data.error) {
 
 			}
@@ -339,7 +340,7 @@
 		params = {
 			id:id	
 		};
-		return	$.getJSON(ROOT+'/person/preference', params, function(data) {
+		return	$.getJSON(ilunch.ROOT+'person/preference', params, function(data) {
 			if(data.error) {
 				
 			}
@@ -356,7 +357,7 @@
 	};
 	
 	ilunch.getDistributionAreaList = function(handler) {
-		return	$.getJSON(ROOT+'/distributionArea/list', function(data) {
+		return	$.getJSON(ilunch.ROOT+'distributionArea/list', function(data) {
 			if(data.error) {
 				
 			}
@@ -378,7 +379,7 @@
 	};
 	
 	ilunch.getCart = function(handler) {
-		return	$.getJSON(ROOT+'/person/cart', function(data) {
+		return	$.getJSON(ilunch.ROOT+'person/cart', function(data) {
 					if(data.error) {
 						data = null;
 					}
@@ -395,7 +396,7 @@
 			return;
 		if(!_validateCart($.parseJSON(data)))
 			return;
-		return	$.ajax(ROOT+'/person/saveCart', {
+		return	$.ajax(ilunch.ROOT+'person/saveCart', {
 //			processData:false,
 			data:{cartInfo:data},
 			success:function(data) {
@@ -424,7 +425,7 @@
 	ilunch.confirmOrder = function(data, handler) {
 		if(!data)
 			return;
-		return	$.ajax(ROOT+'/productOrder/confirm', {
+		return	$.ajax(ilunch.ROOT+'productOrder/confirm', {
 			processData:false,
 			data:data,
 			success:function(data) {
@@ -455,7 +456,7 @@
 		if(rememberMe)
 			params._spring_security_remember_me = 'on';
 			
-		return	$.ajax(ROOT+'/j_spring_security_check', 
+		return	$.ajax(ilunch.ROOT+'j_spring_security_check', 
 			{
 				data : params, 
 				type : 'POST',
@@ -490,7 +491,7 @@
 			'password' : password,
 		};
 		
-		return	$.ajax(ROOT+'/person/register', 
+		return	$.ajax(ilunch.ROOT+'person/register', 
 			{
 				data : params, 
 				type : 'POST',
@@ -592,7 +593,7 @@
 		//is exists?
 		var elem = $('#ilunch_screen_locker');
 		if(elem.length <= 0) {
-			$(document.body).append('<div id="ilunch_screen_locker" class="black_overlay"><div style="position:absolute;left:50%;top:50%;z-index:1002"><img src="/prototype/images/wait01.gif" /></div></div>');
+			$(document.body).append('<div id="ilunch_screen_locker" class="black_overlay"><div style="position:absolute;left:50%;top:50%;z-index:1002"><img src="'+ilunch.ROOT+'images/wait01.gif" /></div></div>');
 			elem = $('#ilunch_screen_locker');
 		}
 		//enable if off

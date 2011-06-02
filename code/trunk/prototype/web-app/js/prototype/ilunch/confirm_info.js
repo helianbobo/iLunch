@@ -209,8 +209,7 @@ $(document).ready(function($){
 	$('#btn_confirm_last').click(function() {
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
-				$('#confirm_form').attr({"action":"/prototype/dataAPI/pickSideDish"});
-				$('#confirm_form').submit();
+				window.location.href = ilunch.ROOT+"dataAPI/pickSideDish";
 				return true;
 			}
 		});
@@ -244,8 +243,7 @@ $(document).ready(function($){
 		
 		ilunch.saveCart(cart.toString(), function(data){
 			if(data) {
-				$('#confirm_form').attr({"action":"/prototype/dataAPI/confirmOrder"});
-				$('#confirm_form').submit();
+				window.location.href = ilunch.ROOT+"dataAPI/confirmOrder";
 				return true;
 			}
 		});
