@@ -1,13 +1,24 @@
 <script type="text/javascript">
     $(document).ready(function($) {
 
+        function hideIt(it){
+            if(it){
+                it.slideUp('slow', function(){it.hide()});
+            }
+        }
+
         $('#changeAreaBtn').click(function(e) {
             $('#changeAreaDialog').css({"right":(e.clientX+30) + "px","top":(e.clientY-5) + "px"});
-            $('#changeAreaDialog').show();
+            if($('#changeAreaDialog').is(':hidden')){
+                $('#changeAreaDialog').slideDown('slow', function(){});
+            }else{
+                hideIt($('#changeAreaDialog'));
+            }
+
         });
 
         $('#selectAreaCancelBtn').click(function(){
-            $('#changeAreaDialog').hide();
+            hideIt($('#changeAreaDialog'));
         });
 
     });
