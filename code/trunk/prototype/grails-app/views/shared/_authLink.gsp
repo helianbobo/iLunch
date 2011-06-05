@@ -11,8 +11,7 @@
             <a href="#" class="closeLogonImage"><img src="${resource(dir: 'images', file: 'close.png')}"></a>
         </div>
         <ul>
-            <li><strong>用户登录</strong></li>
-            <li id="dialog_err"></li>
+            <li><strong>用户登录</strong><span class="error" id="dialog_err"></span></li>
             <li>手机号码：
                 <input id="logon_dialog_un" class="log_srk" name="" type="text"/>
             </li>
@@ -44,8 +43,7 @@
             <a href="#" class="closeLogonImage"><img src="${resource(dir: 'images', file: 'close.png')}"></a>
         </div>
         <ul>
-            <li><strong>用户注册</strong></li>
-            <li id="dialog_err_reg"></li>
+            <li><strong>用户注册</strong><span class="error" id="dialog_err_reg"></span></li>
             <li>手机号码：
                 <input id="reg_dialog_phone" class="reg_srk" name="" type="text"/>
 
@@ -139,6 +137,8 @@
         function closeLogonDialog() {
             $('#logon_dialog').fadeOut('slow', function(){$('#logon_dialog').hide();});
             $('#reg_dialog').fadeOut('slow', function(){$('#reg_dialog').hide();});
+            $('#dialog_err').html('');
+            $('#dialog_err_reg').html('');
             ilunch.unlockScreen();
         }
 
@@ -222,6 +222,10 @@
                 $('#dialog_err_reg').html('请填写手机号码！');
                 return;
             }
+            if(!(/^\d{11}$/.test(un))){
+                $('#dialog_err_reg').html('请正确填写手机号码（11位数字）！');
+                return;
+            }
             // get pwd
             var pwd = $('#reg_dialog_pwd').val();
             if (!pwd || pwd == '') {
@@ -237,12 +241,20 @@
                 $('#dialog_err_reg').html('两次输入的密码不一致！');
                 return;
             }
+            if(!$('#reg_dialog_agree').attr("checked")) {
+                $('#dialog_err_reg').html('在使用我们的服务之前请仔细阅读《网站使用协议》！');
+                return;
+            }
             // call reg API
             ilunch.lockScreen();
             var status = null;
             ilunch.register(un, pwd, function(data) {
-                if (data.error)
-                    status = data.error.message;
+                if (data.error) {
+                    if(data.error.errorCode == '07')
+                        status = '该手机号已被注册！';
+                    else
+                    	status = data.error.message;
+                }
                 else {
                     ilunch.login(un, pwd, true, function(data) {
                         if (data.error)
@@ -293,7 +305,7 @@
     <input type="hidden" id="userId"/>
 </sec:ifNotLoggedIn>
 
-<div id="authLink">
+<div id="authLink" class="link" >
     <sec:ifLoggedIn>
         当前用户：<sec:username/>
         <g:link controller="logout" action="index">登出</g:link>
