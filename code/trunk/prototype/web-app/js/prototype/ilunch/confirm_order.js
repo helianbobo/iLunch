@@ -125,17 +125,17 @@ $(document).ready(function($){
 	///////////////   bind event handlers   ///////////////
 	///////////////////////////////////////////////////////
 	
-	$('#last_week_btn').click(function() {
+	lastWeek = function() {
 		//change current date values to the first day of last week;
 		cart.getLastWeekOrder();
-		cart.render(true);
-	});
+		cart.render();
+	};
 	
-	$('#next_week_btn').click(function() {
+	nextWeek = function() {
 		//change current date values to the first day of next week;
 		cart.getNextWeekOrder();
-		cart.render(true);
-	});
+		cart.render();
+	};
 	
 	$('#btn_confirm_last').click(function() {
 		ilunch.saveCart(cart.toString(), function(data){
