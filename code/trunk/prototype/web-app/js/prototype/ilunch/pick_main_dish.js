@@ -12,17 +12,6 @@ $(document).ready(function($) {
     var areaId = $('#area_id').val();
     if (!areaId || areaId == '')
         ilunch.fatalError("area id not found!");
-
-    var today = new Date();
-    var d = new Date();
-    var currentM = null;
-    var currentD = null;
-    var currentY = null;
-    var currentDay = null;
-    var firstDateOfMonth = null;
-    var skip = 0;
-    var lastDateOfMonth = null;
-    var headOffset = null;
     var ORDER_INADVANCE_DAY = 2;
     var MD_SHOW_NUM = 5;
     var currentPage = 1;
@@ -40,27 +29,10 @@ $(document).ready(function($) {
     in_total.html('0');
     $('#last_month_btn').css({"display":"none"});
 
-    function initialize() {
-        currentM = d.getMonth();
-        currentD = d.getDate();
-        currentY = d.getFullYear();
-        currentDay = d.getDay();
-//		firstDateOfMonth = new Date(currentY, currentM, 1);
-//		skip = 0;
-//		if(firstDateOfMonth.getDay() == 0)
-//			skip = 1;
-//		else if(firstDateOfMonth.getDay() == 6)
-//			skip = 2;
-//		
-//		lastDateOfMonth = new Date(currentY, currentM+1, 0);
-//		headOffset = firstDateOfMonth.getDay() > 1 ? firstDateOfMonth.getDay()-1 : 0;
-		listElem.empty();
-		currentDateElem.html(currentDateElem.html().replace('##YY##', currentY).replace('##MM##', 
-				ilunch.doubleDigit(currentM+1)).replace('##DD##', 
-						ilunch.doubleDigit(currentD)).replace('##WW##', ilunch.digitToCNSS(currentDay)));
-	}
-	
-	initialize();
+    listElem.empty();
+    currentDateElem.html(currentDateElem.html().replace('##YY##', Date.today().getFullYear()).replace('##MM##', 
+    		ilunch.doubleDigit(Date.today().getMonth()+1)).replace('##DD##', 
+    				ilunch.doubleDigit(Date.today().getDate())).replace('##WW##', ilunch.digitToCNSS(Date.today().getDay())));
 	
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
@@ -69,8 +41,8 @@ $(document).ready(function($) {
 	
 	$.when(
 		ilunch.getMainDishListOnSelectionPage(
-			ilunch.dateToString(new Date(today.getFullYear(), today.getMonth(), today.getDate()+ORDER_INADVANCE_DAY)), 
-			ilunch.dateToString(new Date(today.getFullYear(), today.getMonth(), today.getDate()+ORDER_INADVANCE_DAY+CACHE_CAPACITY)),
+			ilunch.dateToString(Date.today().addDays(ORDER_INADVANCE_DAY)), 
+			ilunch.dateToString(Date.today().addDays(ORDER_INADVANCE_DAY+CACHE_CAPACITY)),
 			null,
 			areaId,
 			function(data) {
@@ -165,7 +137,7 @@ $(document).ready(function($) {
                 }
                 divText = divText.replace(/##MD_NAME##/g, md_name).replace(/##IMG##/g, img);
                 divText = divText.replace(/##MM##/g, mm).replace(/##DD##/g, dd).replace(/##WW##/g, ww).replace(/##YY##/g, yy);
-                if (thisDate <= today && thisDate >= today) {
+                if (thisDate.equals(Date.today())) {
                     divText = divText.replace(/##TODAY##/g, '今天');
                     divText = divText.replace(/##DATE_CSS##/g, 'stress');
                 }
@@ -179,70 +151,6 @@ $(document).ready(function($) {
             }
             in_total.html(cart.getTotalMoney());
         });
-
-        //DEPRECATED
-        //size of a typical calendar month excludes weekends is 5*6
-//        for (var i = 0, date = 1 + skip; i < 6; i++, date += 2) {
-//            for (var j = 0; j < 5; j++) {
-//                if (date <= lastDateOfMonth.getDate()) {
-//                    if (i == 0 && j < headOffset) {
-//                        //last month
-//                        listElem.append(emptyTmplt);
-//                    }
-//                    else 
-//                        if (i == 5 && j + 1 > lastDateOfMonth.getDay()) {
-//                            //next month
-//                            listElem.append(emptyTmplt);
-//                        }
-//                        else {
-//                            //current month
-//                            var yy = currentY;
-//                            var mm = ilunch.doubleDigit(1 + currentM);
-//                            var dd = ilunch.doubleDigit(date);
-//                            var ww = ilunch.digitToCNSS(j + 1);
-//                            var md = getMainDishByDate(date);
-//                            if (md) {
-//                                var thisDate = new Date(currentY, currentM, date);
-//                                var sel_md = cart.getOrderByIdAndDate(md.id, thisDate, true);
-//                                var price = ilunch.getPriceByDate(md.prices, thisDate);
-//                                var md_name = md.name;
-//                                var img = md.imageURL;
-//                                
-//                                if (thisDate <= new Date(today.getFullYear(), today.getMonth(), today.getDate() + ORDER_INADVANCE_DAY)) {
-//                                    var divText = oldDishTmplt;
-//                                }
-//                                else {
-//                                    if (sel_md) {
-//                                        var divText = selDishTmplt;
-//                                        divText = divText.replace(/##MD_ID##/g, md.id).replace(/##SEL_N##/g, sel_md.quantity).replace(/##SEL_PRICE##/g, price * sel_md.quantity);
-//                                    }
-//                                    else {
-//                                        var divText = dishTmplt;
-//                                        divText = divText.replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price);
-//                                    }
-//                                }
-//                                divText = divText.replace(/##MD_NAME##/g, md_name).replace(/##IMG##/g, img);
-//                            }
-//                            else 
-//                                var divText = nodishTmplt;
-//                            divText = divText.replace(/##MM##/g, mm).replace(/##DD##/g, dd).replace(/##WW##/g, ww).replace(/##YY##/g, yy);
-//                            if (date == currentD && currentM == new Date().getMonth()) {
-//                                divText = divText.replace(/##TODAY##/g, '今天');
-//                                divText = divText.replace(/##DATE_CSS##/g, 'stress');
-//                            }
-//                            else {
-//                                divText = divText.replace(/##TODAY##/g, '');
-//                                divText = divText.replace(/##DATE_CSS##/g, 'date');
-//                            }
-//                            listElem.append(divText);
-//                            date++;
-//                        }
-//                }
-//            }
-//            in_total.html(cart.getTotalMoney());
-        //DEPRECATED END
-//            //render logic end
-//        }
     };
 
     function getMainDishByDate(date) {
@@ -250,7 +158,7 @@ $(document).ready(function($) {
             for (var j = 0; j < mainDishList[i].prices.length; j++) {
                 var sd = ilunch.makeDate(mainDishList[i].prices[j].startDate);
                 var ed = (mainDishList[i].prices[j].endDate == null ? null : ilunch.makeDate(mainDishList[i].prices[j].endDate));
-                if (sd <= date && (!ed || date <= ed))
+                if (sd.compareTo(date) != 1 && (!ed || date.compareTo(ed) != 1))
                     return [mainDishList[i], mainDishList[i].prices[j].price];
             }
         }
@@ -261,10 +169,8 @@ $(document).ready(function($) {
         var sd = null;
         if (mdCache.length > 0)
             sd = mdCache[mdCache.length - 1].date;
-        var d = (sd == null ?
-                new Date(today.getFullYear(), today.getMonth(), today.getDate() + ORDER_INADVANCE_DAY) :
-                new Date(sd.getFullYear(), sd.getMonth(), sd.getDate() + 1));
-        for (var i = 0; i < CACHE_CAPACITY; i++,d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) {
+        var d = (sd == null ? Date.today().addDays(ORDER_INADVANCE_DAY) : sd.clone().next().day());
+        for (var i = 0; i < CACHE_CAPACITY; i++,d = d.clone().next().day()) {
             if (d.getDay() == 6 || d.getDay() == 0)
                 continue;
             var md = getMainDishByDate(d);
@@ -279,10 +185,6 @@ $(document).ready(function($) {
     ///////////////////////////////////////////////////////
     $('#last_month_btn').click(function() {
         ilunch.lockScreen();
-//		d.setMonth(currentM-1);
-//		initialize();
-//		if(currentM == new Date().getMonth() && currentY == new Date().getFullYear())
-//			$(this).css({"display":"none"});
         if (hasLastPage()) {
             currentPage--;
             if (!hasLastPage())
@@ -299,11 +201,6 @@ $(document).ready(function($) {
 
     $('#next_month_btn').click(function() {
         ilunch.lockScreen();
-//		d.setMonth(currentM+1);
-//		initialize();
-//		if(currentM > new Date().getMonth() && currentY >= new Date().getFullYear())
-//			$('#last_month_btn').css({"display":"inline"});
-//			
 		var thisPageFull = (mdCache.length % MD_SHOW_NUM) == 0;
 		if(hasNextPage()) {
 			currentPage++;
@@ -312,13 +209,11 @@ $(document).ready(function($) {
 			ilunch.unlockScreen();
 		}
 		else {
-			var tmpD = mdCache.length > 0 ? 
-					new Date(mdCache[mdCache.length-1].date.getFullYear(), mdCache[mdCache.length-1].date.getMonth(), mdCache[mdCache.length-1].date.getDate()+1) : 
-						new Date(today.getFullYear(), today.getMonth(), today.getDate()+ORDER_INADVANCE_DAY);
+			var tmpD = mdCache.length > 0 ? mdCache[mdCache.length-1].date.clone().next().day() : Date.today().addDays(ORDER_INADVANCE_DAY);
 			$.when(
 				ilunch.getMainDishListOnSelectionPage(
 					ilunch.dateToString(tmpD), 
-					ilunch.dateToString(new Date(tmpD.getFullYear(), tmpD.getMonth(), tmpD.getDate()+CACHE_CAPACITY)),
+					ilunch.dateToString(tmpD.addDays(CACHE_CAPACITY)),
 					null,
 					areaId,
 					function(data) {

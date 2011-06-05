@@ -351,27 +351,21 @@
 		if(!this.init) {
 			if(this.cart.ORDER_INADVANCE_DAY) {
 				var d = null;
-				var today = new Date();
 				if(!this.cart.products || this.cart.products.length <= 0) {
-					d = new Date();
-					while(true) {
-						if(d >= new Date(today.getFullYear(), today.getMonth(), today.getDate()+this.cart.ORDER_INADVANCE_DAY) &&
-								d.getDay() != 6 && d.getDay() != 0)
-							break;
-						d = new Date(d.getFullYear(), d.getMonth(), d.getDate()+1);
-					}
+					d = Date.today().addDays(this.cart.ORDER_INADVANCE_DAY);
+					if(d.getDay() == 6 || d.getDay() == 0)
+						d = d.next().monday();
 				}
 				else {
 					this.cart.products.sort(function(a, b){
-						if(ilunch.makeDate(a.date) <= ilunch.makeDate(b.date))
+						if(ilunch.makeDate(a.date).compareTo(ilunch.makeDate(b.date)) != 1)
 							return -1;
 						else
 							return 1;
 					});
 					d = ilunch.makeDate(this.cart.products[0].date);
 				}
-				var wOffset = Math.floor((new Date(d.getFullYear(), d.getMonth(), d.getDate()-d.getDay()) -
-						new Date(today.getFullYear(), today.getMonth(), today.getDate()-today.getDay()))/(24*3600*1000*7));
+				var wOffset = ((d.is().monday()?d:d.last().monday()) - (Date.today().is().monday()?Date.today():Date.today().last().monday()))/(1000*3600*24*7);
 				this._currentWeekCursor += wOffset;
 				this.init = true;
 			}

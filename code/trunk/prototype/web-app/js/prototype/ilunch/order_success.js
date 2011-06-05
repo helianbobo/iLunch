@@ -21,25 +21,10 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// initialization /////////////////////
 	///////////////////////////////////////////////////////
-	
-	var d = new Date();
-	var currentM = null;
-	var currentD = null;
-	var currentY = null;
-	var currentDay = null;
 
 	var orderInfoElem = $('#order_info');
 	if(orderInfoElem.length <= 0)
 		ilunch.fatalError('orderInfoElem elem not found!');
-	
-	function initialize() {
-		currentM = d.getMonth();
-		currentD = d.getDate();
-		currentY = d.getFullYear();
-		currentDay = d.getDay();
-	}
-	
-	initialize();
 	
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////

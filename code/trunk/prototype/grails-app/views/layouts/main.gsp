@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon"/>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'jquery-1.5.2.min.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'JSONUtil.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'date-zh-CN.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'dataapi.js')}"></script>
     <g:layoutHead/>
     <g:javascript library="application"/>

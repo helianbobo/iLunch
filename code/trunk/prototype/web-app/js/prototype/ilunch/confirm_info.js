@@ -22,12 +22,6 @@ $(document).ready(function($){
 	////////////////// initialization /////////////////////
 	///////////////////////////////////////////////////////
 	
-	var d = new Date();
-	var currentM = null;
-	var currentD = null;
-	var currentY = null;
-	var currentDay = null;
-
 	var currentDateElem = $('#current_date');
 	if(currentDateElem.length <= 0)
 		ilunch.fatalError('current_date elem not found!');
@@ -38,20 +32,12 @@ $(document).ready(function($){
 	in_total.html('0');
 	if($('#area_name').length <= 0)
 		ilunch.fatalError('area_name elem not found!');
-	
-	function initialize() {
-		currentM = d.getMonth();
-		currentD = d.getDate();
-		currentY = d.getFullYear();
-		currentDay = d.getDay();
 
-		currentDateElem.html(currentDateElem.html().replace('##YY##', currentY).replace('##MM##', 
-				ilunch.doubleDigit(currentM+1)).replace('##DD##', 
-						ilunch.doubleDigit(currentD)).replace('##WW##', ilunch.digitToCNSS(currentDay)));
-		$('#area_selector').html($('#area_selector').html().replace(/##AREA_NAME##/g, $('#area_name').html()));
-	}
-	
-	initialize();
+
+	currentDateElem.html(currentDateElem.html().replace('##YY##', Date.today().getFullYear()).replace('##MM##', 
+    		ilunch.doubleDigit(Date.today().getMonth()+1)).replace('##DD##', 
+    				ilunch.doubleDigit(Date.today().getDate())).replace('##WW##', ilunch.digitToCNSS(Date.today().getDay())));
+	$('#area_selector').html($('#area_selector').html().replace(/##AREA_NAME##/g, $('#area_name').html()));
 	
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////

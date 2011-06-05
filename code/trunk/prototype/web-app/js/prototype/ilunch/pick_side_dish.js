@@ -17,13 +17,8 @@ $(document).ready(function($){
 	///////////////////////////////////////////////////////
 	////////////////// initialization /////////////////////
 	///////////////////////////////////////////////////////
-	
-	var d = new Date();
-	var currentM = null;
-	var currentD = null;
-	var currentY = null;
-	var currentDay = null;
-	var currentPage = null;
+
+	var currentPage = 1;
 	var NItemsPerPage = 8;
 	var currentFlavor = null;
 	var currentList = null;
@@ -42,21 +37,11 @@ $(document).ready(function($){
 		$(this).css({"display":"none"});
 	});
 	
-	function initialize() {
-		currentM = d.getMonth();
-		currentD = d.getDate();
-		currentY = d.getFullYear();
-		currentDay = d.getDay();
-		currentPage = 1;
-		
-		listElem.empty();
-		currentDateElem.html(currentDateElem.html().replace('##YY##', currentY).replace('##MM##', 
-				ilunch.doubleDigit(currentM+1)).replace('##DD##', 
-						ilunch.doubleDigit(currentD)).replace('##WW##', ilunch.digitToCNSS(currentDay)));
-	}
-	
-	initialize();
-	
+	listElem.empty();
+	currentDateElem.html(currentDateElem.html().replace('##YY##', Date.today().getFullYear()).replace('##MM##', 
+    		ilunch.doubleDigit(Date.today().getMonth()+1)).replace('##DD##', 
+    				ilunch.doubleDigit(Date.today().getDate())).replace('##WW##', ilunch.digitToCNSS(Date.today().getDay())));
+
 	///////////////////////////////////////////////////////
 	////////////////// send request for data  /////////////
 	///////////////////////////////////////////////////////
@@ -65,7 +50,7 @@ $(document).ready(function($){
 	
 	$.when(
 		ilunch.getSideDishListOnSelectionPage(
-			''+currentY+'-'+(1+currentM)+'-'+currentD,
+			ilunch.dateToString(Date.today()),
 			areaId,
 			function(data) {
 //				//delete
@@ -289,9 +274,11 @@ $(document).ready(function($){
 		var ul = datePicker.children("ul");
 		ul.empty();
 		var sd = cart.getCurrentWeekOrder().startDate;
-		for(var i = 0, di = sd; i < 5; i++, di = new Date(di.getFullYear(), di.getMonth(), di.getDate()+1)) {
+		var pickableDate = Date.today().addDays(cart.getCart().ORDER_INADVANCE_DAY-1);
+		for(var i = 0, di = sd; i < 5; i++, di = di.clone().next().day()) {
 			var dateTitle = '周'+ilunch.digitToCNSS(i+1)+' '+(di.getMonth()+1)+'/'+di.getDate();
-			if(di <= new Date(d.getFullYear(), d.getMonth(), d.getDate()+cart.getCart().ORDER_INADVANCE_DAY-1)) {
+			//less than or equals
+			if(di.compareTo(pickableDate) != 1) {
 				ul.append('<li><div>'+dateTitle+'<br /></div></li>');
 			}
 			else {

@@ -39,9 +39,9 @@
             </div>
             <div class="pc_2">
               <div class="title">
-                <input id="last_week_btn" class="month_1" onmouseover="this.className = 'month_1_1'" onmouseout="this.className = 'month_1'" name="" type="button" value=""/>
+                <input onclick="lastWeek();" class="week_1" onmouseover="this.className = 'week_1_1'" onmouseout="this.className = 'week_1'" name="" type="button" value=""/>
                 <span id="current_date">今天##YY##-##MM##-##DD## 星期##WW##</span>
-                <input id="next_week_btn" class="month_2" onmouseover="this.className = 'month_2_1'" onmouseout="this.className = 'month_2'" name="" type="button" value=""/>
+                <input onclick="nextWeek();" class="week_2_1" onmouseover="this.className = 'week_2_1'" onmouseout="this.className = 'week_2'" name="" type="button" value=""/>
               </div>
               <div class="pc_2_c">
                 <ul id="cart_date" class="pc_time">
