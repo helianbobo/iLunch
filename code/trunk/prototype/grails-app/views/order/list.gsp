@@ -12,9 +12,9 @@
 
     <div class="title">账户信息</div>
     <p>
-        昵称：${'$'}{nickname}
-        <br/>
-        <a href="#">[修改昵称]</a>
+        <div style="display:inline">昵称：</div><div style="display:inline" id="nickname">${'$'}{nickname}</div>
+<br/>
+        <a href="#" onclick="javascript:fillNickname();">[修改昵称]</a>
     </p>
     <p>手机号：${'$'}{phoneNumber}
         <br/>
