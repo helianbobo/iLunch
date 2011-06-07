@@ -10,10 +10,22 @@
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'JSONUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'date-zh-CN.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'dataapi.js')}"></script>
+
+    <script type="text/javascript">
+
+        (function($) {
+
+            var ilunch = $.ilunch_namespace("cn.ilunch");
+            ilunch.ROOT = '${resource(dir:'/')}';
+
+        })(jQuery);
+    </script>
+
     <g:layoutHead/>
     <g:javascript library="application"/>
 
 </head>
+
 <body>
 
 <div class="container">
