@@ -28,10 +28,10 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://219.136.252.35:3308/ilunch"
+            url = "jdbc:mysql://112.125.57.131:3306/ilunch"
             driverClassName = "com.mysql.jdbc.Driver"
-            username = "ilunch"
-            password = "ilunch"
+            username = "root"
+            password = "5q7v6g9t8f"
         }
     }
     leo {
@@ -41,6 +41,16 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             username = "root"
             password = "root"
+        }
+    }
+
+    liuchao {
+        dataSource {
+            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            url = "jdbc:mysql://localhost:3306/ilunch"
+            driverClassName = "com.mysql.jdbc.Driver"
+            username = "root"
+            password = ""
         }
     }
 }

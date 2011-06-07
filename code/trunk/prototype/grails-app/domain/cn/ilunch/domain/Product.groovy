@@ -24,7 +24,7 @@ class Product {
         smallImageUrl(nullable: true)
         status(min: 0, max: 1)
         productAreaPriceSchedules(nullable: true)
-        name(unique: true)
+        name(nullable: true)
     }
 
     def statusDesc = {
