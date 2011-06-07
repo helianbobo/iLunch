@@ -70,7 +70,7 @@ $(document).ready(function($){
 				for(var i in data) {
 					arr.push(data[i]);
 					for(var j in data[i].flavors)
-						flavors[data[i].flavors[j]] = false;
+						flavors[data[i].flavors[j].value] = false;
 				}
 				sideDishList = currentList = arr;
 				$('#total_page').html(_getTotalPageN());
@@ -348,7 +348,7 @@ $(document).ready(function($){
 		else {
 			for(var i = 0; i < sideDishList.length; i++)
 				for(var j in sideDishList[i].flavors)
-					if(flavor == sideDishList[i].flavors[j])
+					if(flavor == sideDishList[i].flavors[j].value)
 						currentList.push(sideDishList[i]);
 		}
 		for(var i in flavors)
