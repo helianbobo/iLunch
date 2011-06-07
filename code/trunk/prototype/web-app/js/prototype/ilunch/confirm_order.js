@@ -154,27 +154,29 @@ $(document).ready(function($){
 		
 		ilunch.saveCart(cart.toString(), function(data){});
 		var success = null;
+		var orderId = null;
 		ilunch.lockScreen();
 		$.when(
 				ilunch.confirmOrder(cart.toOrderString(user.id), function(result) {
-					if(result == 0) {
+					if(!result.error) {
 						success = true;
+						orderId = result.orderId;
 					}
-//					else if(result == "04"){
-//						success = false;
-//						ilunch.fatalError("使用的积分超过余额！");
-//					}
-//					else if(result == "05") {
-//						success = false;
-//						ilunch.fatalError("只能订购两天之后的餐品！");
-//					}
+					else if(result.error.errorCode == "04"){
+						success = false;
+						ilunch.fatalError("使用的积分超过余额！");
+					}
+					else if(result.error.errorCode == "05") {
+						success = false;
+						ilunch.fatalError("只能订购两天之后的餐品！");
+					}
 				})
 		).done(
 				function() {
 					if(success != null) {
 
 						if(success) {
-							window.location.href = ilunch.ROOT+"dataAPI/orderSuccess";
+							window.location.href = ilunch.ROOT+"dataAPI/orderSuccess?orderId="+orderId;
 						}
 						
 					}
