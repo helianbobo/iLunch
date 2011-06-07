@@ -176,7 +176,9 @@ $(document).ready(function($){
 					if(success != null) {
 
 						if(success) {
-							window.location.href = ilunch.ROOT+"dataAPI/orderSuccess?orderId="+orderId;
+							$('#confirm_form').attr({"action":"/prototype/dataAPI/orderSuccess"});
+							$('#confirm_form').find('input[type=hidden]').val(orderId);
+							$('#confirm_form').submit();
 						}
 						
 					}

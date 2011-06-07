@@ -67,8 +67,11 @@
             <div class="clear"></div>
           </div>
           <div class="dd_next_1">
+          <form id="confirm_form" method="post">
+          	  <input type="hidden" value="" name="orderId" />
               <input id="btn_confirm_last" class="next_2" onmouseover="this.className = 'next_2_1'" onmouseout="this.className = 'next_2'" name="" type="button" value=""/>
               <input id="btn_confirm_next" class="next_1" onmouseover="this.className = 'next_1_1'" onmouseout="this.className = 'next_1'" name="" type="button" value=""/>
+          </form>
           </div>
         </div>
       </div>
