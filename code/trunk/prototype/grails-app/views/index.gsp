@@ -14,13 +14,13 @@
         <div class="tejia">
             <div class="tejia_content">
                 <div class="tc_title"><span class="stress">今日尝鲜:</span>地中海之珠什么的 仅售5元！</div>
-                <div class="tc_content">原价10元，包括一份300g大荤主菜，两份配菜100gX2，一杯饮料300ml，一份米饭150g。主菜材料：鲜嫩猪后腿肉，西兰花，土耳其海鲜酱调配异国风味。配菜：多种配菜任选两款。<a href="#">为什么这么划算？</a></div>
+                <div class="tc_content">原价10元，包括一份300g大荤主菜，两份配菜100gX2，一杯饮料300ml，一份米饭150g。主菜材料：鲜嫩猪后腿肉，西兰花，土耳其海鲜酱调配异国风味。配菜：多种配菜任选两款。<g:link uri="/faq.gsp">为什么这么划算？</g:link></div>
                 <div class="clear"></div>
                 <div class="time"><p>倒计时：</p><p><span class="stress">12</span>小时<span class="stress">38</span>分钟<span class="stress">26</span>秒</p><p>时间不多，快抓紧哦！</p></div>
                 <div class="rush">
                     <p class="stress"><a href="#">仅售5元，马上抢订！</a></p><p>已有1290人订购，还只剩100份</p></div>
                 <div class="clear"></div>
-                <div class="mk"><p class="stress">订购须知：</p><p>本套餐仅供应上海凌空工业园区，<a href="#">点击这里</a>查看其他地区优惠。</p></div>
+                <div class="mk"><p class="stress">订购须知：</p><p>本套餐仅供应上海凌空工业园区，<a href="#" class="changeAreaBtn">点击这里</a>查看其他地区优惠。</p></div>
             </div>
 
             <div class="tejia_pic">
