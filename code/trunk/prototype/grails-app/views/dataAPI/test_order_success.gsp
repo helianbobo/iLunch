@@ -6,8 +6,8 @@
     <title>订单成功</title>
     <meta name="layout" content="main"/>
 
-    <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'cart.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'order_success.js')}"></script>
+    %{--<script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'cart.js')}"></script>--}%
+    %{--<script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'order_success.js')}"></script>--}%
 </head>
 <body>
 <g:render template="/shared/header" model="[current:2]"/>
