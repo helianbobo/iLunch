@@ -451,7 +451,7 @@
 			return '请填写密码';
 		var params = {
 			'j_username' : username,
-			'j_password' : password,
+			'j_password' : password
 		};
 		if(rememberMe)
 			params._spring_security_remember_me = 'on';
@@ -488,7 +488,7 @@
 		}
 		var params = {
 			'cellNumber' : username,
-			'password' : password,
+			'password' : password
 		};
 		
 		return	$.ajax(ilunch.ROOT+'person/register', 

@@ -14,9 +14,9 @@
         <div class="c_c">
           <div class="dd_1"></div>
           <div class="rili">
-            <input id="last_month_btn" class="month_1" onmouseover="this.className = 'month_1_1'" onmouseout="this.className = 'month_1'" name="" type="button" value=""/>
+            <input id="last_month_btn" class="week_1" onmouseover="this.className = 'week_1_1'" onmouseout="this.className = 'week_1'" name="" type="button" value=""/>
             <span id="current_date">今天##YY##-##MM##-##DD## 星期##WW##</span>
-            <input id="next_month_btn" class="month_2" onmouseover="this.className = 'month_2_1'" onmouseout="this.className = 'month_2'" name="" type="button" value=""/>
+            <input id="next_month_btn" class="week_2_1" onmouseover="this.className = 'week_2_1'" onmouseout="this.className = 'week_2'" name="" type="button" value=""/>
           </div>
           <div id="md_list" class="dd_list">
           </div>

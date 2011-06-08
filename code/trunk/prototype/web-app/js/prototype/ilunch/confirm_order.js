@@ -50,6 +50,8 @@ $(document).ready(function($){
 	$.when(
 			ilunch.getCurrentUserInfo(function(data){
 				user = data;
+				if(user.error)
+					ilunch.fatalError("获取用户信息错误，请尝试刷新页面或重新登录！");
 			}),
 			ilunch.getCart(
 					function(data) {
@@ -169,6 +171,10 @@ $(document).ready(function($){
 					else if(result.error.errorCode == "05") {
 						success = false;
 						ilunch.fatalError("只能订购两天之后的餐品！");
+					}
+					else {
+						success = false;
+						ilunch.fatalError("提交订单错误："+result.error.message);
 					}
 				})
 		).done(
