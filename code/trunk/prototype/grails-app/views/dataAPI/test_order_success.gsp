@@ -28,7 +28,7 @@
                         <td width="80">尝鲜套餐：</td>
                         <td id="order_info">
                             <g:each in="${shipments}" status="i" var="shipment">
-                                <p><span>${shipment.shipmentDate} 取餐</span>${shipment.getDisplayingProductName()}</p>
+                                <p><span>${shipment.shipmentDate.format("yyyy-MM-dd")} 取餐</span>${shipment.getDisplayingProductName()}</p>
                             </g:each>
                         </td>
                     </tr>
@@ -47,7 +47,7 @@
                 </table>
             </div>
             <div class="zy">
-                <p>如果您想退订，请在${order.orderDate.format("yyyy-MM-dd HH:mm:ss")} 前退订。登录网站，在查看订单页面中操作。如过期，我们会有原材料损耗，所以不能申请退订，望见谅。</p>
+                <p>如果您想退订，请在${order.orderDate.format("yyyy-MM-dd HH:mm")} 前退订。登录网站，在查看订单页面中操作。如过期，我们会有原材料损耗，所以不能申请退订，望见谅。</p>
                 <p>建议您可以通过转让的形式让他人享受套餐。您只需要把识别码通过短信转发给他人，以便他人顺利取餐。</p>
             </div>
         </div>
