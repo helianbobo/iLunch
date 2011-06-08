@@ -11,7 +11,7 @@ $(document).ready(function($){
 	var sideDishList = null;
 	var cart = null;
 	var areaId = $('#area_id').val();
-	if(!areaId || areaId == '')
+	if(areaId.length <= 0)
 		ilunch.fatalError("area id not found!");
 	
 	///////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ $(document).ready(function($){
 				var arr = [];
 				for(var i in data) {
 					arr.push(data[i]);
-					for(var j in data[i].flavors)
+					for(var j = 0; j < data[i].flavors.length; j++)
 						flavors[data[i].flavors[j].value] = false;
 				}
 				sideDishList = currentList = arr;
@@ -131,7 +131,7 @@ $(document).ready(function($){
         $('#tag_list').empty();
         $('#tag_list').append('分类标签：');
         $('#tag_list').append('<a onclick="change_flavor(\'全部\')">全部</a> | ');
-        for (var i in flavors) {
+        for (var i = 0; i < flavors.length; i++) {
             if (flavors[i]) 
                 $('#tag_list').append('<a class="on" onclick="change_flavor(\'' + i + '\')">' + i + '</a> | ');
             else 
@@ -347,11 +347,11 @@ $(document).ready(function($){
 		}
 		else {
 			for(var i = 0; i < sideDishList.length; i++)
-				for(var j in sideDishList[i].flavors)
+				for(var j = 0; j < sideDishList[i].flavors.length; j++)
 					if(flavor == sideDishList[i].flavors[j].value)
 						currentList.push(sideDishList[i]);
 		}
-		for(var i in flavors)
+		for(var i = 0; i < flavors.length; i++)
 			if(flavors[i])
 				flavors[i] = false;
 		if(flavor != '全部')

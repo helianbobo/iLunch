@@ -10,7 +10,7 @@ $(document).ready(function($) {
     var mainDishList = null;
     var cart = null;
     var areaId = $('#area_id').val();
-    if (!areaId || areaId == '')
+    if (areaId.length <= 0)
         ilunch.fatalError("area id not found!");
     var ORDER_INADVANCE_DAY = 2;
     var MD_SHOW_NUM = 5;
@@ -154,7 +154,7 @@ $(document).ready(function($) {
     };
 
     function getMainDishByDate(date) {
-        for (var i in mainDishList) {
+        for (var i = 0; i < mainDishList.length; i++) {
             for (var j = 0; j < mainDishList[i].prices.length; j++) {
                 var sd = ilunch.makeDate(mainDishList[i].prices[j].startDate);
                 var ed = (mainDishList[i].prices[j].endDate == null ? null : ilunch.makeDate(mainDishList[i].prices[j].endDate));

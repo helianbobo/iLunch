@@ -4,6 +4,7 @@ import cn.ilunch.domain.ProductOrder
 import cn.ilunch.domain.Shipment
 
 class DataAPIController {
+    def springSecurityService
 
     def index = {
         render(view: "test_data")
@@ -33,7 +34,7 @@ class DataAPIController {
         }
         def order = ProductOrder.get(orderId)
         final distributionPoint = order.getDistributionPoint()
-        def contactor = distributionPoint.getKitchen().getManager()
+        def contactor = springSecurityService.currentUser
 
         def dateItemRegistry = order.orderItems.groupBy {orderItem ->
             orderItem.shippmentDate
