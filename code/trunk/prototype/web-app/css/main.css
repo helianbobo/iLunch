@@ -285,7 +285,9 @@ p { margin:0; padding:0; }
 .dd_next_1 .next_3_1 { background:url(../images/button_4.png) left -51px no-repeat; width:272px; height:51px; border:none; cursor:pointer; margin:20px 40px 0 0; }
 .tx { background:#c6e7f8; line-height:38px; height:38px; color:#0481c1; font-size:14px; font-weight:bold; text-align:center; }
 
-.pc_l { float:left; width:669px; background:#fff; }
+.pc_l { float:left; width:669px; background:#fff;
+	position: relative;
+}
 .pc_l .title { background:url(../images/xc_title_bg.png) left top no-repeat; padding:10px 0 0 0; height:25px; line-height:24px; color:#ff9600; font-size:14px; font-weight:bold; text-indent:20px; }
 .pc_l .title p { font-size:12px; color:#666; font-weight:normal; }
 .pc_l .title .fourteen { font-size:14px; color:#666; font-weight:normal; }
