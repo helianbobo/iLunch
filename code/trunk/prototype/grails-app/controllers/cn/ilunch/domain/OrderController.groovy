@@ -84,7 +84,7 @@ class OrderController {
 
         try {
             orderService.cancelOrder(productOrder)
-            flash.message = "已将付款返还到账户余额"
+            flash.message = "已取消订单"
             redirect(action: "listWithinMonth")
             return
         } catch (e) {
