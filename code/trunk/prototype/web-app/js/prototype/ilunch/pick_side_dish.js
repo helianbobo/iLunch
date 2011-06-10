@@ -283,7 +283,7 @@ $(document).ready(function($){
 		var ul = datePicker.children("ul");
 		ul.empty();
 		var sd = cart.getCurrentWeekOrder().startDate;
-		var pickableDate = Date.today().addDays(cart.getCart().ORDER_INADVANCE_DAY-1);
+		var pickableDate = Date.today().addDays(ilunch.ReserveDay-1);
 		for(var i = 0, di = sd; i < 5; i++, di = di.clone().next().day()) {
 			var dateTitle = '周'+ilunch.digitToCNSS(i+1)+' '+(di.getMonth()+1)+'/'+di.getDate();
 			//less than or equals

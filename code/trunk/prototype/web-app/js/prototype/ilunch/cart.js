@@ -232,8 +232,6 @@
 			strarr.push('"distributionPoint":"'+this.cart.distributionPoint+'",');
 		if(this.cart.buildingId != null && this.cart.buildingId != undefined)
 			strarr.push('"buildingId":'+this.cart.buildingId+',');
-		if(this.cart.ORDER_INADVANCE_DAY != null && this.cart.ORDER_INADVANCE_DAY != undefined)
-			strarr.push('"ORDER_INADVANCE_DAY":'+this.cart.ORDER_INADVANCE_DAY+',');
 		if(this.cart.pointChange != null && this.cart.pointChange != undefined)
 			strarr.push('"pointChange":'+this.cart.pointChange+',');
 		strarr.push('"products":[');
@@ -349,26 +347,24 @@
 		}
 
 		if(!this.init) {
-			if(this.cart.ORDER_INADVANCE_DAY) {
-				var d = null;
-				if(!this.cart.products || this.cart.products.length <= 0) {
-					d = Date.today().addDays(this.cart.ORDER_INADVANCE_DAY);
-					if(d.getDay() == 6 || d.getDay() == 0)
-						d = d.next().monday();
-				}
-				else {
-					this.cart.products.sort(function(a, b){
-						if(ilunch.makeDate(a.date).compareTo(ilunch.makeDate(b.date)) != 1)
-							return -1;
-						else
-							return 1;
-					});
-					d = ilunch.makeDate(this.cart.products[0].date);
-				}
-				var wOffset = ((d.is().monday()?d:d.last().monday()) - (Date.today().is().monday()?Date.today():Date.today().last().monday()))/(1000*3600*24*7);
-				this._currentWeekCursor += wOffset;
-				this.init = true;
+			var d = null;
+			if(!this.cart.products || this.cart.products.length <= 0) {
+				d = Date.today().addDays(ilunch.ReserveDay);
+				if(d.getDay() == 6 || d.getDay() == 0)
+					d = d.next().monday();
 			}
+			else {
+				this.cart.products.sort(function(a, b){
+					if(ilunch.makeDate(a.date).compareTo(ilunch.makeDate(b.date)) != 1)
+						return -1;
+					else
+						return 1;
+				});
+				d = ilunch.makeDate(this.cart.products[0].date);
+			}
+			var wOffset = ((d.is().monday()?d:d.last().monday()) - (Date.today().is().monday()?Date.today():Date.today().last().monday()))/(1000*3600*24*7);
+			this._currentWeekCursor += wOffset;
+			this.init = true;
 		}
         //2. render md and sd for each of the week days
         var retval = this.getCurrentWeekOrder();

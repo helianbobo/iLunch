@@ -12,7 +12,7 @@ $(document).ready(function($) {
     var areaId = $('#area_id').val();
     if (areaId.length <= 0)
         ilunch.fatalError("area id not found!");
-    var ORDER_INADVANCE_DAY = 2;
+    var ORDER_INADVANCE_DAY = ilunch.ReserveDay;
     var MD_SHOW_NUM = 5;
     var currentPage = 1;
     var mdCache = [];
@@ -57,7 +57,6 @@ $(document).ready(function($) {
 		ilunch.getCart(
 			function(data) {
 				cart = new ilunch.Cart(data);
-				cart.getCart().ORDER_INADVANCE_DAY = ORDER_INADVANCE_DAY;
 			}
 		)
 	).done(function() {
