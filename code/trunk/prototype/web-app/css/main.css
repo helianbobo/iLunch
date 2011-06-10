@@ -21,7 +21,7 @@ p { margin:0; padding:0; }
 .alert_div_2 .title { color:#006ba2; font-size:14px; font-weight:bold; margin:0 0 20px 0; }
 .alert_div_2 .title img { float:right; border:none; }
 .alert_div_2 .pic { float:left; width:380px; } 
-.alert_div_2 .pic img { padding:5px; border:1px #cfcfcf solid; }
+.alert_div_2 .pic img { padding:5px; border:1px #cfcfcf solid; width:343px; height:343px;}
 .alert_div_2 .pic_text { float:left; width:280px; font-size:14px; } 
 .alert_div_2 .pic_text li { line-height:28px;}
 .alert_div_2 .pic_text .stress { color:#ff0000; font-weight:bold; }

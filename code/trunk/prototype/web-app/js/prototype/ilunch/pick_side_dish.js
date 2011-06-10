@@ -112,7 +112,7 @@ $(document).ready(function($){
 
 	
 	var dishTmplt = ('<div class="xc_li">'+
-						'<div class="xc_p"><a href="#"><img src="'+ilunch.ROOT+'##IMG##" /></a></div>'+
+						'<div class="xc_p"><a onclick="onSDDetail(##SD_ID##);"><img src="'+ilunch.ROOT+'##IMG##" /></a></div>'+
 						'<div class="xc_t">##SD_NAME##</div>'+
 						'<div id="order_##SD_ID##" class="cai_s">'+
 							orderTmplt+
@@ -228,7 +228,12 @@ $(document).ready(function($){
 		cart.render();
 		if(elem) {
 			var sd_id = $('#date_picker').find("input[type=hidden]").val();
-			$('#order_'+sd_id).find("input.xuangou").click();
+			if($('#sd_detail_dialog').css("display") == 'block')
+				$('#sd_detail_dialog').find("input[name=doOrder]").click();
+			else {
+				var sd_id = $('#date_picker').find("input[type=hidden]").val();
+				$('#order_'+sd_id).find("input.xuangou").click();
+			}
 		}
 	};
 	
@@ -237,8 +242,12 @@ $(document).ready(function($){
 		cart.getNextWeekOrder();
 		cart.render();
 		if(elem) {
-			var sd_id = $('#date_picker').find("input[type=hidden]").val();
-			$('#order_'+sd_id).find("input.xuangou").click();
+			if($('#sd_detail_dialog').css("display") == 'block')
+				$('#sd_detail_dialog').find("input[name=doOrder]").click();
+			else {
+				var sd_id = $('#date_picker').find("input[type=hidden]").val();
+				$('#order_'+sd_id).find("input.xuangou").click();
+			}
 		}
 	};
 	
@@ -286,7 +295,8 @@ $(document).ready(function($){
 				ul.append('<li><a onclick="md_order_from_date_picker('+id+',\''+ilunch.dateToString(di)+'\','+quantity+',\''+name+'\',\''+imageURL+'\')" onmouseover="this.className=\'pc_on\'" onmouseout="this.className=\'pc_off\'"><div>'+dateTitle+'<br />'+price+'￥</div></a></li>');
 			}
 		}
-		datePicker.css({"left":elem.offsetLeft+"px", "top":elem.offsetTop+"px", "display":"block"});
+		datePicker.css({"left":(elem.offsetLeft+elem.offsetParent.offsetLeft)+"px", 
+			"top":(elem.offsetTop+elem.offsetParent.offsetTop)+"px", "display":"block"});
 	};
 	
 	md_order_from_date_picker = function(id, date, quantity, name, imageURL) {
@@ -303,6 +313,9 @@ $(document).ready(function($){
 			$('#order_'+id).append(disorderTmplt.replace(/##SEL_N##/g, cart.getOrderByIdAndDate(id, date, false).quantity));
 			datePicker.css({"display":"none"});
 			in_total.html(cart.getTotalMoney());
+			if($('#sd_detail_dialog').css("display") == 'block') {
+				closeSDDetail();
+			}
 		}
 	};
 	
@@ -327,14 +340,18 @@ $(document).ready(function($){
 		var quantity = parseInt($('#quantity_'+id).val());
 		if(!quantity)
 			quantity = 0;
-		$('#quantity_'+id).val((quantity-1)<0?0:(quantity-1));
+		quantity = (quantity-1)<0?0:(quantity-1);
+		$('#quantity_'+id).val(quantity);
+		$('#sd_detail_dialog').find("input[name=quantity]").val(quantity);
 	};
 	
 	inc_quantity = function(id) {
 		var quantity = parseInt($('#quantity_'+id).val());
 		if(!quantity)
 			quantity = 0;
-		$('#quantity_'+id).val(quantity+1);
+		quantity = quantity+1;
+		$('#quantity_'+id).val(quantity);
+		$('#sd_detail_dialog').find("input[name=quantity]").val(quantity);
 	};
 	
 	change_flavor = function(flavor) {
@@ -360,5 +377,36 @@ $(document).ready(function($){
 		currentPage = 1;
 		//render list;
 		renderSDList();
+	};
+	
+	onSDDetail = function(id) {
+		ilunch.lockScreen();
+		var sh = $(window)[0].outerHeight;
+        var sw = $(window)[0].outerWidth;
+        var w = $('#sd_detail_dialog').outerWidth();
+        var h = $('#sd_detail_dialog').outerHeight();
+        $('#sd_detail_dialog').css({"left":((sw - w) / 2) + "px","top":((sh - h) / 2) + "px"});
+        //get sd info and render
+        var sd = ilunch.getOrderById(sideDishList, id);
+        $('#sd_detail_dialog').find("img[name=img]").attr({"src":ilunch.ROOT+sd.imageURL});
+        $('#sd_detail_dialog').find("strong[name=name]").html(sd.name);
+        $('#sd_detail_dialog').find("li[name=flavor]").html(sd.flavors.toString());
+        $('#sd_detail_dialog').find("li[name=story]").html(sd.story);
+        
+        var ctrlTmpl = '<input class="jianyi" type="button" onclick="dec_quantity(##SD_ID##);" />'+ 
+					   '<input class="shuliang_2" name="quantity" type="text" value="##QUANTITY##" />'+ 
+					   '<input class="jiayi" type="button" onclick="inc_quantity(##SD_ID##);"/>'+
+					   '<input onclick="md_order(##SD_ID##,\'##SD_NAME##\',\'##IMG##\',this);" class="button_10" onmouseover="this.className=\'button_10_1\'" onmouseout="this.className=\'button_10\'" type="button" name="doOrder" />';
+		
+        var quantity = $('#quantity_'+id).val();
+        ctrlTmpl = ctrlTmpl.replace(/##SD_ID##/g, id).replace(/##QUANTITY##/g, quantity).replace(/##SD_NAME##/g, sd.name).replace(/##IMG##/g, sd.imageURL);
+        $('#sd_detail_dialog').find("li.sl").empty();
+        $('#sd_detail_dialog').find("li.sl").append(ctrlTmpl);
+        $('#sd_detail_dialog').show();
+	};
+	
+	closeSDDetail = function() {
+		$('#sd_detail_dialog').hide();
+		ilunch.unlockScreen();
 	};
 });
