@@ -295,8 +295,8 @@ $(document).ready(function($){
 				ul.append('<li><a onclick="md_order_from_date_picker('+id+',\''+ilunch.dateToString(di)+'\','+quantity+',\''+name+'\',\''+imageURL+'\')" onmouseover="this.className=\'pc_on\'" onmouseout="this.className=\'pc_off\'"><div>'+dateTitle+'<br />'+price+'￥</div></a></li>');
 			}
 		}
-		datePicker.css({"left":(elem.offsetLeft+elem.offsetParent.offsetLeft)+"px", 
-			"top":(elem.offsetTop+elem.offsetParent.offsetTop)+"px", "display":"block"});
+		var pos = $.position(elem, $(elem).closest('.pc_l'));
+		datePicker.css({"left":pos.x, "top": pos.y, "display":"block"});
 	};
 	
 	md_order_from_date_picker = function(id, date, quantity, name, imageURL) {

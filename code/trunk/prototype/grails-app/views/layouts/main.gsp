@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}"/>
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon"/>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'jquery-1.5.2.min.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'jquery-ext.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'JSONUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'date-zh-CN.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'dataapi.js')}"></script>
