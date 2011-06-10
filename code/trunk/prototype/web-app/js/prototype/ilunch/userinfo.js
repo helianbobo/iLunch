@@ -22,11 +22,13 @@ function fillNickname() {
     }
 
     function changeNickname(event, orgName) {
+        var ilunch = $.ilunch_namespace("cn.ilunch");
+        var root = ilunch.ROOT;
         if (event.value != orgName) {
             if (window.confirm("确定要修改昵称吗？")) {
                 $.ajax({
                     type:"post",
-                    url:"/prototype/person/changeName",
+                    url:root+"person/changeName",
                     data: {"nickName": event.value},
                     beforeSend: function(XMLHttpRequest) {
 

@@ -17,7 +17,7 @@
 
             var ilunch = $.ilunch_namespace("cn.ilunch");
             ilunch.ROOT = '${resource(dir:'/')}';
-
+            ilunch.ReserveDay = ${grailsApplication.config.cn.ilunch.order.reserve.day}
         })(jQuery);
     </script>
 

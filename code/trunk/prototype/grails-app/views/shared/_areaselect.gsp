@@ -7,7 +7,7 @@
             }
         }
 
-        $('#changeAreaBtn').click(function(e) {
+        $('.changeAreaBtn').click(function(e) {
             $('#changeAreaDialog').css({"right":(e.clientX+30) + "px","top":(e.clientY-5) + "px"});
             if($('#changeAreaDialog').is(':hidden')){
                 $('#changeAreaDialog').slideDown('slow', function(){});
@@ -21,6 +21,10 @@
             hideIt($('#changeAreaDialog'));
         });
 
+        $('#selectAreaConfirmBtn').click(function(){
+            hideIt($('#changeAreaDialog'));
+        });
+
     });
 </script>
 
@@ -30,7 +34,7 @@
 <div class="place">
     <p id="area_name">上海凌空科技园</p>
 
-    <p><a href="#" id="changeAreaBtn">[切换其他地区]</a></p>
+    <p><a href="#" class="changeAreaBtn">[切换其他地区]</a></p>
     <input id="area_id" type="hidden" value="1"/>
 </div>
 
@@ -64,7 +68,7 @@
     </p>
 
     <div align="center">
-        <input class="button_7" onmouseover="this.className = 'button_7_1'" onmouseout="this.className = 'button_7'"
+        <input id="selectAreaConfirmBtn" class="button_7" onmouseover="this.className = 'button_7_1'" onmouseout="this.className = 'button_7'"
                name="" type="button"/>
         <input id="selectAreaCancelBtn" class="button_8" onmouseover="this.className = 'button_8_1'" onmouseout="this.className = 'button_8'"
                name="" type="button"/>

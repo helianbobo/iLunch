@@ -31,6 +31,10 @@ class BootStrap {
             leo {
                 loadTestData()
             }
+
+            liuchao {
+                loadTestData()
+            }
         }
 
     }

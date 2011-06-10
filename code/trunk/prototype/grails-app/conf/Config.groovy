@@ -101,6 +101,7 @@ cn.ilunch.exception.code.CellphoneNumberInvalid = "06"
 cn.ilunch.exception.code.CellphoneNumberRegistered = "07"
 cn.ilunch.exception.code.NotEnoughProduct = "08"
 
+cn.ilunch.order.reserve.day=3
 cn.ilunch.date.format = 'yyyy-MM-dd'
 cn.ilunch.repository.remainDisplayRatio = '0.8'
 cn.ilunch.product.image.location = "${userHome}/ilunch/images/products"

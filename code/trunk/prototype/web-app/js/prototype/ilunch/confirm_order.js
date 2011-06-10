@@ -182,7 +182,7 @@ $(document).ready(function($){
 					if(success != null) {
 
 						if(success) {
-							$('#confirm_form').attr({"action":"/prototype/dataAPI/orderSuccess"});
+							$('#confirm_form').attr({"action":ilunch.ROOT+"dataAPI/orderSuccess"});
 							$('#confirm_form').find('input[type=hidden]').val(orderId);
 							$('#confirm_form').submit();
 						}
