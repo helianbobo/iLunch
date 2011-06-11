@@ -29,7 +29,10 @@ p { margin:0; padding:0; }
 .button_9_1 { background:url(../images/button_9.gif) left -32px no-repeat; width:82px; height:32px; cursor:pointer; border:none; }
 .button_10 { background:url(../images/button_10.gif) left top no-repeat; width:89px; height:23px; cursor:pointer; border:none;}
 .button_10_1 { background:url(../images/button_10.gif) left -23px no-repeat; width:89px; height:23px; cursor:pointer; border:none;}
-.shuliang_2 { background:url(../images/shuliang_2.png) left top fixed; width:40px; height:16px; border:none; cursor:text;*vertical-align:middle; }
+.shuliang_2 { 
+    background: url(../images/shuliang_2.png) no-repeat left top;
+    margin: 0 2px;
+    width:40px; height:16px; border:none; cursor:text;*vertical-align:middle; }
 .alert_div_2 .pic_text .sl { padding:20px 0 0 0; text-align:center;}
 .alert_div_2 .pic_text .sl input { _vertical-align:middle; }
 .alert_div_2 .pic_text .sub { text-align:center; padding:30px 0 0 0; }
