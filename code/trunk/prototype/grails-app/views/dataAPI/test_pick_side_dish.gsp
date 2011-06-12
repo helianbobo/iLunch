@@ -13,13 +13,39 @@
       <div class="content">
 		<div class="c_c">
           <div class="dd_2"></div>
-          <div class="pcbg">
+			<div class="pcbg">
             <div class="pc_l">
               <div class="clear"></div>
               <div class="title1">更多配菜</div>
               <div id="tag_list" class="title1_select">分类标签：
                 <a href="#">全部</a> | <a href="#" class="on">本帮菜</a> | <a href="#">川菜</a> | <a href="#">湘菜</a> | <a href="#">粤菜</a> | <a href="#">东北菜</a> | <a href="#">甜口味</a> | <a href="#">咸口味</a> | <a href="#">辣口味</a> | <a href="#">其他</a>
               </div>
+              
+              <div class="alert_div_2" id="sd_detail_dialog"
+				style="position: absolute; display: none; z-index: 2000">
+				<div class="title">
+					<a href="#" onclick="closeSDDetail();"><img
+						src="${resource(dir: 'images', file: 'close.png')}" /> </a>配菜信息
+				</div>
+				<div class="pic">
+					<img name="img" src="" />
+				</div>
+				<div class="pic_text">
+					<ul>
+						<li><strong name="name"></strong></li>
+						<li name="flavor"></li>
+						<li name="story"></li>
+						<li class="sl"></li>
+						<li class="sub"><input class="button_9"
+							onmouseover="this.className='button_9_1'"
+							onmouseout="this.className='button_9'" name="" type="button"
+							value="" onclick="closeSDDetail();" /></li>
+					</ul>
+					<div></div>
+					<div></div>
+				</div>
+			  </div>
+              
               <div id="date_picker" class="alert_div_7" style="position:absolute;display:none;z-index:10000">
               	<input type="hidden" value="" />
                 <div class="title_">选购下周的配菜，别忘了先将日历切换到下周哦~</div>
@@ -27,33 +53,9 @@
                 </ul>
                 <div class="btnbox_week" style="background:#FFF; color:#03F; text-align:center;"><a style="color:#0183C1; margin-right:30px;" onclick="lastWeek(this);">上一周</a> <a style="color:#0183C1;" onclick="nextWeek(this);">下一周</a></div>
               </div>
-              <div class="alert_div_2" id="sd_detail_dialog" style="position:absolute;display:none;z-index:2000">
-					<div class="title">
-						<a href="#" onclick="closeSDDetail();"><img src="${resource(dir: 'images', file: 'close.png')}" />
-						</a>配菜信息
-					</div>
-					<div class="pic">
-						<img name="img" src="" />
-					</div>
-					<div class="pic_text">
-						<ul>
-							<li><strong name="name"></strong>
-							</li>
-							<li name="flavor"></li>
-							<li name="story"></li>
-							<li class="sl">
-							</li>
-							<li class="sub">
-							<input class="button_9"	onmouseover="this.className='button_9_1'" onmouseout="this.className='button_9'" name="" type="button" value="" onclick="closeSDDetail();" />
-							</li>
-						</ul>
-						<div></div>
-						<div></div>
-					</div>
-				</div>
+
               <div id="sd_list">
               </div>
-
             </div>
             <div class="pc_2">
               <div class="title">

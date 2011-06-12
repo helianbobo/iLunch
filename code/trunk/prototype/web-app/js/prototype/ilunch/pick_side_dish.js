@@ -381,11 +381,6 @@ $(document).ready(function($){
 	
 	onSDDetail = function(id) {
 		ilunch.lockScreen();
-		var sh = $(window)[0].outerHeight;
-        var sw = $(window)[0].outerWidth;
-        var w = $('#sd_detail_dialog').outerWidth();
-        var h = $('#sd_detail_dialog').outerHeight();
-        $('#sd_detail_dialog').css({"left":((sw - w) / 2) + "px","top":((sh - h) / 2) + "px"});
         //get sd info and render
         var sd = ilunch.getOrderById(sideDishList, id);
         $('#sd_detail_dialog').find("img[name=img]").attr({"src":ilunch.ROOT+sd.imageURL});
