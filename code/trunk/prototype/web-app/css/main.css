@@ -145,6 +145,7 @@ p { margin:0; padding:0; }
 .login .error {color:red;font-size:12px}
 /*--header end--*/
 .xq_body { background:url(../images/xq_bg_1.png) left top repeat-x; height:459px; }
+.maindish_content { width:525px; float:left; padding:0 20px 0 5px; }
 .xq_content { background:url(../images/xq_bg.png) right top no-repeat; width:525px; float:left; padding:0 20px 0 5px; }
 .mbx { background:url(../images/mbx.png) left top no-repeat; color:#fff; font-size:14px; height:27px; line-height:27px; text-indent:10px; margin:0 0 10px 0; }
 .mbx a { color:#00ff0c; text-decoration:underline; }

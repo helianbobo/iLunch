@@ -2,7 +2,7 @@
 <div class="header_body">
     <div class="header_wide">
         <div class="header">
-            <g:link dir="/" class="logo"/>
+            <g:link uri="/" class="logo"/>
             <div class="slogan"></div>
             <g:render template="/shared/areaselect"/>
 
