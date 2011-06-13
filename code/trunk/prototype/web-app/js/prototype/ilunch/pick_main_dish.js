@@ -71,7 +71,7 @@ $(document).ready(function($) {
 
 	var dishSubTmplt1 = '<div class="dl_c_li">'+
 							'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
-							'<div class="cai_p"><a href="#"><img src="'+ilunch.ROOT+'##IMG##" /></a></div>'+
+							'<div class="cai_p"><a href="'+ilunch.ROOT+'mainDish/showPublic/##MD_ID##"><img src="'+ilunch.ROOT+'##IMG##" /></a></div>'+
 							'<div class="cai_t">##MD_NAME##</div>'+
 							'<div name="order" class="cai_s">';
 	
