@@ -21,10 +21,17 @@ class Shipment {
 
     def getDisplayingProductName() {
         def productNames = ""
-        orderItems.each {
-            productNames += it.product.name + ","
+        Map itemMap = orderItems.groupBy {
+            it.product.name
         }
-        productNames
+        def description = ""
+        itemMap.each{name,products->
+            description = description.concat(name+"(${products.size()}份)"+",")
+        }
+        if(description)
+            return description[0..-2]
+
+        return description
     }
 
     def getDisplayStatus = {

@@ -38,7 +38,7 @@
                     </tr>
                     <tr>
                         <td>联系人：</td>
-                        <td>${contactor.name}</td>
+                        <td>${contactor.name?:"未提供联系人姓名"}</td>
                     </tr>
                     <tr>
                         <td>配送地址：</td>
