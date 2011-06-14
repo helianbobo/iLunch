@@ -45,7 +45,7 @@ $(document).ready(function($){
 		)
 	).done(function() {
 		renderOnSale();
-		ilunch.startCountDown(ilunch.makeDate(firstMD.prices[0].startDate));
+		ilunch.startCountDown(ilunch.makeDate(firstMD.prices[0].startDate).addDays(1-ilunch.ReserveDay));
 		ilunch.unlockScreen();
 	});
 	
