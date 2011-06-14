@@ -55,7 +55,7 @@ grails.org.hibernate
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
-        grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://ilunch.cn"
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
@@ -104,7 +104,18 @@ cn.ilunch.exception.code.NotEnoughProduct = "08"
 cn.ilunch.order.reserve.day=3
 cn.ilunch.date.format = 'yyyy-MM-dd'
 cn.ilunch.repository.remainDisplayRatio = '0.8'
-cn.ilunch.product.image.location = "${userHome}/ilunch/images/products"
+
+
+environments {
+    production {
+        cn.ilunch.product.image.location = "/data/ilunch/images/products"
+    }
+    development {
+        cn.ilunch.product.image.location = "./target/images/products"
+    }
+
+}
+
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'cn.ilunch.domain.Person'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'cn.ilunch.domain.UserRole'
