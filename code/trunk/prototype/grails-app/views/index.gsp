@@ -4,6 +4,9 @@
 
     <title>首页</title>
     <meta name="layout" content="main"/>
+    
+    <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'cart.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/prototype/ilunch', file: 'index.js')}"></script>
 </head>
 
 <body>
@@ -13,23 +16,23 @@
     <div class="tj_body">
         <div class="tejia">
             <div class="tejia_content">
-                <div class="tc_title"><span class="stress">今日尝鲜:</span>地中海之珠什么的 仅售5元！</div>
-                <div class="tc_content">原价10元，包括一份300g大荤主菜，两份配菜100gX2，一杯饮料300ml，一份米饭150g。主菜材料：鲜嫩猪后腿肉，西兰花，土耳其海鲜酱调配异国风味。配菜：多种配菜任选两款。<g:link uri="/faq.gsp">为什么这么划算？</g:link></div>
+                <div class="tc_title"><span class="stress">今日尝鲜:</span>##MD_NAME## 仅售##PRICE##元！</div>
+                <div class="tc_content">原价25元，包括一份300g大荤主菜，两份配菜100gX2，一杯饮料300ml，一份米饭150g。主菜材料：鲜嫩猪后腿肉，西兰花，土耳其海鲜酱调配异国风味。配菜：多种配菜任选两款。<g:link uri="/faq.gsp">为什么这么划算？</g:link></div>
                 <div class="clear"></div>
-                <div class="time"><p>倒计时：</p><p><span class="stress">12</span>小时<span class="stress">38</span>分钟<span class="stress">26</span>秒</p><p>时间不多，快抓紧哦！</p></div>
+                <div class="time" id="countdown"><p>倒计时：</p><p><span class="stress">12</span>小时<span class="stress">38</span>分钟<span class="stress">26</span>秒</p><p>时间不多，快抓紧哦！</p></div>
                 <div class="rush">
-                    <p class="stress"><a href="#">仅售5元，马上抢订！</a></p><p>已有1290人订购，还只剩100份</p></div>
+                    <p class="stress"><a href="#" onclick="onSelectOnSale();">仅售##PRICE##元，马上抢订！</a></p><p>已有1290人订购，还只剩##REMAIN##份</p></div>
                 <div class="clear"></div>
                 <g:render template="/shared/purchaseNotice"/>
             </div>
 
             <div class="tejia_pic">
-                <div class="tp_on"><a href="#"><img src="images/pic_1.jpg"/></a></div>
-                <div class="tp_on_title">主菜：地中海之珠实拍</div>
+                <div class="tp_on"><a href="#"><img src="##MD_IMG##"/></a></div>
+                <div class="tp_on_title">主菜：##MD_NAME##</div>
                 <div class="tp_select">
                     <ul>
                         <li><a href="#"><img src="images/pic_2.jpg"/></a></li>
-                        <li class="on"><a href="#"><img src="images/pic_3.jpg"/></a></li>
+                        <li class="on"><a href="#"><img src="##MD_IMG##"/></a></li>
                         <li><a href="#"><img src="images/pic_4.jpg"/></a></li>
                     </ul>
                 </div>

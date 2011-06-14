@@ -13,7 +13,7 @@ $(document).ready(function($){
 	var selBuilding = null;
 	var points = null;
 	var areaId = $('#area_id').val();
-	if(!areaId || areaId == '')
+	if(areaId.length <= 0)
 		ilunch.fatalError("area id not found!");
 //	var userId = $('#user_id').val();
 //	if(!userId || userId == '') {

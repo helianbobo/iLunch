@@ -187,12 +187,12 @@ p { margin:0; padding:0; }
 
 .tejia_pic { width:435px; height:360px; background:#fff; float:left; }
 .tp_on { padding:5px 0 0 5px; }
-.tp_on img { border:none; }
+.tp_on img { border:none; width:425px; height:290px; }
 .tp_on_title { color:#00486b; padding:6px 0 0 15px; float:left; width:175px; }
 .tp_on_title_1 { color:#666; text-align:center; height:50px; line-height:50px; font-size:14px; }
 .tp_select { float:right; width:240px; margin:3px 0 0 0; }
 .tp_select li { float:right; width:41px; height:45px; margin:0 5px 0 0;_margin:0 2px 0 3px; background:url(../images/pic_normal.png) left top no-repeat; }
-.tp_select li img { margin:6px 0 0 2px; border:none;}
+.tp_select li img { margin:6px 0 0 2px; border:none;width:38px; height:39px;}
 .tp_select .on { background:url(../images/pic_on.png) left top no-repeat; }
 
 .announce { background:url(../images/announce.png) left top repeat-x; }

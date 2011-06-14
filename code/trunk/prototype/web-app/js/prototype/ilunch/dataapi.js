@@ -573,7 +573,7 @@
 			return;
 		if(d >= 10)
 			return d+'';
-		if(d > 0 && d < 10)
+		if(d >= 0 && d < 10)
 			return '0'+d;
 	};
 	
@@ -611,6 +611,57 @@
 		if(elem.css("display") == "block") {
 			elem.css({"display":"none"});
 		}
+	};
+	
+	ilunch.startCountDown = function(dueDate) {
+		if(!dueDate)
+			return;
+		var elem = $('#countdown');
+		if(elem.length <= 0)
+			return;
+		var indicators = elem.find(".stress");
+		var diff = dueDate - new Date();
+		if(!diff || diff < 0)
+			return;
+		if(ilunch.countDownStarted)
+			return;
+		ilunch.countDownStarted = true;
+		var hour = Math.floor(diff/(3600*1000));
+		diff -= hour*3600*1000;
+		var minute = Math.floor(diff/(60*1000));
+		diff -= minute*60*1000;
+		var second = Math.floor(diff/1000);
+		
+		function setValue() {
+			indicators[0].innerHTML = ilunch.doubleDigit(hour);
+			indicators[1].innerHTML= ilunch.doubleDigit(minute);
+			indicators[2].innerHTML= ilunch.doubleDigit(second);
+		}
+		
+		setValue();
+		
+		function doCountDown() {
+			second = parseInt(indicators[2].innerHTML, 10);
+			minute = parseInt(indicators[1].innerHTML, 10);
+			hour = parseInt(indicators[0].innerHTML, 10);
+			second--;
+			if(second < 0) {
+				second = 59;
+				minute--;
+				if(minute < 0) {
+					minute = 59;
+					hour--;
+					if(hour < 0) {
+						hour = 0;
+						clearInterval(pcd);
+					}
+				}
+			}
+			
+			setValue();
+		}
+		
+		var pcd = setInterval(doCountDown, 1000);
 	};
 	
 })(jQuery);
