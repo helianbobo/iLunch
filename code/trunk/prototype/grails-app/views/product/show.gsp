@@ -25,12 +25,27 @@
 
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="product.originalImageUrl.label" default="图片预览" /></td>
-                            
-                            <td valign="top" class="value"><image src="${fieldValue(bean: productInstance, field: "originalImageUrl")}"/></td>
-                            
+                            <td valign="top" class="name"><g:message code="product.originalImageUrl.label" default="小尺寸图片预览" /></td>
+
+                            <td valign="top" class="value"><image src="${fieldValue(bean: productInstance, field: "smallImageUrl")}"/></td>
+
                         </tr>
-                    
+                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="product.originalImageUrl.label" default="中尺寸图片预览" /></td>
+
+                            <td valign="top" class="value"><image src="${fieldValue(bean: productInstance, field: "mediumImageUrl")}"/></td>
+
+                        </tr> <tr class="prop">
+                            <td valign="top" class="name"><g:message code="product.originalImageUrl.label" default="大尺寸图片预览" /></td>
+
+                            <td valign="top" class="value"><image src="${fieldValue(bean: productInstance, field: "largeImageUrl")}"/></td>
+
+                        </tr> <tr class="prop">
+                            <td valign="top" class="name"><g:message code="product.originalImageUrl.label" default="故事图片预览" /></td>
+
+                            <td valign="top" class="value"><image src="${fieldValue(bean: productInstance, field: "detailImageUrl")}"/></td>
+
+                        </tr>
 
                     
                         <tr class="prop">

@@ -6,7 +6,7 @@ class Product {
 
     String name
     String story
-    String desc
+    String description
     int status//in use or deleted
     String originalImageUrl
     String detailImageUrl
@@ -26,7 +26,7 @@ class Product {
         status(min: 0, max: 1)
         productAreaPriceSchedules(nullable: true)
         name(nullable: true)
-        desc(nullable: true)
+        description(nullable: true)
     }
 
     def statusDesc = {

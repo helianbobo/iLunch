@@ -113,7 +113,9 @@ environments {
     development {
         cn.ilunch.product.image.location = "./target/images/products"
     }
-
+    leo{
+       cn.ilunch.product.image.location = "G:/sources/ilunch/code/trunk/prototype/web-app/images/products"
+    }
 }
 
 // Added by the Spring Security Core plugin:

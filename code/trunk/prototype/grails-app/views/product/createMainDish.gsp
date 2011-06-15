@@ -63,14 +63,40 @@
 
                 <tr class="prop">
                     <td valign="top" class="name">
-                        <label for="story"><g:message code="product.story.label" default="图片"/></label>
+                        <label for="story"><g:message code="product.story.label" default="小尺寸图片"/></label>
                     </td>
                     <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
 
-                        <input type="file" name="image"/>
+                        <input type="file" name="smallImage"/>
                     </td>
                 </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="中尺寸图片"/></label>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
 
+                        <input type="file" name="mediumImage"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="大尺寸图片"/></label>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <input type="file" name="largeImage"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="故事图片"/></label>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <input type="file" name="detailImage"/>
+                    </td>
+                </tr>
                 <tr class="prop">
                     <td valign="top" class="name">
                         <label for="story"><g:message code="product.story.label" default="同时添加到排菜安排"/></label>

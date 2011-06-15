@@ -81,7 +81,7 @@ class ProductController {
     }
 
     private def queryProductOnSelectionPage(Date fromDate, Date toDate, long areaId, String className, max) {
-        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.original_image_url as original_image_url,p.id as id,p.class as class,t.value,S2.remain as remain, S2.quantity as quantity
+        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as productId,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.small_image_url as small_image_url, p.medium_image_url as medium_image_url, p.large_image_url as large_image_url, p.detail_image_url as detail_image_url, p.original_image_url as original_image_url,p.id as id,p.class as class,t.value,S2.remain as remain, S2.quantity as quantity
                     from product_area_price_schedule S2
                     left join product p on p.id = S2.product_id
                     left join product_tags pt on p.id=pt.product_id
@@ -94,8 +94,7 @@ class ProductController {
                         ${toDate ? "and (t.from_date<=:ed)" : ""}
                         group by t.product_id,from_date) S1
                         on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                        where p.class = :className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING)
-
+                        where p.class = :className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING).addScalar('small_image_url', Hibernate.STRING).addScalar('medium_image_url', Hibernate.STRING).addScalar('large_image_url', Hibernate.STRING).addScalar('detail_image_url', Hibernate.STRING)
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)
         sqlQuery.setString("className", className)
@@ -136,7 +135,7 @@ class ProductController {
     }
 
     private List queryProductOnIndexPage(Date fromDate, long areaId, String className, max) {
-        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as id,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.original_image_url as original_image_url, p.id as id,p.class,t.value,S2.remain as remain, S2.quantity as quantity
+        def sqlQuery = sessionFactory.currentSession.createSQLQuery("""select S2.price as price,S2.product_id as id,S2.from_date as fromDate,S2.to_date as toDate,p.name as productName, p.story as story, p.small_image_url as small_image_url, p.medium_image_url as medium_image_url, p.large_image_url as large_image_url, p.detail_image_url as detail_image_url, p.original_image_url as original_image_url, p.id as id,p.class,t.value,S2.remain as remain, S2.quantity as quantity
                     from product_area_price_schedule S2
                     left join product p on p.id = S2.product_id
                     left join product_tags pt on p.id=pt.product_id
@@ -148,7 +147,7 @@ class ProductController {
                         and (t.to_date>=:st or t.to_date is null )
                         group by t.product_id) S1
                     on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                    where p.class=:className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING)
+                    where p.class=:className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING).addScalar('small_image_url', Hibernate.STRING).addScalar('medium_image_url', Hibernate.STRING).addScalar('large_image_url', Hibernate.STRING).addScalar('detail_image_url', Hibernate.STRING)
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)
         sqlQuery.setString("className", className)
@@ -245,19 +244,19 @@ class ProductController {
                         if (areaId)
                             eq('area', area)
 //                        or {
-//                            isNull('toDate')
-//                            and {
-//                                le('fromDate', today)
-//                                ge('toDate', today)
-//                            }
-//                        }
+                        //                            isNull('toDate')
+                        //                            and {
+                        //                                le('fromDate', today)
+                        //                                ge('toDate', today)
+                        //                            }
+                        //                        }
                     }
                 }
             }
             resultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
         }
 //        query.setResultTransformer(Transformers.DISTINCT_ROOT_ENTITY);
-//        def result = query.list()
+        //        def result = query.list()
 
 
         return [productInstanceList: result, productInstanceTotal: result.size(), areaId: areaId]
@@ -315,12 +314,7 @@ class ProductController {
             return
         }
 
-        def f = request.getFile('image')
-        if (!f.empty) {
-            String location = grailsApplication.config.cn.ilunch.product.image.location
-            def newFile = new File(location + "/${params.name}" + ".jpg")
-            f.transferTo(newFile)
-        }
+
 
         def productInstance
 
@@ -329,14 +323,24 @@ class ProductController {
 
 
         if (isMainDish) {
-            productInstance = new MainDish(name: name, story: params.story, originalImageUrl: "images/${name}.jpg")
+            productInstance = new MainDish(name: name, story: params.story)
         } else {
-            productInstance = new SideDish(name: name, story: params.story, originalImageUrl: "images/${name}.jpg")
+            productInstance = new SideDish(name: name, story: params.story)
         }
 
 
         try {
             Product.withTransaction {
+                productInstance.save()
+                ['small', 'medium', 'large', 'detail'].each {
+                    def f = request.getFile(it + 'Image')
+                    if (!f.empty) {
+                        String location = grailsApplication.config.cn.ilunch.product.image.location
+                        def newFile = new File(location + "/${it + "_" + productInstance.id}" + ".jpg")
+                        f.transferTo(newFile)
+                        productInstance."${it}ImageUrl" = "images/products/${it + "_" + productInstance.id}.jpg"
+                    }
+                }
                 productInstance.save()
                 if (params.createSchedule) {
                     def fromDate = params.fromDate
@@ -351,6 +355,7 @@ class ProductController {
                     def schedule = new ProductAreaPriceSchedule(quantity: quantity, fromDate: fromDate, toDate: toDate, product: productInstance, area: area, price: params.price)
                     productInstance.addToProductAreaPriceSchedules schedule
                     schedule.save()
+
                 }
             }
         }
@@ -652,12 +657,7 @@ class ProductController {
     def update = {
         def productInstance = Product.get(params.id)
 
-        def f = request.getFile('image')
-        if (!f.empty) {
-            String location = grailsApplication.config.cn.ilunch.product.image.location
-            def newFile = new File(location + "/${params.name}" + ".jpg")
-            f.transferTo(newFile)
-        }
+
 
         if (productInstance) {
             if (params.version) {
@@ -670,6 +670,15 @@ class ProductController {
                 }
             }
             productInstance.properties = params
+            ['small', 'medium', 'large', 'detail'].each {
+                def f = request.getFile(it + 'Image')
+                if (!f.empty) {
+                    String location = grailsApplication.config.cn.ilunch.product.image.location
+                    def newFile = new File(location + "/${it + "_" + productInstance.id}" + ".jpg")
+                    f.transferTo(newFile)
+                    productInstance."${it}ImageUrl" = "images/products/${it + "_" + productInstance.id}.jpg"
+                }
+            }
             if (!productInstance.hasErrors() && productInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'product.label', default: 'product'), productInstance.id])}"
                 redirect(action: "list")

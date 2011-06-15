@@ -31,13 +31,43 @@
 
                 <tr class="prop">
                     <td valign="top" class="name">
-                        <label for="originalImageUrl"><g:message code="product.originalImageUrl.label" default="图片预览"/></label>
+                        <label for="story"><g:message code="product.story.label" default="小尺寸图片"/></label>
+                        <img src="${resource(dir:'/')}${fieldValue(bean: productInstance, field: "smallImageUrl")}"/>
                     </td>
-                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'originalImageUrl', 'errors')}">
-                        <img name="originalImageUrl" src="${productInstance?.originalImageUrl}"/>
-                        <input type="file" name="image"/>
-                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
 
+                        <input type="file" name="smallImage"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="中尺寸图片"/></label>
+                        <img src="${resource(dir:'/')}${fieldValue(bean: productInstance, field: "mediumImageUrl")}"/>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <input type="file" name="mediumImage"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="大尺寸图片"/></label>
+                        <img src="${resource(dir:'/')}${fieldValue(bean: productInstance, field: "largeImageUrl")}"/>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <input type="file" name="largeImage"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="故事图片"/></label>
+                        <img src="${fieldValue(bean: productInstance, field: "detailImageUrl")}"/>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <input type="file" name="detailImage"/>
+                    </td>
                 </tr>
 
 

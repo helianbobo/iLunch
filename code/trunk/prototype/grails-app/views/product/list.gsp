@@ -67,7 +67,7 @@
                             还没有安排该产品计划，请点击右侧修改排菜安排链接
                         </g:else>
                     </td>
-                    <td><img src="${fieldValue(bean: productInstance, field: "originalImageUrl")}"/></td>
+                    <td><img src="${resource(dir:'/')}${fieldValue(bean: productInstance, field: "smallImageUrl")}"/></td>
                     <td>${productInstance.statusDesc()}</td>
                     <td><g:link action="edit" id="${productInstance.id}">修改产品信息</g:link>
                     <g:link action="editSchedule" id="${productInstance.id}">修改排菜安排</g:link>

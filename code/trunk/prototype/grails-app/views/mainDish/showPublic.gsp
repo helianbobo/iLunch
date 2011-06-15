@@ -20,7 +20,7 @@
         <div class="maindish_content">
             <div class="tc_title">${mainDishInstance.name}</div>
 
-            <div class="tc_content">${mainDishInstance.desc}</div>
+            <div class="tc_content">${mainDishInstance.description}</div>
 
             <g:render template="/shared/purchaseNotice"/>
         </div>
