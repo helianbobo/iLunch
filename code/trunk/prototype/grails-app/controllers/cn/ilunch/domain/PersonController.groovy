@@ -87,6 +87,7 @@ class PersonController {
             forward(controller: "exception", action: "cartNotFound")
             return
         }
+        response.addHeader("pragma", "no-cache")
         render([text: session.getValue("cartInfo"), contentType: 'text/plain'])
     }
 
