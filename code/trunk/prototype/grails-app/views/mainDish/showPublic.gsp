@@ -15,7 +15,7 @@
 
 <div class="xq_body">
     <div class="tejia">
-        <div class="mbx">当前位置：<g:link uri="/">首页</g:link> > 主菜详情介绍</div>
+        <div class="mbx">当前位置：<g:link controller="dataAPI" action="pickMainDish">午餐预定</g:link> > 主菜详情介绍</div>
 
         <div class="maindish_content">
             <div class="tc_title">${mainDishInstance.name}</div>
