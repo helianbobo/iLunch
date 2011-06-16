@@ -13,6 +13,8 @@ class PersonController {
     }
 
     def loggedInUserPreference = {
+        response.addHeader("Pragma", "no-cache")
+        response.addHeader("Cache-Control", "no-cache")
         if (springSecurityService.isLoggedIn()) {
             def id = springSecurityService.currentUser.id
             forward(action: 'preference', params: [id: id])
@@ -83,11 +85,13 @@ class PersonController {
     }
 
     def cart = {
+        response.addHeader("Pragma", "no-cache")
+        response.addHeader("Cache-Control", "no-cache")
         if (!session.getValue("cartInfo")) {
             forward(controller: "exception", action: "cartNotFound")
             return
         }
-        response.addHeader("pragma", "no-cache")
+
         render([text: session.getValue("cartInfo"), contentType: 'text/plain'])
     }
 

@@ -159,4 +159,4 @@ grails.plugins.springsecurity.interceptUrlMap = [
         '/**': ['ROLE_ADMIN']
 ]
 
-grails.config.locations = [ "classpath:config.properties"]
+grails.config.locations = [ "file:${userHome}/ilunch.properties"]

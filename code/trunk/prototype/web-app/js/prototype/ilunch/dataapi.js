@@ -396,7 +396,8 @@
 			return;
 		if(!_validateCart($.parseJSON(data)))
 			return;
-		return	$.ajax(ilunch.ROOT+'person/saveCart', {
+		return $.ajax(ilunch.ROOT+'person/saveCart', {
+            cache:false,
 //			processData:false,
 			data:{cartInfo:data},
 			success:function(data) {
@@ -427,6 +428,7 @@
 			return;
 		return	$.ajax(ilunch.ROOT+'productOrder/confirm', {
 			processData:false,
+                    cache:false,
 			data:data,
 			success:function(data) {
 				if(data.error) {
@@ -458,7 +460,8 @@
 			
 		return	$.ajax(ilunch.ROOT+'j_spring_security_check', 
 			{
-				data : params, 
+				data : params,
+                cache:false,
 				type : 'POST',
 				dataType : "json",
 				success : function(data) {
@@ -495,6 +498,7 @@
 			{
 				data : params, 
 				type : 'POST',
+                cache:false,
 				dataType : "json",
 				success : function(data) {
 					if(data.error) {

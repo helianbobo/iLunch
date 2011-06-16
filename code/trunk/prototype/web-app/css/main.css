@@ -103,7 +103,7 @@ p { margin:0; padding:0; }
 .button_19 {background:url(../images/button_18.gif) left top no-repeat; width:272px; height:51px; border:none; cursor:pointer; border:none;  margin:20px 0 0 0;}
 .button_19_1 {background:url(../images/button_18.gif) left -51px no-repeat; width:272px; height:51px; border:none; cursor:pointer; border:none; margin:20px 0 0 0; }
 
-.alert_div_7 {  left:0; top:0; width:305px; height:63px;position:relative;  background:#fff;}
+.alert_div_7 { background: none repeat scroll 0 0 #FFFFFF; border: 1px solid #CECECE; left: 0; position: relative; top: 0; width: 305px; }
 .alert_div_7 .title { color:#ff0000; text-align:center; font-size:12px; }
 .alert_div_7 li { float:left; width:60px; margin:0 1px 0 0; }  
 .alert_div_7 li div { display:block; width:60px; height:40px; background:#ededed; color:#c1c1c1; text-align:center; line-height:20px; }
@@ -280,7 +280,7 @@ p { margin:0; padding:0; }
 .xc_sl .shuliang { margin:0 2px;_vertical-align:middle; color:#ababab; font-size:12px; background:url(../images/shuliang.png) left top no-repeat; width:23px; height:16px; border:none; cursor:text; }
 
 .dd_list_bottom { background:url(../images/diandan_list_bottom.png) left top no-repeat; line-height:33px; height:43px; text-align:right; color:#ff5300; font-size:14px; font-weight:bold; padding:0 30px 0 0; }
-.dd_next_1 { background:url(../images/dingdian_bottom_1.png) left top no-repeat; text-align:center; height:84px; margin:0 0 130px 0;}
+.dd_next_1 { background:url(../images/dingdian_bottom_1.png) left top no-repeat; text-align:center; height:84px; padding:0 0 130px 0;}
 .dd_next_1 .next_1 { background:url(../images/button_1.png) left top no-repeat; width:272px; height:51px; border:none; cursor:pointer; margin:20px 0 0 0; }
 .dd_next_1 .next_1_1 { background:url(../images/button_1.png) left -51px no-repeat; width:272px; height:51px; border:none; cursor:pointer; margin:20px 0 0 0; }
 .dd_next_1 .next_2 { background:url(../images/button_2.png) left top no-repeat; width:132px; height:51px; border:none; cursor:pointer; margin:20px 40px 0 0; }
@@ -299,7 +299,7 @@ p { margin:0; padding:0; }
 .pc_l .title p a { color:#009cff; text-decoration:none; font-weight:bold; }
 .pc_l .title p a:hover { color:#009cff; text-decoration:underline; font-weight:bold; }
 
-.pc_l .title1 { background: url(../images/line.png) 20px top no-repeat #fff; padding:10px 0 0 0; height:25px; line-height:24px; color:#ff9600; font-size:14px; font-weight:bold; text-indent:20px; }
+.pc_l .title1 { background: none no-repeat scroll 20px top #FFFFFF; color: #FF9600; font-size: 14px; font-weight: bold; height: 25px; line-height: 24px; padding: 10px 0 0; text-indent: 20px; }
 .title1_select { color:#666; text-indent:20px; padding:0 0 10px 0; }
 .title1_select a { color:#0183c1; font-size:12px; font-weight:bold; text-decoration:none; }
 .title1_select a:hover { color:#0183c1; font-size:12px; font-weight:bold; text-decoration:underline; }
@@ -322,7 +322,7 @@ p { margin:0; padding:0; }
 .pc_p li { float:left; position:relative; width:60px; height:60px; margin:5px 2px 5px 4px;_margin:5px 3px 5px 2px;}
 .pc_p li .sdpic { border:3px #fff solid; width:54px; height:54px;}
 .pc_p .n { position:absolute; top:3px; right:3px; z-index:999; background:#ff0000; display:block; width:15px; height:10px; text-align:center; color:#fff; font-size:9px; font-family:Tahoma, Geneva, sans-serif; line-height:9px; }
-.pc_p .no { position:absolute; bottom:3px; right:3px; z-index:999; background:#ff0000; width:12px; height:12px;}
+.pc_p .no { position:absolute; bottom:3px; right:3px; z-index:999; background:#fff; width:12px; height:12px;}
 .title_1 { background:#c6e7f8; text-align:center; color:#0582c2; font-size:14px; font-weight:bold; height:40px; line-height:40px; }
 
 .page { color:#666; padding:0 0 0 20px; background:#fff; line-height:30px; float:left; width:649px; height:33px;}
@@ -367,7 +367,7 @@ p { margin:0; padding:0; }
 .zf_list .lxr  { background:#feffc9; border:1px #e6dd45 solid; } 
 .zf_list .pay_online  { background:#fff; border:none; padding:0; margin:20px 0 0 0; }
 .pay_online img { vertical-align:middle; margin:0 0 0 20px; border:none;}
-.zf_list .stress { color:#ff9600; font-weight:bold; float:right; }
+.zf_list .stress { color:#ff9600; font-weight:bold; float:right;margin:20px 0; }
 
 .sub_list {  background:url(../images/xc_title_bg_1.png) left top no-repeat #fff; padding:30px; }
 .sub_list .title {font-family:"黑体"; font-size:20px; color:#ff9600; font-weight:bold; margin:0 0 30px 0; }
@@ -382,7 +382,7 @@ p { margin:0; padding:0; }
 .zy { background:url(../images/icon_1.png) left top no-repeat; }
 .zy p { padding:0 0 0 30px; }
 
-.my_list {background:url(../images/xc_title_bg_2.png) left top no-repeat #fff;padding:25px 10px 10px 10px ; margin:0 0 130px 0; }
+.my_list { background: url("../images/xc_title_bg_2.png") no-repeat scroll left top #FFFFFF; padding: 25px 10px 130px; }
 .xy_text {background:url(../images/xc_title_bg_2.png) left top no-repeat #fff;padding:25px 10px 10px 10px ; }
 .ml_c { background:url(../images/mlc_l_bg.png) left top repeat-y; float:left;}
 .ml_c_1 { background:url(../images/mlc_2_bg.png) left top repeat-y; float:left;}
