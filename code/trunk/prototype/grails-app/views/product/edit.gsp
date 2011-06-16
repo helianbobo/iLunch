@@ -62,7 +62,7 @@
                 <tr class="prop">
                     <td valign="top" class="name">
                         <label for="story"><g:message code="product.story.label" default="故事图片"/></label>
-                        <img src="${fieldValue(bean: productInstance, field: "detailImageUrl")}"/>
+                        <img src="${resource(dir:'/')}${fieldValue(bean: productInstance, field: "detailImageUrl")}"/>
                     </td>
                     <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
 

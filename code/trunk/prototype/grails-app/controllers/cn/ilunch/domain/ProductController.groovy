@@ -205,7 +205,7 @@ class ProductController {
                                 },
                                 remain: (schedule[10] * (grailsApplication.config.cn.ilunch.repository.remainDisplayRatio as double)) as int,
                                 quantity: schedule[11],
-                                imageURL: schedule[6],
+                                imageURL: schedule[13],
                                 flavors: array {
                                     for (t in tagMap["id" + schedule[7]])
                                         tag(
@@ -675,6 +675,10 @@ class ProductController {
                 if (!f.empty) {
                     String location = grailsApplication.config.cn.ilunch.product.image.location
                     def newFile = new File(location + "/${it + "_" + productInstance.id}" + ".jpg")
+                    /*if(!newFile.exists()){
+                        println newFile.name
+                        newFile.createNewFile()
+                    }*/
                     f.transferTo(newFile)
                     productInstance."${it}ImageUrl" = "images/products/${it + "_" + productInstance.id}.jpg"
                 }

@@ -26,7 +26,7 @@
         </div>
 
         <div class="tejia_pic">
-            <div class="tp_on"><a href="#"><img src="${mainDishInstance.largeImageUrl}"/></a></div>
+            <div class="tp_on"><a href="#"><img src="${resource(dir:'/')}${mainDishInstance.largeImageUrl}"/></a></div>
 
             <div class="tp_on_title_1">主菜：${mainDishInstance.name}实拍</div>
 
@@ -47,7 +47,7 @@
     </div>
 
     <div class="right" style="background:#fff;">
-        <div class="xq_pic"><img src="${mainDishInstance.detailImageUrl}"/></div>
+        <div class="xq_pic"><img src="${resource(dir:'/')}${mainDishInstance.detailImageUrl}"/></div>
     </div>
 
     <div class="clear"></div>
