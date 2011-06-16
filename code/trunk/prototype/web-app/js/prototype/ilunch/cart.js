@@ -99,7 +99,7 @@
 	 *
 	 * @param isMainDish - true for maindish and false for sidedish
 	 */
-	ilunch.Cart.prototype.addOrder = function(isMainDish, date, id, name, imageURL, price, quantity) {
+	ilunch.Cart.prototype.addOrder = function(isMainDish, date, id, name, price, quantity) {
 		var dateIndex = -1;
 		var products = this.cart.products;
 		for(var i = 0; i < products.length; i++) {
@@ -117,10 +117,10 @@
 			}
 		}
 		if(dateIndex >= 0) {
-			products[dateIndex][isMainDish?'mainDishes':'sideDishes'].push({id:id, name:name, imageURL:imageURL, price:price, quantity:quantity});
+			products[dateIndex][isMainDish?'mainDishes':'sideDishes'].push({id:id, name:name, price:price, quantity:quantity});
 		}
 		else {
-			var dish = {id:id, name:name, imageURL:imageURL, price:price, quantity:quantity};
+			var dish = {id:id, name:name, price:price, quantity:quantity};
 			var data = {
 					date: date,
 					mainDishes:[],
@@ -246,7 +246,6 @@
 				strarr.push('{');
 				strarr.push('"id":'+this.cart.products[i].mainDishes[j].id+',');
 				strarr.push('"name":"'+this.cart.products[i].mainDishes[j].name+'",');
-				strarr.push('"imageURL":"'+this.cart.products[i].mainDishes[j].imageURL+'",');
 				strarr.push('"price":"'+this.cart.products[i].mainDishes[j].price+'",');
 				strarr.push('"quantity":'+this.cart.products[i].mainDishes[j].quantity);
 				strarr.push('}');
@@ -260,7 +259,6 @@
 				strarr.push('{');
 				strarr.push('"id":'+this.cart.products[i].sideDishes[j].id+',');
 				strarr.push('"name":"'+this.cart.products[i].sideDishes[j].name+'",');
-				strarr.push('"imageURL":"'+this.cart.products[i].sideDishes[j].imageURL+'",');
 				strarr.push('"price":"'+this.cart.products[i].sideDishes[j].price+'",');
 				strarr.push('"quantity":'+this.cart.products[i].sideDishes[j].quantity);
 				strarr.push('}');
@@ -389,7 +387,7 @@
             var md = this.getOrdersByDate(di, true);
             if (md && md.length > 0) {
                 md = md[0];
-                $('#cart_dashboard').append('<li><img class="sdpic" src="' + ilunch.ROOT + md.imageURL + '" /></li>');
+                $('#cart_dashboard').append('<li><img class="sdpic" src="' + ilunch.makeIMGPath(md.id, 'small') + '" /></li>');
             }
             else {
                 $('#cart_dashboard').append('<li><img src="'+ilunch.ROOT+'images/zc_y.png" /></li>');
@@ -415,7 +413,7 @@
                             //render this SD here
                             var sd = products[i].sideDishes[ri];
 							var noElem = !notEditable?'<div class="no"><a onclick="md_disorder(' + sd.id + ',\'' + ilunch.dateToString(di) + '\')"><img src="'+ilunch.ROOT+'images/no.png" /></a></div>':'';
-                            $('#cart_dashboard').append('<li><img class="sdpic" src="'+ilunch.ROOT+ sd.imageURL + '" /><div class="n">x' + sd.quantity + '</div>'+noElem+'</li>');
+                            $('#cart_dashboard').append('<li><img class="sdpic" src="'+ilunch.makeIMGPath(sd.id, 'small')+ '" /><div class="n">x' + sd.quantity + '</div>'+noElem+'</li>');
                             isRendered = true;
                             break;
                         }

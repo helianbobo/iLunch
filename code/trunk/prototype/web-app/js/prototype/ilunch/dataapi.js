@@ -142,7 +142,7 @@
 				
 			}
 			else {
-				if(!ilunch.validateData(data, ['name', 'price', 'startDate','endDate', 'imageURL', 'story','remain','quantity'], 'maindish'))
+				if(!ilunch.validateData(data, ['name', 'price', 'startDate','endDate', 'story','remain','quantity'], 'maindish'))
 					return;
 			}
 			handler(data);
@@ -167,7 +167,7 @@
 				
 			}
 			else {
-				if(!ilunch.validateData(data, ['name', 'price', 'startDate','endDate', 'imageURL', 'story','remain','quantity'], 'sidedish'))
+				if(!ilunch.validateData(data, ['name', 'price', 'startDate','endDate', 'story','remain','quantity'], 'sidedish'))
 					return;
 			}
 			handler(data);
@@ -196,7 +196,7 @@
 					return;
 				}
 				for(var i = 0; i < data.length; i++) {
-					if(!ilunch.validateData(data[i], ['id', 'name', 'prices', 'imageURL'], 'MainDishList['+i+']'))
+					if(!ilunch.validateData(data[i], ['id', 'name', 'prices'], 'MainDishList['+i+']'))
 						return;
                     for(var j = 0; j < data[i].prices.length; j++) {
 						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'MainDishList['+i+'].prices['+j+']'))
@@ -233,7 +233,7 @@
 							return;
 						}
 						for(var i = 0; i < data.length; i++) {
-							if(!ilunch.validateData(data[i], ['id', 'name', 'prices', 'imageURL'], 'MainDishList['+i+']'))
+							if(!ilunch.validateData(data[i], ['id', 'name', 'prices'], 'MainDishList['+i+']'))
 								return;
 		                    for(var j = 0; j < data[i].prices.length; j++) {
 								if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'MainDishList['+i+'].prices['+j+']'))
@@ -267,7 +267,7 @@
 					return;
 				}
 				for(var i = 0; i < data.length; i++) {
-					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices', 'imageURL'], 'SideDishList['+i+']'))
+					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices'], 'SideDishList['+i+']'))
 						return;
 					for(var j = 0; j < data[i].prices.length; j++) {
 						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'SideDishList['+i+'].prices['+j+']'))
@@ -300,7 +300,7 @@
 					return;
 				}
 				for(var i = 0; i < data.length; i++) {
-					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices', 'imageURL'], 'SideDishList['+i+']'))
+					if(!ilunch.validateData(data[i], ['id', 'name', 'flavors', 'prices'], 'SideDishList['+i+']'))
 						return;
 					for(var j = 0; j < data[i].prices.length; j++) {
 						if(!ilunch.validateData(data[i].prices[j], ['startDate', 'endDate', 'price'], 'SideDishList['+i+'].prices['+j+']'))
@@ -570,6 +570,10 @@
 			break;
 		}
 		return cnss;
+	};
+	
+	ilunch.makeIMGPath = function(id, type) {
+		return ilunch.IMG_ROOT+type+"_"+id+".jpg";
 	};
 	
 	ilunch.doubleDigit = function(d) {

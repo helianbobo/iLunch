@@ -106,13 +106,13 @@ $(document).ready(function($){
 						'<input onclick="inc_quantity(##SD_ID##)" class="jiayi" name="" type="button" value="" />'+
 						'份  '+
 					 '</div>'+
-					 '<input class="xuangou" onclick="md_order(##SD_ID##,\'##SD_NAME##\',\'##IMG##\',this);" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
+					 '<input class="xuangou" onclick="md_order(##SD_ID##,\'##SD_NAME##\',this);" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
 	
 	var disorderTmplt = '<span class="xc_sl">已选购##SEL_N##份</span>';
 
 	
 	var dishTmplt = ('<div class="xc_li">'+
-						'<div class="xc_p"><a onclick="onSDDetail(##SD_ID##);"><img src="'+ilunch.ROOT+'##IMG##" /></a></div>'+
+						'<div class="xc_p"><a onclick="onSDDetail(##SD_ID##);"><img src="##IMG##" /></a></div>'+
 						'<div class="xc_t">##SD_NAME##</div>'+
 						'<div id="order_##SD_ID##" class="cai_s">'+
 							orderTmplt+
@@ -149,7 +149,7 @@ $(document).ready(function($){
                 var sel_sd = cart.getOrderById(sdList[i].id, false);
                 var price = sdList[i].prices[0].price;
                 var sd_name = sdList[i].name;
-                var img = sdList[i].imageURL;
+                var img = ilunch.makeIMGPath(sdList[i].id,'medium');
                 var divText = dishTmplt;
                 divText = divText.replace(/##SD_ID##/g, sdList[i].id).replace(/##PRICE##/g, price);
                 divText = divText.replace(/##SD_NAME##/g, sd_name).replace(/##IMG##/g, img);
@@ -273,7 +273,7 @@ $(document).ready(function($){
 		});
 	});
 	
-	md_order = function(id, name, imageURL, elem) {
+	md_order = function(id, name, elem) {
 		//0.render date picker then pop it up
 		var quantity = parseInt($('#quantity_'+id).val());
 		if(!quantity || quantity <= 0)
@@ -292,20 +292,20 @@ $(document).ready(function($){
 			}
 			else {
 				var price = ilunch.getPriceByDate(ilunch.getOrderById(sideDishList, id).prices, ilunch.makeDate(di));
-				ul.append('<li><a onclick="md_order_from_date_picker('+id+',\''+ilunch.dateToString(di)+'\','+quantity+',\''+name+'\',\''+imageURL+'\')" onmouseover="this.className=\'pc_on\'" onmouseout="this.className=\'pc_off\'"><div>'+dateTitle+'<br />'+price+'￥</div></a></li>');
+				ul.append('<li><a onclick="md_order_from_date_picker('+id+',\''+ilunch.dateToString(di)+'\','+quantity+',\''+name+'\')" onmouseover="this.className=\'pc_on\'" onmouseout="this.className=\'pc_off\'"><div>'+dateTitle+'<br />'+price+'￥</div></a></li>');
 			}
 		}
 		var pos = $.position(elem, $(elem).closest('.pc_l'));
 		datePicker.css({"left":pos.x, "top": pos.y, "display":"block"});
 	};
 	
-	md_order_from_date_picker = function(id, date, quantity, name, imageURL) {
+	md_order_from_date_picker = function(id, date, quantity, name) {
 		//1.add to cart;
 		var sd = ilunch.getOrderById(sideDishList, id);
 		date = ilunch.makeDate(date);
 		if(sd && quantity > 0 && name) {
 			var price = ilunch.getPriceByDate(sd.prices, date);
-			cart.addOrder(false, date, id, name, imageURL, price, quantity);
+			cart.addOrder(false, date, id, name, price, quantity);
 			//2.re-render cart;
 			cart.render();
 			$('#quantity_'+id).val('1');
@@ -383,7 +383,7 @@ $(document).ready(function($){
 		ilunch.lockScreen();
         //get sd info and render
         var sd = ilunch.getOrderById(sideDishList, id);
-        $('#sd_detail_dialog').find("img[name=img]").attr({"src":ilunch.ROOT+sd.imageURL});
+        $('#sd_detail_dialog').find("img[name=img]").attr({"src":ilunch.makeIMGPath(sd.id,'medium')});
         $('#sd_detail_dialog').find("strong[name=name]").html(sd.name);
         $('#sd_detail_dialog').find("li[name=flavor]").html(sd.flavors.toString());
         $('#sd_detail_dialog').find("li[name=story]").html(sd.story);
@@ -391,10 +391,10 @@ $(document).ready(function($){
         var ctrlTmpl = '<input class="jianyi" type="button" onclick="dec_quantity(##SD_ID##);" />'+ 
 					   '<input class="shuliang_2" name="quantity" type="text" value="##QUANTITY##" />'+ 
 					   '<input class="jiayi" type="button" onclick="inc_quantity(##SD_ID##);"/>'+
-					   '<input onclick="md_order(##SD_ID##,\'##SD_NAME##\',\'##IMG##\',this);" class="button_10" onmouseover="this.className=\'button_10_1\'" onmouseout="this.className=\'button_10\'" type="button" name="doOrder" />';
+					   '<input onclick="md_order(##SD_ID##,\'##SD_NAME##\',this);" class="button_10" onmouseover="this.className=\'button_10_1\'" onmouseout="this.className=\'button_10\'" type="button" name="doOrder" />';
 		
         var quantity = $('#quantity_'+id).val();
-        ctrlTmpl = ctrlTmpl.replace(/##SD_ID##/g, id).replace(/##QUANTITY##/g, quantity).replace(/##SD_NAME##/g, sd.name).replace(/##IMG##/g, sd.imageURL);
+        ctrlTmpl = ctrlTmpl.replace(/##SD_ID##/g, id).replace(/##QUANTITY##/g, quantity).replace(/##SD_NAME##/g, sd.name);
         $('#sd_detail_dialog').find("li.sl").empty();
         $('#sd_detail_dialog').find("li.sl").append(ctrlTmpl);
         $('#sd_detail_dialog').show();
