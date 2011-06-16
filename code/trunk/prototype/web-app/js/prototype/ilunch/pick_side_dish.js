@@ -131,7 +131,7 @@ $(document).ready(function($){
         $('#tag_list').empty();
         $('#tag_list').append('分类标签：');
         $('#tag_list').append('<a onclick="change_flavor(\'全部\')">全部</a> | ');
-        for (var i = 0; i < flavors.length; i++) {
+        for (var i in flavors) {
             if (flavors[i]) 
                 $('#tag_list').append('<a class="on" onclick="change_flavor(\'' + i + '\')">' + i + '</a> | ');
             else 
@@ -368,7 +368,7 @@ $(document).ready(function($){
 					if(flavor == sideDishList[i].flavors[j].value)
 						currentList.push(sideDishList[i]);
 		}
-		for(var i = 0; i < flavors.length; i++)
+		for(var i in flavors)
 			if(flavors[i])
 				flavors[i] = false;
 		if(flavor != '全部')
@@ -385,7 +385,10 @@ $(document).ready(function($){
         var sd = ilunch.getOrderById(sideDishList, id);
         $('#sd_detail_dialog').find("img[name=img]").attr({"src":ilunch.makeIMGPath(sd.id,'medium')});
         $('#sd_detail_dialog').find("strong[name=name]").html(sd.name);
-        $('#sd_detail_dialog').find("li[name=flavor]").html(sd.flavors.toString());
+        var flvs = '';
+        for(var i = 0; i < sd.flavors.length; i++)
+        	flvs += (sd.flavors[i].value+" ");
+        $('#sd_detail_dialog').find("li[name=flavor]").html(flvs);
         $('#sd_detail_dialog').find("li[name=story]").html(sd.story);
         
         var ctrlTmpl = '<input class="jianyi" type="button" onclick="dec_quantity(##SD_ID##);" />'+ 
