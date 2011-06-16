@@ -94,7 +94,7 @@ class ProductController {
                         ${toDate ? "and (t.from_date<=:ed)" : ""}
                         group by t.product_id,from_date) S1
                         on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                        where p.class = :className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING).addScalar('small_image_url', Hibernate.STRING).addScalar('medium_image_url', Hibernate.STRING).addScalar('large_image_url', Hibernate.STRING).addScalar('detail_image_url', Hibernate.STRING)
+                        where p.class = :className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('small_image_url', Hibernate.STRING).addScalar('medium_image_url', Hibernate.STRING).addScalar('large_image_url', Hibernate.STRING).addScalar('detail_image_url', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING)
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)
         sqlQuery.setString("className", className)
@@ -147,7 +147,7 @@ class ProductController {
                         and (t.to_date>=:st or t.to_date is null )
                         group by t.product_id) S1
                     on S1.product_id=S2.product_id and S1.fromDate=S2.from_date
-                    where p.class=:className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING).addScalar('small_image_url', Hibernate.STRING).addScalar('medium_image_url', Hibernate.STRING).addScalar('large_image_url', Hibernate.STRING).addScalar('detail_image_url', Hibernate.STRING)
+                    where p.class=:className order by S2.from_date asc""").addScalar('price', Hibernate.DOUBLE).addScalar('productId', Hibernate.LONG).addScalar('fromDate', Hibernate.DATE).addScalar('toDate', Hibernate.DATE).addScalar('productName', Hibernate.STRING).addScalar('story', Hibernate.STRING).addScalar('small_image_url', Hibernate.STRING).addScalar('medium_image_url', Hibernate.STRING).addScalar('large_image_url', Hibernate.STRING).addScalar('detail_image_url', Hibernate.STRING).addScalar('original_image_url', Hibernate.STRING).addScalar('id', Hibernate.LONG).addScalar('class', Hibernate.STRING).addScalar('value', Hibernate.STRING).addScalar('remain', Hibernate.LONG).addScalar('quantity', Hibernate.STRING)
         sqlQuery.setTimestamp("st", fromDate)
         sqlQuery.setLong("area", areaId)
         sqlQuery.setString("className", className)
@@ -163,8 +163,8 @@ class ProductController {
         def tagMap = [:]
         def priceMap = [:]
         result.each {it ->
-            def id = it[7]
-            def tag = it[9]
+            def id = it[11]
+            def tag = it[13]
             def p = new Expando()
             p.price = it[0]
             p.fromDate = it[2].format(dateFormatString)
@@ -193,21 +193,21 @@ class ProductController {
         render(contentType: "text/json") {
             products = array {
                 for (schedule in result) {
-                    if (addedSchedule.add(schedule[7])) {
+                    if (addedSchedule.add(schedule[11])) {
                         dish([
-                                id: schedule[7],
+                                id: schedule[11],
                                 name: schedule[4],
                                 prices: array {
-                                    for (pc in priceMap["id" + schedule[7]])
+                                    for (pc in priceMap["id" + schedule[11]])
                                         price(
                                                 [price: pc.price, startDate: pc.fromDate, endDate: pc.toDate]
                                         )
                                 },
-                                remain: (schedule[10] * (grailsApplication.config.cn.ilunch.repository.remainDisplayRatio as double)) as int,
-                                quantity: schedule[11],
-                                imageURL: schedule[13],
+                                remain: (schedule[14] * (grailsApplication.config.cn.ilunch.repository.remainDisplayRatio as double)) as int,
+                                quantity: schedule[15],
+                                imageURL: schedule[10],
                                 flavors: array {
-                                    for (t in tagMap["id" + schedule[7]])
+                                    for (t in tagMap["id" + schedule[11]])
                                         tag(
                                                 [value: t]
                                         )
@@ -675,10 +675,6 @@ class ProductController {
                 if (!f.empty) {
                     String location = grailsApplication.config.cn.ilunch.product.image.location
                     def newFile = new File(location + "/${it + "_" + productInstance.id}" + ".jpg")
-                    /*if(!newFile.exists()){
-                        println newFile.name
-                        newFile.createNewFile()
-                    }*/
                     f.transferTo(newFile)
                     productInstance."${it}ImageUrl" = "images/products/${it + "_" + productInstance.id}.jpg"
                 }

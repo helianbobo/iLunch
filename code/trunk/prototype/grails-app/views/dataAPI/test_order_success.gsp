@@ -41,6 +41,10 @@
                         <td>${contactor.name?:"未提供联系人姓名"}</td>
                     </tr>
                     <tr>
+                        <td>所在大楼：</td>
+                        <td>${contactor.primaryBuilding.name}</td>
+                    </tr>
+                    <tr>
                         <td>配送地址：</td>
                         <td>${distributionPoint.area.name} ${distributionPoint.name}</td>
                     </tr>
