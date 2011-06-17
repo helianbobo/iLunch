@@ -214,7 +214,7 @@
                     }
                     else {
                         // show error msg
-                        $('#dialog_err').html(status);
+                        $('#dialog_err').html('用户名或密码不正确！');
                     }
                     clearInterval(p);
                 }
