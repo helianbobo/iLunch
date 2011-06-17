@@ -392,7 +392,7 @@ p { margin:0; padding:0; }
 .mlc_l p a { color:#0064bb; text-decoration:none; font-weight:bold; } 
 .mlc_l p a:hover { color:#0064bb; text-decoration:underline; }
 
-.mlc_r { float:left; margin:0 0 0 15px; width:715px; height:500px;}
+.mlc_r { float:left; margin:0 0 0 15px; width:715px; height:800px;}
 .mlc_r_1 { float:left; width:725px; }
 .mlc_r .title { font-weight:bold; font-size:14px; font-weight:bold; color:#000; margin:10px 0 20px 0; }
 .title_menu { background:url(../images/title_menu_bg.png) left top repeat-x; height:32px; }
@@ -401,12 +401,25 @@ p { margin:0; padding:0; }
 .title_menu li a:hover { color:#0064bb; text-decoration:none; }
 .title_menu .on { background:url(../images/title_menu_on.png) left 1px no-repeat; } 
 
-.title_menu table th { background:#f3fcff; border-bottom:1px #c5e7f7 solid; color:#999; text-align:left; padding:5px 0;}
+.title_menu table th { background:#f3fcff; border-bottom:1px #c5e7f7 solid; color:#333;text-align:left; padding:5px 0;}
 .title_menu table td { border-bottom:1px #c5e7f7 solid; color:#666; text-align:left; padding:3px 0; vertical-align:top; }
 .title_menu table a{ color:#0064bb; text-decoration:none; }
 .title_menu table a:hover { color:#0064bb; text-decoration:underline; }
 .title_menu table a.stress { color:#bb0000; }
 .title_menu .page { padding:0; }
+
+.title_menu .overlay { border-bottom:1px #c5e7f7 solid;border-left:1px #c5e7f7 solid; color:#666; text-align: center; padding:3px 0; vertical-align:top;}
+
+.title_menu .foods-name{ width:125px;}
+
+.title_menu .foods-price{ width:36px;}
+
+.title_menu .foods-address{ width:249px;}
+
+.title_menu .order-code{width:80px;}
+
+.title_menu .order-status{width:72px;}
+
 .notice { background:#f3fcff; font-size:14px; padding:10px; color:#666; border-bottom:1px #c5e7f7 solid; margin:0 0 20px 0; }
 .notice a{ color:#0064bb; font-weight:bold; text-decoration:none; }
 .notice a:hover { color:#0064bb; font-weight:bold; text-decoration:underline; }
