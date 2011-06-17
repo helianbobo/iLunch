@@ -26,7 +26,7 @@
                        onmouseout="this.className = 'button_11'" name="" type="button"/>
                 <input id="logon_dialog_cancel" class="button_12" onmouseover="this.className = 'button_12_1'"
                        onmouseout="this.className = 'button_12'" name="" type="button"/>
-                <input type="submit" sytle="display:none" />
+                <input type="submit" style="display:none" />
             </li>
         </ul>
         </form>
@@ -74,7 +74,7 @@
                        onmouseout="this.className = 'button_13'" name="" type="button"/>
                 <input id="reg_dialog_cancel" class="button_12" onmouseover="this.className = 'button_12_1'"
                        onmouseout="this.className = 'button_12'" name="" type="button"/>
-                <input type="submit" sytle="display:none" />
+                <input type="submit" style="display:none" />
             </li>
         </ul>
         </form>
