@@ -1,3 +1,4 @@
+
 <%@ page import="cn.ilunch.domain.Product" %>
 <html>
 <head>
@@ -41,12 +42,30 @@
                 </tr>
                 <tr class="prop">
                     <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="小尺寸图片路径"/></label>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <g:textField name="smallImageUrl" value="${productInstance?.smallImageUrl}"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
                         <label for="story"><g:message code="product.story.label" default="中尺寸图片"/></label>
                         <img src="${resource(dir:'/')}${fieldValue(bean: productInstance, field: "mediumImageUrl")}"/>
                     </td>
                     <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
 
                         <input type="file" name="mediumImage"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="中尺寸图片路径"/></label>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <g:textField name="mediumImageUrl" value="${productInstance?.mediumImageUrl}"/>
                     </td>
                 </tr>
                 <tr class="prop">
@@ -61,6 +80,15 @@
                 </tr>
                 <tr class="prop">
                     <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="大尺寸图片路径"/></label>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
+
+                        <g:textField name="largeImageUrl" value="${productInstance?.largeImageUrl}"/>
+                    </td>
+                </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
                         <label for="story"><g:message code="product.story.label" default="故事图片"/></label>
                         <img src="${resource(dir:'/')}${fieldValue(bean: productInstance, field: "detailImageUrl")}"/>
                     </td>
@@ -69,7 +97,15 @@
                         <input type="file" name="detailImage"/>
                     </td>
                 </tr>
+                <tr class="prop">
+                    <td valign="top" class="name">
+                        <label for="story"><g:message code="product.story.label" default="故事尺寸图片路径"/></label>
+                    </td>
+                    <td valign="top" class="value ${hasErrors(bean: productInstance, field: 'image', 'errors')}">
 
+                        <g:textField name="detailImageUrl" value="${productInstance?.detailImageUrl}"/>
+                    </td>
+                </tr>
 
                 <tr class="prop">
                     <td valign="top" class="name">
