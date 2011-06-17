@@ -383,7 +383,7 @@ $(document).ready(function($){
 		ilunch.lockScreen();
         //get sd info and render
         var sd = ilunch.getOrderById(sideDishList, id);
-        $('#sd_detail_dialog').find("img[name=img]").attr({"src":ilunch.makeIMGPath(sd.id,'medium')});
+        $('#sd_detail_dialog').find("img[name=img]").attr({"src":ilunch.makeIMGPath(sd.id,'large')});
         $('#sd_detail_dialog').find("strong[name=name]").html(sd.name);
         var flvs = '';
         for(var i = 0; i < sd.flavors.length; i++)
