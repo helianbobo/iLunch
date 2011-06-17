@@ -27,7 +27,7 @@ p { margin:0; padding:0; }
 .alert_div_2 .pic_text .stress { color:#ff0000; font-weight:bold; }
 .button_9 { background:url(../images/button_9.gif) left top no-repeat; width:82px; height:32px; cursor:pointer; border:none; }
 .button_9_1 { background:url(../images/button_9.gif) left -32px no-repeat; width:82px; height:32px; cursor:pointer; border:none; }
-.button_10 { background:url(../images/button_10.gif) left top no-repeat; width:89px; height:23px; cursor:pointer; border:none;}
+.button_10 { background:url(../images/button_10.gif) left top no-repeat; width:89px; height:23px; cursor:pointer; border:none;margin:0 20px;}
 .button_10_1 { background:url(../images/button_10.gif) left -23px no-repeat; width:89px; height:23px; cursor:pointer; border:none;}
 .shuliang_2 { 
     background: url(../images/shuliang_2.png) no-repeat left top;
