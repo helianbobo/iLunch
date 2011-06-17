@@ -26,14 +26,14 @@ class OrderController {
         def shipmentCriteria = Shipment.createCriteria()
         def shipmentList = shipmentCriteria.list {
             gt('shipmentDate', new Date() - 31)
-            eq('status', Shipment.CREATED)
+            //eq('status', Shipment.CREATED)
             if (orderList)
                 inList('productOrder', orderList)
             maxResults(params.max)
             order("shipmentDate", "desc")
         }
 
-        render(view: "list", model: [shipments: shipmentList, orders: orderList])
+        render(view: "list", model: [shipments: shipmentList, orders: orderList,optionOrder:'listWithinMonth',optionShipment:params.optionShipment])
     }
 
     def listPending = {
@@ -54,7 +54,7 @@ class OrderController {
         orderList.each {
             shipments.addAll(it.shipments)
         }
-        render(view: "list", model: [shipments: shipments, orders: orderList])
+        render(view: "list", model: [shipments: shipments, orders: orderList,optionOrder:'listPending',optionShipment:params.optionShipment])
     }
 
     def listCompleted = {
@@ -65,7 +65,7 @@ class OrderController {
 
         def c = ProductOrder.createCriteria()
         def orderList = c.list {
-            eq('status', ProductOrder.COMPLETED)
+            inList('status', [ProductOrder.COMPLETED,ProductOrder.CANCELLED])
 
             eq('customer', customer)
             maxResults(params.max)
@@ -75,8 +75,9 @@ class OrderController {
         orderList.each {
             shipments.addAll(it.shipments)
         }
-        render(view: "list", model: [shipments: shipments, orders: orderList])
+        render(view: "list", model: [shipments: shipments, orders: orderList,optionOrder:'listCompleted',optionShipment:params.optionShipment])
     }
+
 
     def cancel = {
         def orderId = params.id
