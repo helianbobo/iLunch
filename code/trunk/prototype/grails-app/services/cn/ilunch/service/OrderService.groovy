@@ -25,7 +25,6 @@ class OrderService {
 
         oldOrder.save()
         def today = new Date()
-        today.clearTime()
         ProductOrder newOrder = new ProductOrder(orderDate: today, distributionPoint: oldOrder.distributionPoint, customer: oldOrder.customer, pointChange: oldOrder.pointChange)
         def amount = 0.0
         oldOrder.orderItems.each {oldItem ->
@@ -119,7 +118,6 @@ class OrderService {
         }
 
         def today = new Date()
-        today.clearTime()
         productOrder.completeDate = today
         productOrder.status = ProductOrder.COMPLETED
         productOrder.save()
@@ -134,7 +132,6 @@ class OrderService {
 
         ProductOrder productOrder = new ProductOrder(status: ProductOrder.SUBMITTED)
         def today = new Date()
-        today.clearTime()
         productOrder.orderDate = today
         productOrder.distributionPoint = distributionPoint
 
