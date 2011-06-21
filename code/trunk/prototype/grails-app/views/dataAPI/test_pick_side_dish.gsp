@@ -23,7 +23,7 @@
               
               <div class="alert_div_2" id="sd_detail_dialog"
 				style="position: absolute; display: none; z-index: 2000">
-				<div class="title">
+				<div div style="background:none;padding:0;text-indent:0px;" class="title">
 					<a href="#" onclick="closeSDDetail();"><img
 						src="${resource(dir: 'images', file: 'close.png')}" /> </a>配菜信息
 				</div>

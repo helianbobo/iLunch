@@ -19,7 +19,7 @@
           <div class="pcbg">
             <div class="pc_l">
               <div class="title">
-                <p><strong>请核对信息，如信息正确请点击”在线支付”通过支付宝网上支付。如信息有误，请返回<a href="#">上一步</a>修改：</strong></p>
+                <p><strong>请核对信息，如信息正确请点击”在线支付”通过支付宝网上支付。如信息有误，请返回<a>上一步</a>修改：</strong></p>
               </div>
               <div class="zf_list">
                 <ul id="order_info">

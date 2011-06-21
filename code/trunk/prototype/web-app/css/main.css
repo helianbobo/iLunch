@@ -28,7 +28,7 @@ p { margin:0; padding:0; }
 .button_9 { background:url(../images/button_9.gif) left top no-repeat; width:82px; height:32px; cursor:pointer; border:none; }
 .button_9_1 { background:url(../images/button_9.gif) left -32px no-repeat; width:82px; height:32px; cursor:pointer; border:none; }
 .button_10 { background:url(../images/button_10.gif) left top no-repeat; width:89px; height:23px; cursor:pointer; border:none;margin:0 20px;}
-.button_10_1 { background:url(../images/button_10.gif) left -23px no-repeat; width:89px; height:23px; cursor:pointer; border:none;}
+.button_10_1 { background:url(../images/button_10.gif) left -23px no-repeat; width:89px; height:23px; cursor:pointer; border:none;margin:0 20px;}
 .shuliang_2 { 
     background: url(../images/shuliang_2.png) no-repeat left top;
     margin: 0 2px;
@@ -178,7 +178,7 @@ p { margin:0; padding:0; }
 .time .stress { font-size:26px;  font-family:Tahoma, Geneva, sans-serif; }
 .rush { float:left; margin:95px 0 0 100px; }
 .rush p { color:#0f2903; line-height:24px; }
-.rush .stress { font-family:"黑体"; font-weight:bold; color:#fff; font-size:20px; }
+.rush .stress { font-family:"黑体"; font-weight:bold; color:#fff; font-size:19px; }
 .rush a { color:#fff; text-decoration:none; }
 .rush a:hover { color:#fff; text-decoration:underline; }
 .mk { margin:40px 0 20px 0; padding:0 20px; }

@@ -97,15 +97,14 @@ $(document).ready(function($){
 			var md = products[i].mainDishes[0];
 			if(md) {
 				itemPrice += (md.price*md.quantity);
-				itemNames += (md.name+'(x'+md.quantity+') +');
+				itemNames += (md.name+'(x'+md.quantity+')');
 			}
 			for(var j = 0; j < products[i].sideDishes.length; j++) {
+				itemNames += ' + ';
 				var sd = products[i].sideDishes[j];
 				itemPrice += (sd.price*sd.quantity);
-				itemNames += (sd.name+'(x'+sd.quantity+') +');
+				itemNames += (sd.name+'(x'+sd.quantity+')');
 			}
-			if(itemNames[itemNames.length-1] == '+')
-				itemNames = itemNames.substring(0, itemNames.length-1);
 
 			orderInfoElem.append(orderItemTmplt.replace(/##ITEM_PRICE##/g, itemPrice).
 					replace(/##ITEM_NAMES##/g, itemNames).
