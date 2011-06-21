@@ -32,6 +32,8 @@
 <body>
 
 <g:render template="/shared/loginPopup"/>
+<g:render template="/shared/sideDishPopup"/>
+<g:render template="/shared/datePicker"/>
 
 <div class="container">
 
