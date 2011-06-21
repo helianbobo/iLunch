@@ -10,6 +10,7 @@
         <div class="title">
             <a href="#" class="closeLogonImage"><img src="${resource(dir: 'images', file: 'close.png')}"></a>
         </div>
+        <form action="" onsubmit="$('#logon_dialog_confirm').click();">
         <ul>
             <li><strong>用户登录</strong><span class="error" id="dialog_err"></span></li>
             <li>手机号码：
@@ -25,8 +26,10 @@
                        onmouseout="this.className = 'button_11'" name="" type="button"/>
                 <input id="logon_dialog_cancel" class="button_12" onmouseover="this.className = 'button_12_1'"
                        onmouseout="this.className = 'button_12'" name="" type="button"/>
+                <input type="submit" style="display:none" />
             </li>
         </ul>
+        </form>
     </div>
 </div>
 
@@ -42,6 +45,7 @@
         <div class="title">
             <a href="#" class="closeLogonImage"><img src="${resource(dir: 'images', file: 'close.png')}"></a>
         </div>
+        <form onsubmit="$('#reg_dialog_confirm').click();">
         <ul>
             <li><strong>用户注册</strong><span class="error" id="dialog_err_reg"></span></li>
             <li>手机号码：
@@ -70,14 +74,17 @@
                        onmouseout="this.className = 'button_13'" name="" type="button"/>
                 <input id="reg_dialog_cancel" class="button_12" onmouseover="this.className = 'button_12_1'"
                        onmouseout="this.className = 'button_12'" name="" type="button"/>
+                <input type="submit" style="display:none" />
             </li>
         </ul>
+        </form>
     </div>
 </div>
 
 <script type="text/javascript">
     function showLoginDialog() {
         $('#logon_dialog').fadeIn('slow', function(){});
+        $('#logon_dialog').find('input')[0].focus();
     }
     $(document).ready(function() {
 
@@ -152,6 +159,7 @@
             $('#logon_dialog').fadeOut('slow', function(){$('#logon_dialog').hide();});
             $('#reg_dialog').css({"left":x,"top":y});
             $('#reg_dialog').fadeIn('slow', function(){});
+            $('#reg_dialog').find('input')[0].focus();
         });
 
         $('#reg_dialog_logon_btn').click(function() {
@@ -206,7 +214,7 @@
                     }
                     else {
                         // show error msg
-                        $('#dialog_err').html(status);
+                        $('#dialog_err').html('用户名或密码不正确！');
                     }
                     clearInterval(p);
                 }

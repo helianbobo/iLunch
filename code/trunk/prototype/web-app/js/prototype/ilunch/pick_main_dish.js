@@ -71,7 +71,7 @@ $(document).ready(function($) {
 
 	var dishSubTmplt1 = '<div class="dl_c_li">'+
 							'<div class="date"><span class="##DATE_CSS##">##DATE##</span></div>'+
-							'<div class="cai_p"><a href="'+ilunch.ROOT+'mainDish/showPublic/##MD_ID##"><img src="'+ilunch.ROOT+'##IMG##" /></a></div>'+
+							'<div class="cai_p"><a href="'+ilunch.ROOT+'mainDish/showPublic/##MD_ID##"><img src="##IMG##" /></a></div>'+
 							'<div class="cai_t">##MD_NAME##</div>'+
 							'<div name="order" class="cai_s">';
 	
@@ -84,7 +84,7 @@ $(document).ready(function($) {
 						'<input onclick="inc_quantity(this)" class="jiayi" name="" type="button" value="" />'+
 						'份  <span class="stress">##PRICE##元/份</span>'+
 					 '</div>'+
-					 '<input class="xuangou" onclick="md_order(##MD_ID##,\'##YY##-##MM##-##DD##\',\'##MD_NAME##\',\'##IMG##\',this);" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
+					 '<input class="xuangou" onclick="md_order(##MD_ID##,\'##YY##-##MM##-##DD##\',\'##MD_NAME##\',this);" onmouseover="this.className=\'xuangou_1\'" onmouseout="this.className=\'xuangou\'" name="" type="button" value="" />';
 	
 	var disorderTmplt = '<div class="cai_sl">已选购##SEL_N##份共##SEL_PRICE##元</div>'+
 						'<input onclick="md_disorder(##MD_ID##,\'##YY##-##MM##-##DD##\',this);" class="fangqi" onmouseover="this.className=\'fangqi_1\'" onmouseout="this.className=\'fangqi\'" name="" type="button" value="" />';
@@ -125,7 +125,7 @@ $(document).ready(function($) {
                 var sel_md = cart.getOrderByIdAndDate(md.id, thisDate, true);
                 var price = renderList[i].price;
                 var md_name = md.name;
-                var img = md.imageURL;
+                var img = ilunch.makeIMGPath(md.id,'medium');
                 if (sel_md) {
                     var divText = selDishTmplt;
                     divText = divText.replace(/##MD_ID##/g, md.id).replace(/##SEL_N##/g, sel_md.quantity).replace(/##SEL_PRICE##/g, price * sel_md.quantity);
@@ -249,13 +249,13 @@ $(document).ready(function($) {
 		});
 	});
 	
-	md_order = function(id, date, name, imageURL, elem) {
+	md_order = function(id, date, name, elem) {
 		var md = ilunch.getOrderById(mdList, id);
 		var quantity = parseInt($(elem).prev().find('input[name="quantity"]').val());
 		date = ilunch.makeDate(date);
 		if(md && quantity > 0) {
 			var price = ilunch.getPriceByDate(md.prices, date);
-			cart.addOrder(true, date, id, name, imageURL, price, quantity);
+			cart.addOrder(true, date, id, name, price, quantity);
 			var pElem = $(elem).parents('div[name="order"]');
 			pElem.empty();
 			pElem.append(disorderTmplt.replace(/##MD_ID##/g, id).replace(/##SEL_N##/g, quantity).replace(/##SEL_PRICE##/g, price*quantity).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
@@ -273,7 +273,7 @@ $(document).ready(function($) {
 			var price = ilunch.getPriceByDate(md.prices, date);
 			var pElem = $(elem).parents('div[name="order"]');
 			pElem.empty();
-			pElem.append(orderTmplt.replace(/##MD_NAME##/g, md.name).replace(/##IMG##/g, md.imageURL).replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
+			pElem.append(orderTmplt.replace(/##MD_NAME##/g, md.name).replace(/##IMG##/g, ilunch.makeIMGPath(md.id,'medium')).replace(/##MD_ID##/g, md.id).replace(/##PRICE##/g, price).replace(/##YY##/g, date.getFullYear()).replace(/##MM##/g, 
 					ilunch.doubleDigit(date.getMonth()+1)).replace(/##DD##/g, ilunch.doubleDigit(date.getDate())));
 			in_total.html(cart.getTotalMoney());
 			if(parseInt(in_total.html()) < 0)

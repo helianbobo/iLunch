@@ -63,7 +63,7 @@ $(document).ready(function($){
 			return;
 		var elem = $('.tejia')[0];
 		elem.innerHTML = elem.innerHTML.replace(/##MD_NAME##/g, firstMD.name).replace(/##PRICE##/g, firstMD.prices[0].price)
-				.replace(/##REMAIN##/g, firstMD.remain).replace(/##MD_IMG##/g, ilunch.ROOT+firstMD.imageURL);
+				.replace(/##REMAIN##/g, firstMD.remain).replace(/##MD_IMG##/g, ilunch.makeIMGPath(firstMD.id, 'large'));
 	};
 	
 	///////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ $(document).ready(function($){
 		date = ilunch.makeDate(firstMD.prices[0].startDate);
 		if(md && quantity > 0) {
 			var price = md.prices[0].price;
-			cart.addOrder(true, date, md.id, md.name, md.imageURL, price, quantity);
+			cart.addOrder(true, date, md.id, md.name, price, quantity);
 			
 			ilunch.saveCart(cart.toString(), function(data){
 				if(data) {
