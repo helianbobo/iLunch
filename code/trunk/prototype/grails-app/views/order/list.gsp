@@ -19,10 +19,7 @@
         %{--<a href="#" onclick='javascript:fillNickname();'>[修改昵称]</a>--}%
     %{--</p>--}%
     <p>手机号：${'$'}{phoneNumber}
-        <br/>
-        订餐次数：500次
-        <br/>
-        等级：食神
+  
     </p>
 
     <p>账户余额：${'$'}{balance}元
@@ -44,7 +41,7 @@
 
                 <div class="mlc_r">
                     <g:if test="${flash.message}">
-                    <div class="message">${flash.message}</div>
+                    <div class="message" style="color:black;font-size:14px;">${flash.message}</div>
                 </g:if>
                     <div class="title">订单记录</div>
 
