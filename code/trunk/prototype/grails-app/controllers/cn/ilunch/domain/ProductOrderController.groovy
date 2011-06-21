@@ -27,6 +27,11 @@ class ProductOrderController {
             forward(controller: "exception", action: "entityNotFound", params: [id: buildingId, entityName: Building])
             return;
         }
+        if(!customer.primaryBuilding){
+            customer.primaryBuilding = building;
+            customer.save()
+        }
+
         def pointChangePoint = orderDetails.pointChange as float
         if (pointChangePoint > (customer.pointBalance as float)) {
             forward(controller: "exception", action: "notEnoughPointChange", params: [id: userId])
