@@ -13,7 +13,7 @@ class MainDish extends Product{
     }
 
 def imageSizeDesc(){
-[small:"51*51",medium:"174*150",large:"224*194",story:"426 * 280"]
+[small:"54*54",medium:"174*150",large:"224*194",story:"426 * 280"]
 }
 
 }
